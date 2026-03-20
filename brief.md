@@ -54,9 +54,9 @@ Example:
 **Tech stack** (pre-filled — adjust if needed):
 
 - **Smart contracts:** Solidity ^0.8.24 on Arbitrum Sepolia (via `reineira-code`)
-- **Frontend:** Vue 3 + TypeScript + Vite + Pinia + TailwindCSS (via `reineira-modules/app`)
-- **Payment link:** Vue 3 + Wagmi + RainbowKit (via `reineira-modules/payment-link`)
-- **Backend:** TypeScript + Clean Architecture, DB-agnostic (via `reineira-modules/backend`)
+- **Frontend:** Vue 3 + TypeScript + Vite + Pinia + TailwindCSS (via `platform-modules/app`)
+- **Payment link:** Vue 3 + Wagmi + RainbowKit (via `platform-modules/payment-link`)
+- **Backend:** TypeScript + Clean Architecture, DB-agnostic (via `platform-modules/backend`)
 - **Wallet (primary):** ZeroDev — ERC-4337 smart accounts, passkey auth
 - **Wallet (external):** Any wallet via RainbowKit/WalletConnect (payment-link app)
 - **Encryption:** Fhenix CoFHE (FHE on-chain), cofhejs SDK
@@ -84,7 +84,7 @@ Example:
 **What exists already:**
 
 - Protocol contracts deployed on Arbitrum Sepolia (reineira-code)
-- Plug-and-play frontend + backend modules (reineira-modules)
+- Plug-and-play frontend + backend modules (platform-modules)
 - SDK for escrow creation and management (@reineira-os/sdk)
 
 ---
@@ -152,7 +152,7 @@ Example:
 
 <!-- What are the top 3 things you need to do RIGHT NOW?
 1. e.g., Deploy custom condition resolver for our use case
-2. e.g., Set up frontend from reineira-modules with our branding
+2. e.g., Set up frontend from platform-modules with our branding
 3. e.g., Wire escrow creation flow end-to-end -->
 
 1.

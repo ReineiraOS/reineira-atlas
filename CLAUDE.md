@@ -33,9 +33,9 @@ platform version before advising on contract patterns.
 | ------------------------------ | ------------------------------------------------------- | ----------------------------- |
 | **reineira-atlas** (this repo) | Startup OS — strategy, ops, growth, agents              | Markdown + Claude Code agents |
 | **reineira-code**              | Smart contract development — resolvers, policies        | Hardhat + Solidity + cofhejs  |
-| **reineira-modules**           | Plug-and-play app starters — backend, frontend, invoice | See below                     |
+| **platform-modules**           | Plug-and-play app starters — backend, frontend, invoice | See below                     |
 
-### reineira-modules
+### platform-modules
 
 | Module          | Stack                                                       | Purpose                                     |
 | --------------- | ----------------------------------------------------------- | ------------------------------------------- |
@@ -96,7 +96,7 @@ judge(coverageId, proof) → ebool           // encrypted dispute verdict
 ```
 1. Clone reineira-atlas       → fill brief.md, get your startup OS
 2. Clone reineira-code        → build custom resolver/policy for your use case
-3. Pick from reineira-modules → backend, app, payment-link (or all three)
+3. Pick from platform-modules → backend, app, payment-link (or all three)
 4. Atlas agents guide you     → /deploy, /integrate, /pitch-prep
 ```
 
@@ -112,7 +112,7 @@ judge(coverageId, proof) → ebool           // encrypted dispute verdict
 - **Cross-chain:** Circle CCTP v2 (USDC cross-chain transfers)
 - **Chain:** Arbitrum (L2)
 
-### Module-level (from reineira-modules — customizable)
+### Module-level (from platform-modules — customizable)
 
 - **Platform app:** Vue 3 + Vite + Pinia + TailwindCSS + ZeroDev (smart accounts, passkeys)
 - **Payment link:** Vue 3 + Vite + Wagmi + RainbowKit (external wallet connection)
@@ -129,7 +129,7 @@ judge(coverageId, proof) → ebool           // encrypted dispute verdict
 | Skill prefix | Domain                                                |
 | ------------ | ----------------------------------------------------- |
 | `protocol-*` | Smart contract development, resolver/policy design    |
-| `product-*`  | Frontend + backend development on reineira-modules    |
+| `product-*`  | Frontend + backend development on platform-modules    |
 | `strategy`   | Business model, pricing, tokenomics, roadmap          |
 | `growth-*`   | Community, content, partnerships, developer relations |
 | `ops`        | Sprint planning, weekly reviews, coordination         |

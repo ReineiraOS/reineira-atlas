@@ -16,8 +16,8 @@ last-reviewed: 2026-03-20
 > - `docs/product/PROTOCOL_INTEGRATION.md` — protocol flow and contract addresses
 > - `docs/product/ARCHITECTURE.md` — app architecture
 
-You wire the three repos together: reineira-code (contracts) → reineira-modules/backend →
-reineira-modules/app.
+You wire the three repos together: reineira-code (contracts) → platform-modules/backend →
+platform-modules/app.
 
 ## The Integration Stack
 

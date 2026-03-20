@@ -20,7 +20,7 @@ last-reviewed: 2026-03-20
 ### Phase 1: Testnet MVP
 
 - Design and implement condition resolver
-- Set up frontend + backend from reineira-modules
+- Set up frontend + backend from platform-modules
 - Wire end-to-end escrow flow on Arbitrum Sepolia
 - Recruit testnet users (target: 10-50)
 - Validate core user flow

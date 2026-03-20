@@ -29,7 +29,7 @@ Every builder on ReineiraOS works with three repos:
 | ------------------------------ | ---------------------------------------------------------------------------------------- |
 | **reineira-atlas** (this repo) | Startup OS — strategy, ops, growth, compliance, pitch                                    |
 | **reineira-code**              | Smart contracts — resolvers, policies, tests, deploy                                     |
-| **reineira-modules**           | App starters — backend (Vercel-ready), platform app (ZeroDev), payment link (RainbowKit) |
+| **platform-modules**           | App starters — backend (Vercel-ready), platform app (ZeroDev), payment link (RainbowKit) |
 
 ### Protocol Primitives Available to Every Venture
 
@@ -68,7 +68,7 @@ Read `brief.md`. Extract:
 - **Stage** (idea / MVP / launched / growing / scaling)
 - **Core features** (ordered by priority)
 - **User flow** (end-to-end)
-- **Tech stack** (note any overrides from reineira-modules defaults)
+- **Tech stack** (note any overrides from platform-modules defaults)
 - **Revenue model** and pricing
 - **Growth channels**
 - **Team composition** and gaps
@@ -138,7 +138,7 @@ Every agent MUST include:
 1. **Protocol context** — which primitives the venture uses, relevant contract addresses
 2. **Venture-specific numbers** — from the brief, not generic placeholders
 3. **Domain playbook** — actionable instructions, not theory
-4. **Ecosystem awareness** — pointers to reineira-code and reineira-modules
+4. **Ecosystem awareness** — pointers to reineira-code and platform-modules
 
 #### Tool Mapping
 
@@ -172,7 +172,7 @@ Every agent MUST include:
 **`product-integrator.md`:**
 
 - SDK usage: ReineiraSDK.create → sdk.escrow.build()
-- Connect reineira-modules frontend → backend → protocol
+- Connect platform-modules frontend → backend → protocol
 - ZeroDev smart account integration (passkey auth, user operations)
 - RainbowKit/WalletConnect for external wallet connections (payment-link)
 - Cross-chain CCTP v2 flow (if applicable)

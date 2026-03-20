@@ -35,7 +35,7 @@ _One protocol. Infinite verticals. Pick one and build._
 | -------------------- | -------------------------------------------------------------------- |
 | **reineira-atlas**   | Run the startup (strategy, ops, growth, compliance, pitch)           |
 | **reineira-code**    | Build on the protocol (Solidity resolvers, policies, tests, deploy)  |
-| **reineira-modules** | Ship the product (plug-and-play backend, platform app, payment link) |
+| **platform-modules** | Ship the product (plug-and-play backend, platform app, payment link) |
 
 ### Venture Verticals
 
@@ -259,9 +259,9 @@ Every repo in the ecosystem declares compatibility with a platform version in `r
 | @reineira-os/sdk              | SDK         | Follows contracts      | Yes                                       |
 | reineira-code                 | Dev tooling | Independent patches    | Yes — generates interface-compatible code |
 | reineira-atlas                | Startup OS  | Independent patches    | Yes — agent guidance matches interfaces   |
-| reineira-modules/backend      | App starter | Independent            | Yes — uses matching SDK                   |
-| reineira-modules/app          | App starter | Independent            | Yes — uses matching SDK                   |
-| reineira-modules/payment-link | App starter | Independent            | Yes — uses matching SDK                   |
+| platform-modules/backend      | App starter | Independent            | Yes — uses matching SDK                   |
+| platform-modules/app          | App starter | Independent            | Yes — uses matching SDK                   |
+| platform-modules/payment-link | App starter | Independent            | Yes — uses matching SDK                   |
 
 ### What agents should do
 

@@ -13,9 +13,9 @@ last-reviewed: 2026-03-20
 | ----------------------------- | ---------------------------------------------- | ---------------------- |
 | reineira-atlas                | Markdown + Claude agents                       | Startup OS             |
 | reineira-code                 | Hardhat + Solidity + cofhejs                   | Smart contracts        |
-| reineira-modules/backend      | TypeScript + Clean Architecture (Vercel-ready) | Backend API            |
-| reineira-modules/app          | Vue 3 + Vite + Pinia + Tailwind + ZeroDev      | Platform app           |
-| reineira-modules/payment-link | Vue 3 + Vite + Wagmi + RainbowKit              | Shareable payment link |
+| platform-modules/backend      | TypeScript + Clean Architecture (Vercel-ready) | Backend API            |
+| platform-modules/app          | Vue 3 + Vite + Pinia + Tailwind + ZeroDev      | Platform app           |
+| platform-modules/payment-link | Vue 3 + Vite + Wagmi + RainbowKit              | Shareable payment link |
 
 ## Tech Stack
 
@@ -56,10 +56,10 @@ graph TD
 
 ```bash
 # Backend
-cd reineira-modules/backend && npm run dev
+cd platform-modules/backend && npm run dev
 
 # Frontend
-cd reineira-modules/app && yarn dev  # port 4831
+cd platform-modules/app && yarn dev  # port 4831
 
 # Contracts
 cd reineira-code && npx hardhat test

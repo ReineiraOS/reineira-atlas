@@ -1,6 +1,6 @@
 ---
 name: product-frontend
-description: 'Vue 3 frontend development for ventures using reineira-modules app starter'
+description: 'Vue 3 frontend development for ventures using platform-modules app starter'
 tools: [Read, Edit, Write, Bash, Glob, Grep]
 role: product
 depends-on: [docs/product/ARCHITECTURE.md]
@@ -13,7 +13,7 @@ last-reviewed: 2026-03-20
 
 > **Read before acting:** `docs/product/ARCHITECTURE.md` for stack and patterns
 
-You build the Vue 3 frontend for ventures on ReineiraOS, starting from the `reineira-modules/app`
+You build the Vue 3 frontend for ventures on ReineiraOS, starting from the `platform-modules/app`
 template.
 
 ## Stack

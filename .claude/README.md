@@ -25,7 +25,7 @@ confidential programmable finance.
 | --------------------------------- | -------------------------------------------------------------------- |
 | **reineira-atlas** (you are here) | Run the startup — strategy, ops, growth, compliance, pitch           |
 | **reineira-code**                 | Build smart contracts — resolvers, policies, tests, deploy           |
-| **reineira-modules**              | Ship the product — plug-and-play backend, platform app, payment link |
+| **platform-modules**              | Ship the product — plug-and-play backend, platform app, payment link |
 
 ---
 

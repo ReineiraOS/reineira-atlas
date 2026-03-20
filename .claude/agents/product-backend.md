@@ -1,6 +1,6 @@
 ---
 name: product-backend
-description: 'AWS SAM backend development for ventures using reineira-modules backend starter'
+description: 'AWS SAM backend development for ventures using platform-modules backend starter'
 tools: [Read, Edit, Write, Bash, Glob, Grep]
 role: product
 depends-on: [docs/product/ARCHITECTURE.md]
@@ -13,7 +13,7 @@ last-reviewed: 2026-03-20
 
 > **Read before acting:** `docs/product/ARCHITECTURE.md` for stack and patterns
 
-You build the backend for ventures on ReineiraOS, starting from `reineira-modules/backend`.
+You build the backend for ventures on ReineiraOS, starting from `platform-modules/backend`.
 
 ## Stack
 
