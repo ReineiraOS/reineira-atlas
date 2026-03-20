@@ -1,0 +1,25 @@
+# Environment
+.env
+.env.local
+
+# Data (append-only logs — keep structure, ignore content)
+.claude/data/decisions/*.md
+!.claude/data/decisions/.gitkeep
+.claude/data/metrics/*.md
+!.claude/data/metrics/.gitkeep
+.claude/data/signals/*.md
+!.claude/data/signals/.gitkeep
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Editor
+*.swp
+*.swo
+*~
+.idea/
+.vscode/
+
+# Node (if linting tools added)
+node_modules/
