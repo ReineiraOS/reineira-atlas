@@ -13,9 +13,75 @@ env:
   NODE_VERSION: '24'
 
 jobs:
+  validate:
+    name: Validate
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
+
+      - name: Check required files exist
+        run: |
+          files=(
+            "CLAUDE.md"
+            "CONTRIBUTING.md"
+            "CHANGELOG.md"
+            "LICENSE"
+            "reineira.json"
+            ".releaserc.json"
+            ".claude/SYSTEM.md"
+            ".claude/agents/_dispatch.md"
+            ".claude/agents/_starter.md"
+            ".claude/skills/_index.md"
+            "brief.template.md"
+          )
+          missing=0
+          for f in "${files[@]}"; do
+            if [ ! -f "$f" ]; then
+              echo "Missing: $f"
+              missing=$((missing + 1))
+            fi
+          done
+          if [ "$missing" -gt 0 ]; then
+            echo "$missing required file(s) missing"
+            exit 1
+          fi
+          echo "All required files present"
+
+      - name: Validate reineira.json
+        run: |
+          python3 -c "
+          import json, sys
+          with open('reineira.json') as f:
+              data = json.load(f)
+          required = ['name', 'version', 'platform']
+          for key in required:
+              if key not in data:
+                  print(f'Missing key: {key}')
+                  sys.exit(1)
+          print(f'Valid: {data[\"name\"]} v{data[\"version\"]} (platform {data[\"platform\"]})')
+          "
+
+      - name: Check agent frontmatter
+        run: |
+          errors=0
+          for f in .claude/agents/*.md; do
+            if [ "$(basename "$f")" = "_dispatch.md" ]; then continue; fi
+            if ! head -1 "$f" | grep -q '^---'; then
+              echo "Missing frontmatter: $f"
+              errors=$((errors + 1))
+            fi
+          done
+          if [ "$errors" -gt 0 ]; then
+            echo "$errors agent(s) missing frontmatter"
+            exit 1
+          fi
+          echo "All agents have frontmatter"
+
   release:
     name: Semantic Release
     runs-on: ubuntu-latest
+    needs: validate
     timeout-minutes: 15
     permissions:
       contents: write
