@@ -24,5 +24,6 @@ Thumbs.db
 .idea/
 .vscode/
 
-# Node (if linting tools added)
+# Node (semantic-release tooling)
 node_modules/
+package-lock.json
