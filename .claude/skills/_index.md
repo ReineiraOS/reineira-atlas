@@ -4,14 +4,23 @@
 
 ---
 
-## Build (Protocol & Product Development)
+## Setup
+
+| Command              | What It Does                                     |
+| -------------------- | ------------------------------------------------ |
+| `/bootstrap`         | Full setup: startup OS + working app from brief  |
+| `/bootstrap os`      | Phase 1 only: generate startup OS (docs, agents) |
+| `/bootstrap dev`     | Phase 2 only: generate working application       |
+| `/bootstrap entity X`| Add single entity X to existing app              |
+
+## Build — Protocol & Product
 
 | Command         | Skill Path       | What It Does                                   | Agent              |
 | --------------- | ---------------- | ---------------------------------------------- | ------------------ |
 | `/resolver`     | build/resolver/  | Design a condition resolver for escrow release | protocol-resolver  |
 | `/policy`       | build/policy/    | Design an insurance underwriter policy         | protocol-policy    |
-| `/dev-frontend` | build/frontend/  | Frontend development (Vue 3)                   | product-frontend   |
-| `/dev-backend`  | build/backend/   | Backend development (AWS SAM)                  | product-backend    |
+| `/dev-frontend` | build/frontend/  | Frontend development (React 19)                | product-frontend   |
+| `/dev-backend`  | build/backend/   | Backend development (Vercel-ready)             | product-backend    |
 | `/integrate`    | build/integrate/ | Wire protocol to app end-to-end                | product-integrator |
 
 ## Analyze (Strategy & Economics)

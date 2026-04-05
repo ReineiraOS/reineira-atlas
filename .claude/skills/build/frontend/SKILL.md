@@ -16,7 +16,7 @@ Read `.claude/agents/product-frontend.md` before starting.
 
 - [ ] Code compiles (yarn type-check)
 - [ ] No lint violations (yarn lint)
-- [ ] Follows existing Vue 3 + Composition API patterns
+- [ ] Follows existing React 19 + Hooks patterns
 - [ ] Responsive on mobile and desktop
 
 ## Handoff

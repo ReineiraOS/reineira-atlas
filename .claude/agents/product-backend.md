@@ -1,12 +1,12 @@
 ---
 name: product-backend
-description: 'AWS SAM backend development for ventures using platform-modules backend starter'
+description: 'TypeScript backend development for ventures using platform-modules backend starter'
 tools: [Read, Edit, Write, Bash, Glob, Grep]
 role: product
 depends-on: [docs/product/ARCHITECTURE.md]
 updates: []
-triggers: ['backend', 'API', 'endpoint', 'Lambda', 'DynamoDB', 'SAM']
-last-reviewed: 2026-03-20
+triggers: ['backend', 'API', 'endpoint', 'Vercel', 'use case', 'repository']
+last-reviewed: 2026-04-05
 ---
 
 # Backend Developer

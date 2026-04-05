@@ -104,8 +104,8 @@ All of Idea, plus split and add:
 
 | Agent          | File                    | Purpose                                             |
 | -------------- | ----------------------- | --------------------------------------------------- |
-| Frontend Dev   | `product-frontend.md`   | Vue 3 app development (replaces fullstack)          |
-| Backend Dev    | `product-backend.md`    | AWS SAM backend development (replaces fullstack)    |
+| Frontend Dev   | `product-frontend.md`   | React 19 app development (replaces fullstack)          |
+| Backend Dev    | `product-backend.md`    | TypeScript backend development (Vercel-ready) (replaces fullstack)    |
 | Integrator     | `product-integrator.md` | Wire protocol to app end-to-end                     |
 | Policy Guide   | `protocol-policy.md`    | Insurance policy design (if venture uses insurance) |
 | Content Writer | `growth-content.md`     | Tutorials, blog posts, social                       |
@@ -237,6 +237,19 @@ Only create skills for agents in the roster.
 
 - `data/decisions/{today}.md` — tech stack, vertical, scope decisions
 - `data/metrics/{today}.md` — day zero baseline
+
+### Step 7: Point to Builder
+
+After the OS is generated, inform the user:
+
+```
+Your startup OS is ready. Next step: generate a working application.
+
+Run the builder agent to create your backend + frontend from platform-modules:
+  claude "Read .claude/agents/_builder.md then read brief.md and execute the full build."
+
+Or use the slash command: /build-app
+```
 
 ---
 
