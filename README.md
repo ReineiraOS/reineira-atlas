@@ -12,32 +12,112 @@ Atlas is a **one-command launcher** for building on ReineiraOS. Fill in a brief,
 and get a working application with backend API, frontend app, strategy docs, and AI agents — all
 configured for your venture.
 
+## Quick start
+
+### 1. Set up the workspace
+
 ```bash
-# 1. Clone atlas
+mkdir my-workspace && cd my-workspace
+
+# Clone atlas (this repo) and the app template
 git clone https://github.com/ReineiraOS/reineira-atlas.git
+git clone https://github.com/ReineiraOS/platform-modules.git
+
+# They must be siblings:
+# my-workspace/
+# ├── reineira-atlas/
+# └── platform-modules/
+```
+
+### 2. Create your venture brief
+
+```bash
 cd reineira-atlas
-
-# 2. Create your venture brief from the template
 cp brief.template.md brief.md
-# edit brief.md — name, features, entities, branding
+# Edit brief.md — venture name, features, entities, branding
+```
 
-# 3. Bootstrap everything (requires Claude Code + platform-modules sibling)
+See `test-briefs/freelance-shield.md` for a complete example.
+
+### 3. Create external accounts
+
+Before running bootstrap, set up accounts for services used by the app:
+
+| Service | What it's for | Where to sign up | Required? |
+| ------- | ------------- | ---------------- | --------- |
+| **ZeroDev** | Smart account wallets (passkey auth) | [dashboard.zerodev.app](https://dashboard.zerodev.app) | Yes — get project ID, bundler URL, passkey server URL |
+| **Vercel** | Deploy backend + frontend | [vercel.com](https://vercel.com) | For deploy (not needed for local dev) |
+| **Neon** | Postgres database | [neon.tech](https://neon.tech) | For deploy (local dev uses in-memory) |
+
+Optional (protocol-level, needed when wiring escrow flow):
+
+| Service | What it's for | Where to sign up | Required? |
+| ------- | ------------- | ---------------- | --------- |
+| **QuickNode** | Blockchain webhooks for escrow events | [quicknode.com](https://www.quicknode.com) | When integrating escrow |
+| **Reclaim Protocol** | zkTLS proofs (proof of delivery) | [reclaimprotocol.org](https://reclaimprotocol.org) | If using zkTLS verification |
+
+### 4. Bootstrap
+
+Open `reineira-atlas/` in Claude Code, then:
+
+```
 /bootstrap
 ```
 
-**Output:** a new `../<venture-name>/` directory with:
+**Output:** a new `../my-venture/` directory (name from your brief):
 
 ```
-<venture-name>/
-├── packages/backend/     ← API with CRUD for your entities (Clean Architecture, Vercel-ready)
-├── packages/app/         ← React 19 + ZeroDev frontend with pages for each entity
-├── .claude/docs/         ← Strategy, architecture, metrics, compliance — filled from your brief
-└── .claude/agents/       ← AI agents configured for your stage and vertical
+my-venture/
+├── packages/backend/     ← API with CRUD for your entities (Vercel-ready)
+├── packages/app/         ← React 19 + ZeroDev frontend
+├── .claude/docs/         ← Strategy, architecture, metrics — filled from brief
+└── .claude/agents/       ← AI agents for your stage
 ```
 
-Atlas itself stays clean — it's a reusable template, not modified per venture.
+### 5. Configure environment
 
-### Granular options
+```bash
+cd ../my-venture
+
+# Backend — only JWT_SECRET is required for local dev
+cp packages/backend/.env.example packages/backend/.env
+# Set JWT_SECRET (any random 32+ char string)
+
+# Frontend — ZeroDev credentials are required for wallet auth
+cp packages/app/.env.example packages/app/.env
+# Set VITE_ZERODEV_PROJECT_ID, VITE_ZERODEV_BUNDLER_URL, VITE_ZERODEV_PASSKEY_SERVER_URL
+```
+
+### 6. Run locally
+
+```bash
+pnpm install
+pnpm dev:backend    # http://localhost:3000
+pnpm dev:app        # http://localhost:4831
+```
+
+### 7. Deploy to Vercel
+
+Both packages are Vercel-ready out of the box:
+
+```bash
+# Install Vercel CLI
+npm i -g vercel
+
+# Deploy backend (has vercel.json with API rewrites)
+cd packages/backend
+vercel --prod
+# Set env vars in Vercel dashboard: JWT_SECRET, DATABASE_URL (Neon), ALLOWED_ORIGINS
+
+# Deploy frontend
+cd ../app
+vercel --prod
+# Set env vars: VITE_API_BASE_URL (your backend URL), VITE_ZERODEV_* credentials
+```
+
+The backend uses Vercel serverless functions (`api/` directory) — no Express/Fastify server needed in production.
+
+## Granular bootstrap options
 
 ```
 /bootstrap                              → full setup (OS + app)
@@ -53,7 +133,7 @@ Atlas itself stays clean — it's a reusable template, not modified per venture.
 | ---- | ----------------- | -------- |
 | **reineira-atlas** (this repo) | Launch the venture — brief → bootstrap → working app | 0.1 |
 | [reineira-code](https://github.com/ReineiraOS/reineira-code) | Build smart contracts — resolvers, policies, tests, deploy | 0.1 |
-| [platform-modules](https://github.com/ReineiraOS/platform-modules) | App template — backend, platform app, payment link | 0.1 |
+| [platform-modules](https://github.com/ReineiraOS/platform-modules) | App template — backend, platform app | 0.1 |
 
 ## Slash commands
 
@@ -105,13 +185,13 @@ reineira-atlas/
 
 ## Compatibility
 
-| Component        | Requirement             |
-| ---------------- | ----------------------- |
-| Platform         | ReineiraOS 0.1          |
-| Claude Code      | Required                |
-| platform-modules | Sibling directory       |
-| Node.js          | 18+                     |
-| pnpm             | 9+                      |
+| Component        | Requirement                                              |
+| ---------------- | -------------------------------------------------------- |
+| Platform         | ReineiraOS 0.1                                           |
+| Claude Code      | Required                                                 |
+| platform-modules | Sibling directory (`../platform-modules/`)               |
+| Node.js          | 18+                                                      |
+| pnpm             | 9+                                                       |
 
 ## License
 
