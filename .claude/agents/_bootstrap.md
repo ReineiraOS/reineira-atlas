@@ -11,42 +11,58 @@ last-reviewed: 2026-04-05
 
 # Bootstrap — One Command Setup
 
-> From `brief.md` to startup OS + working application.
-> Phase 1: `_starter` (docs, agents, skills). Phase 2: `_builder` (code via pipeline skills).
+> From `brief.md` to startup OS + working application in `../<venture-name>/`.
+> Atlas stays clean — all venture artifacts go into the new project directory.
+
+---
+
+## Output Directory
+
+**Everything goes into `../<venture-name>/`** — a sibling directory to atlas.
+
+```
+../<venture-name>/
+├── packages/backend/       ← API with entity CRUD
+├── packages/app/           ← React 19 frontend with pages
+├── .claude/docs/           ← Strategy, architecture, metrics (from brief)
+├── .claude/agents/         ← AI agents for this venture's stage
+├── .claude/data/           ← Decisions, metrics snapshots
+└── CLAUDE.md               ← Venture-specific context
+```
+
+Atlas (`reineira-atlas/`) is NOT modified. It remains a reusable template.
 
 ---
 
 ## Prerequisites
 
 1. `brief.md` filled out (venture name, features, entities, branding)
-2. `../platform-modules/` exists
+2. `../platform-modules/` exists as sibling directory
 
 ---
 
 ## Phase 1: Startup OS (_starter)
 
 1. Read `brief.md`
-2. Select agent roster by stage
-3. Generate docs in `.claude/docs/`
-4. Generate skills for selected agents
-5. Update `SYSTEM.md` with venture numbers
-6. Seed `data/decisions/` and `data/metrics/`
+2. Scaffold venture directory first (rsync from platform-modules)
+3. Copy `.claude/docs/` templates from atlas → venture project
+4. Fill docs with venture-specific content from the brief
+5. Generate agent files in venture project's `.claude/agents/`
+6. Seed `venture/.claude/data/decisions/` and `data/metrics/`
 
-**Gate:** `docs/product/ARCHITECTURE.md` must be populated.
+**Gate:** `../<venture-name>/.claude/docs/product/ARCHITECTURE.md` must be populated.
 
 ## Phase 2: Working Application (_builder pipeline)
 
-Execute skills in order:
+Execute in the venture project (`../<venture-name>/`):
 
 ```
-/scaffold <venture-name>    — copy template, rebrand
-/brand                      — apply colors, typography, mode
-/cleanup                    — remove sample UI not in brief
-/gen-entity <Entity1>       — first entity vertical slice
-/gen-entity <Entity2>       — second entity
-/gen-entity <EntityN>       — ...for each entity in brief
-/gen-dashboard              — dashboard with Recent blocks
-/verify                     — build, test, report
+scaffold     — copy template, rebrand (already done in Phase 1)
+brand        — apply colors, typography, mode
+cleanup      — remove sample UI not in brief
+gen-entity   — one entity vertical slice (called per entity)
+gen-dashboard — dashboard with Recent blocks
+verify       — build, test, report
 ```
 
 ## Phase 3: Summary

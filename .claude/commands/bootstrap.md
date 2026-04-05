@@ -27,12 +27,16 @@ If arguments contain a `.md` file path, use that as the brief. Otherwise use `br
 
 ## Phase 1: Startup OS (skip if argument is `dev` or `entity`)
 
-Read the brief, then execute the `_starter.md` process:
-1. Select agent roster by stage
-2. Generate docs in `.claude/docs/` with venture-specific content
-3. Generate skills for selected agents
-4. Update SYSTEM.md with venture numbers
-5. Seed data/decisions/ and data/metrics/
+Read the brief, then execute the `_starter.md` process.
+
+**IMPORTANT: All venture-specific artifacts go into `../<venture-name>/`, NOT into atlas.**
+Atlas stays as a reusable template with `{placeholder}` docs.
+
+1. Scaffold the venture project first (Phase 2 Step 1) if it doesn't exist yet
+2. Copy `.claude/docs/` templates from atlas into `../<venture-name>/.claude/docs/`
+3. Fill docs with venture-specific content from the brief
+4. Copy relevant agent files into `../<venture-name>/.claude/agents/`
+5. Seed `../<venture-name>/.claude/data/decisions/` and `data/metrics/`
 
 ---
 

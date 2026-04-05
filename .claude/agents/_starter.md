@@ -129,9 +129,24 @@ All of MVP, plus:
 - If solo founder → defer growth split to Growing stage
 - If funded → add `strategy-pitch.md` even at MVP stage
 
+### Step 1.5: Determine Output Directory
+
+**All venture-specific artifacts go into `../<venture-name>/`, NOT into atlas.**
+
+Atlas is a reusable template. Its `.claude/docs/` contain `{placeholder}` templates.
+The bootstrap copies these templates into the venture project and fills them with real content.
+
+```
+TARGET = ../<venture-name>/    ← venture project (created by scaffold step)
+```
+
+If the venture directory doesn't exist yet, scaffold it first (Phase 2 Step 1 from _builder.md).
+
+All paths below (agents, docs, data) are relative to TARGET, not to atlas.
+
 ### Step 2: Generate Agent Files
 
-For EACH agent, create `.claude/agents/{name}.md` using the standard template.
+For EACH agent, create `TARGET/.claude/agents/{name}.md` using the standard template.
 
 Every agent MUST include:
 
@@ -185,11 +200,16 @@ Every agent MUST include:
 
 ### Step 3: Generate Docs
 
-Create docs with REAL content from the brief:
+Copy doc templates from atlas `reineira-atlas/.claude/docs/` into `TARGET/.claude/docs/`,
+then fill them with REAL content from the brief. Create the directory structure first:
 
-#### Protocol-specific docs:
+```bash
+mkdir -p TARGET/.claude/docs/{strategy,product,growth,intelligence,legal,execution}
+```
 
-- **`docs/product/PROTOCOL_INTEGRATION.md`** — which protocol primitives used, protocol flow for
+#### Protocol-specific docs (all paths relative to TARGET):
+
+- **`.claude/docs/product/PROTOCOL_INTEGRATION.md`** — which protocol primitives used, protocol flow for
   this venture, contract addresses, resolver/policy design, SDK patterns, testing patterns
 - **`docs/product/ARCHITECTURE.md`** — tech stack, system diagram, data entities, how the three
   repos connect
@@ -227,16 +247,19 @@ Create slash commands for agents that were created:
 
 Only create skills for agents in the roster.
 
-### Step 5: Update SYSTEM.md & CLAUDE.md
+### Step 5: Create Venture SYSTEM.md & CLAUDE.md
 
-- Update key numbers table with brief data
-- Update phase
-- Update CLAUDE.md with venture name, stack, agent roles
+Create `TARGET/.claude/SYSTEM.md` with venture-specific content:
+- Phase, key numbers, conventions — filled from brief
+- Do NOT modify atlas SYSTEM.md — it stays as the master template
+
+Create or update `TARGET/CLAUDE.md` with venture name, stack, agent roles.
 
 ### Step 6: Seed Data
 
-- `data/decisions/{today}.md` — tech stack, vertical, scope decisions
-- `data/metrics/{today}.md` — day zero baseline
+All data goes into the venture project:
+- `TARGET/.claude/data/decisions/{today}.md` — tech stack, vertical, scope decisions
+- `TARGET/.claude/data/metrics/{today}.md` — day zero baseline
 
 ### Step 7: Point to Builder
 
