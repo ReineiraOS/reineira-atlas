@@ -45,7 +45,7 @@ Before running bootstrap, set up accounts for services used by the app:
 
 | Service | What it's for | Where to sign up | Required? |
 | ------- | ------------- | ---------------- | --------- |
-| **ZeroDev** | Smart account wallets (passkey auth) | [dashboard.zerodev.app](https://dashboard.zerodev.app) | Yes — get project ID, bundler URL, passkey server URL |
+| **ZeroDev** | Smart account wallets (passkey auth) | [dashboard.zerodev.app](https://dashboard.zerodev.app) | Yes — get project ID, bundler URL, passkey server URL. Enable **gas sponsorship** in project settings (otherwise users pay gas themselves) |
 | **Vercel** | Deploy backend + frontend | [vercel.com](https://vercel.com) | For deploy (not needed for local dev) |
 | **Neon** | Postgres database | [neon.tech](https://neon.tech) | For deploy (local dev uses in-memory) |
 
