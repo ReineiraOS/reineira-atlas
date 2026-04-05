@@ -94,7 +94,7 @@ judge(coverageId, proof) → ebool           // encrypted dispute verdict
 ## Builder Journey
 
 ```
-1. Clone reineira-atlas           → fill brief.md (identity, features, entities, branding)
+1. Clone reineira-atlas           → cp brief.template.md brief.md, fill it in
 2. /bootstrap                     → startup OS + working application (one command)
 3. Clone reineira-code            → build custom resolver/policy
 4. /integrate                     → wire protocol to app end-to-end

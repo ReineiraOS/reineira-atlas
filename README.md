@@ -17,8 +17,8 @@ configured for your venture.
 git clone https://github.com/ReineiraOS/reineira-atlas.git
 cd reineira-atlas
 
-# 2. Fill in your venture brief
-cp test-briefs/freelance-shield.md brief.md   # start from example
+# 2. Create your venture brief from the template
+cp brief.template.md brief.md
 # edit brief.md — name, features, entities, branding
 
 # 3. Bootstrap everything (requires Claude Code + platform-modules sibling)
@@ -92,7 +92,7 @@ After bootstrap, use these in your venture project with Claude Code:
 reineira-atlas/
 ├── reineira.json          ← Platform version
 ├── CLAUDE.md              ← Protocol context, ecosystem, tech stack
-├── brief.md               ← Your venture brief (fill this in)
+├── brief.template.md      ← Venture brief template (copy to brief.md)
 ├── test-briefs/           ← Example briefs for reference
 └── .claude/
     ├── SYSTEM.md          ← Phase, conventions, economy roles

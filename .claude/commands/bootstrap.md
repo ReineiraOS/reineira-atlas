@@ -21,7 +21,15 @@ Examples:
 
 ## Brief Resolution
 
-If arguments contain a `.md` file path, use that as the brief. Otherwise use `brief.md` from project root.
+If arguments contain a `.md` file path, use that as the brief.
+Otherwise use `brief.md` from project root (created by the user from `brief.template.md`).
+
+If `brief.md` does not exist, tell the user:
+```
+brief.md not found. Create it first:
+  cp brief.template.md brief.md
+  # then fill in your venture details
+```
 
 ---
 
