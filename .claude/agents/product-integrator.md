@@ -22,7 +22,7 @@ platform-modules/app.
 ## The Integration Stack
 
 ```
-User → Frontend (Vue 3) → Backend (TypeScript) → Protocol (Arbitrum)
+User → Frontend (React 19) → Backend (TypeScript) → Protocol (Arbitrum)
                 ↕                    ↕                  ↕
         ZeroDev SDK          @reineira/sdk      ConfidentialEscrow
         cofhejs (encrypt)    Business logic     Fhenix CoFHE
@@ -82,8 +82,8 @@ const escrow = await sdk.escrow
 ## Testing the Full Flow
 
 ```
-1. Start backend locally: sam build && sam local start-api
-2. Start frontend: yarn dev
+1. Start backend locally: pnpm dev:backend
+2. Start frontend: pnpm dev:app
 3. Use testnet: Arbitrum Sepolia
 4. Fund test wallet with testnet USDC
 5. Create escrow → trigger condition → verify release

@@ -37,11 +37,11 @@ platform version before advising on contract patterns.
 
 ### platform-modules
 
-| Module          | Stack                                                       | Purpose                                     |
-| --------------- | ----------------------------------------------------------- | ------------------------------------------- |
-| `backend/`      | TypeScript + Clean Architecture (Vercel-ready, DB-agnostic) | Backend API                                 |
-| `app/`          | Vue 3 + Vite + Pinia + TailwindCSS + ZeroDev                | Platform app (smart accounts, passkeys)     |
-| `payment-link/` | Vue 3 + Vite + TailwindCSS + Wagmi + RainbowKit             | Shareable payment link for external parties |
+| Module          | Stack                                                                | Purpose                                     |
+| --------------- | -------------------------------------------------------------------- | ------------------------------------------- |
+| `backend/`      | TypeScript + Clean Architecture (Vercel-ready, DB-agnostic)          | Backend API                                 |
+| `app/`          | React 19 + Vite + Zustand + TanStack Router + TailwindCSS + ZeroDev | Platform app (smart accounts, passkeys)     |
+| `payment-link/` | Vue 3 + Vite + TailwindCSS + Wagmi + RainbowKit (planned)           | Shareable payment link for external parties |
 
 ---
 
@@ -94,10 +94,22 @@ judge(coverageId, proof) → ebool           // encrypted dispute verdict
 ## Builder Journey
 
 ```
-1. Clone reineira-atlas       → fill brief.md, get your startup OS
-2. Clone reineira-code        → build custom resolver/policy for your use case
-3. Pick from platform-modules → backend, app, payment-link (or all three)
-4. Atlas agents guide you     → /deploy, /integrate, /pitch-prep
+1. Clone reineira-atlas           → cp brief.template.md brief.md, fill it in
+2. /bootstrap                     → startup OS + working application (one command)
+3. Clone reineira-code            → build custom resolver/policy
+4. /integrate                     → wire protocol to app end-to-end
+5. /bootstrap entity <Name>       → add new entities as product evolves
+6. /strategy, /pitch-prep         → business decisions, fundraising
+```
+
+### Granular bootstrap options
+
+```
+/bootstrap                    → full (OS + app)
+/bootstrap os                 → Phase 1 only (docs, agents, skills)
+/bootstrap dev                → Phase 2 only (scaffold, brand, entities, dashboard)
+/bootstrap entity Invoice     → add single entity to existing app
+/bootstrap test-briefs/x.md   → use specific brief file
 ```
 
 ---
@@ -114,8 +126,8 @@ judge(coverageId, proof) → ebool           // encrypted dispute verdict
 
 ### Module-level (from platform-modules — customizable)
 
-- **Platform app:** Vue 3 + Vite + Pinia + TailwindCSS + ZeroDev (smart accounts, passkeys)
-- **Payment link:** Vue 3 + Vite + Wagmi + RainbowKit (external wallet connection)
+- **Platform app:** React 19 + Vite + Zustand + TanStack Router + TailwindCSS + ZeroDev (smart accounts, passkeys)
+- **Payment link:** Vue 3 + Vite + Wagmi + RainbowKit (external wallet connection) — planned
 - **Backend:** TypeScript + Clean Architecture (Vercel-ready, DB-agnostic)
 - **Wallet (primary):** ZeroDev — ERC-4337 smart accounts, passkey auth, session keys
 - **Wallet (secondary):** Supports any wallet via RainbowKit/WalletConnect

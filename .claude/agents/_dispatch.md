@@ -34,12 +34,21 @@ last-reviewed: 2026-03-20
 | "zkTLS", "Reclaim", "proof", "oracle", "Chainlink", "UMA"                     | `protocol-resolver` | —                  | PROTOCOL_INTEGRATION.md                |
 | "pool", "liquidity", "staking", "operator"                                    | `protocol-policy`   | `strategy-advisor` | PROTOCOL_INTEGRATION.md, TOKENOMICS.md |
 
+### Setup & App Generation
+
+| Prompt Signal                                                         | Command                    | Docs Loaded |
+| --------------------------------------------------------------------- | -------------------------- | ----------- |
+| "bootstrap", "setup", "initialize", "start project", "create venture" | `/bootstrap`               | brief.md    |
+| "generate OS", "startup OS", "generate docs"                          | `/bootstrap os`            | brief.md    |
+| "build app", "generate app", "scaffold app"                           | `/bootstrap dev`           | brief.md    |
+| "add entity", "generate entity", "new entity"                         | `/bootstrap entity <Name>` | brief.md    |
+
 ### Product & App Development
 
 | Prompt Signal                                                         | Primary Agent        | Support             | Docs Loaded                              |
 | --------------------------------------------------------------------- | -------------------- | ------------------- | ---------------------------------------- |
-| "frontend", "component", "page", "UI", "Vue", "Pinia"                 | `product-frontend`   | —                   | ARCHITECTURE.md                          |
-| "backend", "API", "endpoint", "Lambda", "DynamoDB", "SAM"             | `product-backend`    | —                   | ARCHITECTURE.md                          |
+| "frontend", "component", "page", "UI", "React", "Zustand"             | `product-frontend`   | —                   | ARCHITECTURE.md                          |
+| "backend", "API", "endpoint", "Vercel", "use case"                     | `product-backend`    | —                   | ARCHITECTURE.md                          |
 | "integrate", "wire up", "connect", "SDK", "escrow flow", "end-to-end" | `product-integrator` | `protocol-resolver` | PROTOCOL_INTEGRATION.md, ARCHITECTURE.md |
 | "design", "mockup", "UX", "branding"                                  | `product-frontend`   | —                   | ARCHITECTURE.md                          |
 
@@ -95,6 +104,30 @@ last-reviewed: 2026-03-20
 ---
 
 ## Example Chains
+
+### /bootstrap — full setup
+
+```
+Phase 1: startup OS (docs, agents, skills)
+Phase 2: scaffold → brand → cleanup → gen-entity (×N) → dashboard → verify
+Output: startup OS + branded working application
+```
+
+### /bootstrap dev — app only (skip OS)
+
+```
+scaffold → brand → cleanup → gen-entity (×N) → dashboard → verify
+Output: branded working application (assumes OS already generated)
+```
+
+### /bootstrap entity Invoice — add one entity
+
+```
+Reads existing codebase + brief
+Generates backend vertical slice + frontend components
+Updates container.ts, navbar, routes
+Output: complete entity with API + UI
+```
 
 ### "Build a chargeback insurance resolver"
 
