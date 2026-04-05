@@ -1,0 +1,109 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.claude/**'
+      - 'brief.template.md'
+      - 'test-briefs/**'
+      - 'CLAUDE.md'
+      - 'CONTRIBUTING.md'
+      - '.github/workflows/ci.yml'
+  pull_request:
+    branches: ['*']
+    paths:
+      - '.claude/**'
+      - 'brief.template.md'
+      - 'test-briefs/**'
+      - 'CLAUDE.md'
+      - 'CONTRIBUTING.md'
+      - '.github/workflows/ci.yml'
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  validate:
+    name: Validate Structure
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
+
+      - name: Check required files exist
+        run: |
+          files=(
+            "CLAUDE.md"
+            "CONTRIBUTING.md"
+            "CHANGELOG.md"
+            "LICENSE"
+            "reineira.json"
+            ".releaserc.json"
+            ".claude/SYSTEM.md"
+            ".claude/agents/_dispatch.md"
+            ".claude/agents/_starter.md"
+            ".claude/skills/_index.md"
+            "brief.template.md"
+          )
+          missing=0
+          for f in "${files[@]}"; do
+            if [ ! -f "$f" ]; then
+              echo "Missing: $f"
+              missing=$((missing + 1))
+            fi
+          done
+          if [ "$missing" -gt 0 ]; then
+            echo "$missing required file(s) missing"
+            exit 1
+          fi
+          echo "All required files present"
+
+      - name: Validate reineira.json
+        run: |
+          python3 -c "
+          import json, sys
+          with open('reineira.json') as f:
+              data = json.load(f)
+          required = ['name', 'version', 'platform']
+          for key in required:
+              if key not in data:
+                  print(f'Missing key: {key}')
+                  sys.exit(1)
+          print(f'Valid: {data[\"name\"]} v{data[\"version\"]} (platform {data[\"platform\"]})')
+          "
+
+      - name: Check agent frontmatter
+        run: |
+          errors=0
+          for f in .claude/agents/*.md; do
+            if [ "$(basename "$f")" = "_dispatch.md" ]; then continue; fi
+            if ! head -1 "$f" | grep -q '^---'; then
+              echo "Missing frontmatter: $f"
+              errors=$((errors + 1))
+            fi
+          done
+          if [ "$errors" -gt 0 ]; then
+            echo "$errors agent(s) missing frontmatter"
+            exit 1
+          fi
+          echo "All agents have frontmatter"
+
+      - name: Check skill structure
+        run: |
+          errors=0
+          for skill_dir in .claude/skills/*/; do
+            if [ "$(basename "$skill_dir")" = "_index.md" ]; then continue; fi
+            for noun_dir in "$skill_dir"*/; do
+              if [ ! -f "${noun_dir}SKILL.md" ]; then
+                echo "Missing SKILL.md in: $noun_dir"
+                errors=$((errors + 1))
+              fi
+            done
+          done
+          if [ "$errors" -gt 0 ]; then
+            echo "$errors skill(s) missing SKILL.md"
+            exit 1
+          fi
+          echo "All skills have SKILL.md"
