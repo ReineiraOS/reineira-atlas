@@ -26,4 +26,3 @@ Thumbs.db
 
 # Node (semantic-release tooling)
 node_modules/
-package-lock.json
