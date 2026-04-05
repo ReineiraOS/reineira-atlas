@@ -37,11 +37,10 @@ platform version before advising on contract patterns.
 
 ### platform-modules
 
-| Module          | Stack                                                                | Purpose                                     |
-| --------------- | -------------------------------------------------------------------- | ------------------------------------------- |
-| `backend/`      | TypeScript + Clean Architecture (Vercel-ready, DB-agnostic)          | Backend API                                 |
-| `app/`          | React 19 + Vite + Zustand + TanStack Router + TailwindCSS + ZeroDev | Platform app (smart accounts, passkeys)     |
-| `payment-link/` | Vue 3 + Vite + TailwindCSS + Wagmi + RainbowKit (planned)           | Shareable payment link for external parties |
+| Module     | Stack                                                                | Purpose                                 |
+| ---------- | -------------------------------------------------------------------- | --------------------------------------- |
+| `backend/` | TypeScript + Clean Architecture (Vercel-ready, DB-agnostic)          | Backend API                             |
+| `app/`     | React 19 + Vite + Zustand + TanStack Router + TailwindCSS + ZeroDev | Platform app (smart accounts, passkeys) |
 
 ---
 
@@ -127,7 +126,6 @@ judge(coverageId, proof) → ebool           // encrypted dispute verdict
 ### Module-level (from platform-modules — customizable)
 
 - **Platform app:** React 19 + Vite + Zustand + TanStack Router + TailwindCSS + ZeroDev (smart accounts, passkeys)
-- **Payment link:** Vue 3 + Vite + Wagmi + RainbowKit (external wallet connection) — planned
 - **Backend:** TypeScript + Clean Architecture (Vercel-ready, DB-agnostic)
 - **Wallet (primary):** ZeroDev — ERC-4337 smart accounts, passkey auth, session keys
 - **Wallet (secondary):** Supports any wallet via RainbowKit/WalletConnect

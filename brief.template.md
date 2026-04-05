@@ -54,11 +54,9 @@ Example:
 **Tech stack** (pre-filled — adjust if needed):
 
 - **Smart contracts:** Solidity ^0.8.24 on Arbitrum Sepolia (via `reineira-code`)
-- **Frontend:** Vue 3 + TypeScript + Vite + Pinia + TailwindCSS (via `platform-modules/app`)
-- **Payment link:** Vue 3 + Wagmi + RainbowKit (via `platform-modules/payment-link`)
+- **Frontend:** React 19 + TypeScript + Vite + Zustand + TanStack Router + TailwindCSS (via `platform-modules/app`)
 - **Backend:** TypeScript + Clean Architecture, DB-agnostic (via `platform-modules/backend`)
 - **Wallet (primary):** ZeroDev — ERC-4337 smart accounts, passkey auth
-- **Wallet (external):** Any wallet via RainbowKit/WalletConnect (payment-link app)
 - **Encryption:** Fhenix CoFHE (FHE on-chain), cofhejs SDK
 - **Settlement:** Stablecoin-agnostic (IFHERC20) — supports any wrapped stablecoin
 - **Cross-chain:** CCTP v2 (USDC cross-chain transfers)
@@ -70,7 +68,6 @@ Example:
 - ReineiraOS ConfidentialEscrow contract
 - ReineiraOS ConfidentialCoverageManager (insurance)
 - ZeroDev smart accounts (primary wallet)
-- Any wallet via RainbowKit/WalletConnect (payment-link)
 - Reclaim Protocol zkTLS proofs
 - Chainlink price feeds
 

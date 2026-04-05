@@ -29,7 +29,7 @@ Every builder on ReineiraOS works with three repos:
 | ------------------------------ | ---------------------------------------------------------------------------------------- |
 | **reineira-atlas** (this repo) | Startup OS — strategy, ops, growth, compliance, pitch                                    |
 | **reineira-code**              | Smart contracts — resolvers, policies, tests, deploy                                     |
-| **platform-modules**           | App starters — backend (Vercel-ready), platform app (ZeroDev), payment link (RainbowKit) |
+| **platform-modules**           | App starters — backend (Vercel-ready), platform app (ZeroDev) |
 
 ### Protocol Primitives Available to Every Venture
 
@@ -189,7 +189,6 @@ Every agent MUST include:
 - SDK usage: ReineiraSDK.create → sdk.escrow.build()
 - Connect platform-modules frontend → backend → protocol
 - ZeroDev smart account integration (passkey auth, user operations)
-- RainbowKit/WalletConnect for external wallet connections (payment-link)
 - Cross-chain CCTP v2 flow (if applicable)
 
 **`strategy-pitch.md`:**

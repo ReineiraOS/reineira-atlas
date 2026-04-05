@@ -14,18 +14,16 @@ last-reviewed: 2026-03-20
 | reineira-atlas                | Markdown + Claude agents                       | Startup OS             |
 | reineira-code                 | Hardhat + Solidity + cofhejs                   | Smart contracts        |
 | platform-modules/backend      | TypeScript + Clean Architecture (Vercel-ready) | Backend API            |
-| platform-modules/app          | Vue 3 + Vite + Pinia + Tailwind + ZeroDev      | Platform app           |
-| platform-modules/payment-link | Vue 3 + Vite + Wagmi + RainbowKit              | Shareable payment link |
+| platform-modules/app          | React 19 + Vite + Zustand + TanStack Router + Tailwind + ZeroDev | Platform app           |
 
 ## Tech Stack
 
 | Layer             | Technology                                      | Purpose                |
 | ----------------- | ----------------------------------------------- | ---------------------- |
 | Contracts         | Solidity ^0.8.24 + Hardhat + cofhejs            | Resolvers, policies    |
-| Frontend          | Vue 3 + TypeScript + Vite + Pinia + TailwindCSS | Platform app           |
+| Frontend          | React 19 + TypeScript + Vite + Zustand + TanStack Router + TailwindCSS | Platform app           |
 | Backend           | TypeScript + Clean Architecture (DB-agnostic)   | API + business logic   |
 | Wallet (primary)  | ZeroDev — ERC-4337 smart accounts, passkeys     | User operations        |
-| Wallet (external) | Wagmi + RainbowKit (payment-link app)           | External payer wallets |
 | Encryption        | Fhenix CoFHE                                    | On-chain FHE           |
 | Settlement        | Stablecoin-agnostic (IFHERC20) + CCTP v2        | Any wrapped stablecoin |
 | Deploy            | Hardhat (contracts), Vercel (apps)              | Infrastructure         |
@@ -34,7 +32,7 @@ last-reviewed: 2026-03-20
 
 ```mermaid
 graph TD
-    User[User] --> FE[Frontend - Vue 3]
+    User[User] --> FE[Frontend - React 19]
     FE --> ZD[ZeroDev Smart Account]
     FE --> BE[Backend - TypeScript]
     BE --> SDK[ReineiraOS SDK]
