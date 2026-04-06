@@ -4,8 +4,9 @@
 
 ## 1. Identity
 
-- **Venture name:** FreelanceShield
-- **One-liner:** Confidential milestone-based escrow for freelance contracts, with chargeback protection
+- **Venture name:** InvoiceShield
+- **One-liner:** Confidential milestone-based invoicing with escrow settlement and chargeback
+  protection
 - **Domain:** Confidential programmable finance (FHE-encrypted settlement)
 - **Protocol:** ReineiraOS on Arbitrum (Fhenix CoFHE)
 - **Stage:** MVP
@@ -14,11 +15,13 @@
 
 ## 2. Problem
 
-- Freelancers lose money to non-paying clients — 29% of freelancers report unpaid invoices
+- Service providers lose money to non-paying clients — 29% of freelancers and contractors report
+  unpaid invoices
 - Clients fear paying upfront with no guarantee of delivery
 - Existing escrow solutions (Escrow.com, PayPal) expose transaction amounts and take 5-8% fees
 - Dispute resolution is slow, opaque, and expensive
-- Our edge: FHE-encrypted milestone escrows release on zkTLS proof of delivery, with amounts hidden from everyone except the parties involved
+- Our edge: FHE-encrypted milestone escrows release on zkTLS proof of delivery, with invoice amounts
+  hidden from everyone except the parties involved
 
 ---
 
@@ -30,16 +33,19 @@
 2. Proof-of-delivery via zkTLS (verify GitHub commits, Figma exports, Google Drive uploads)
 3. Automated escrow release when milestones are verified
 4. Dispute flow with time-locked resolution
-5. Freelancer dashboard with earnings analytics
+5. Provider dashboard with earnings analytics
 
 **User flow:**
 
-Freelancer creates contract with milestones → Client funds escrow (FHE-encrypted total) → Freelancer completes milestone → submits zkTLS proof → escrow releases milestone amount → repeat until contract complete → Client can dispute within 48h window
+Provider creates invoice with milestones → Client funds escrow (FHE-encrypted total) → Provider
+completes milestone → submits zkTLS proof → escrow releases milestone amount → repeat until contract
+complete → Client can dispute within 48h window
 
 **Tech stack** (pre-filled — adjust if needed):
 
 - **Smart contracts:** Solidity ^0.8.24 on Arbitrum Sepolia (via `reineira-code`)
-- **Frontend:** React 19 + TypeScript + Vite + Zustand + TanStack Router + TailwindCSS (via `platform-modules/app`)
+- **Frontend:** React 19 + TypeScript + Vite + Zustand + TanStack Router + TailwindCSS (via
+  `platform-modules/app`)
 - **Backend:** TypeScript + Clean Architecture, DB-agnostic (via `platform-modules/backend`)
 - **Wallet (primary):** ZeroDev — ERC-4337 smart accounts, passkey auth
 - **Encryption:** Fhenix CoFHE (FHE on-chain), cofhejs SDK
@@ -56,7 +62,7 @@ Freelancer creates contract with milestones → Client funds escrow (FHE-encrypt
 
 **Data entities:**
 
-- Invoices (freelancer, client, title, total amount, currency, status, deadline)
+- Invoices (provider, client, title, total amount, currency, status, deadline)
 - Milestones (invoice ID, title, description, amount, proof type, status, due date)
 - Disputes (invoice ID, milestone ID, reason, evidence URL, resolution, status)
 - Escrows (encrypted: owner, amount, paidAmount, isRedeemed) — from protocol
@@ -83,21 +89,22 @@ Freelancer creates contract with milestones → Client funds escrow (FHE-encrypt
 
 - GMV (total milestone volume) through escrows
 - Number of active contracts
-- Monthly active freelancers
+- Monthly active providers
 - Dispute rate (target: <3%)
 - Average contract size
 - Milestone completion rate
 
 **Growth channels:**
 
-- Developer community (Upwork alternatives, freelancer DAOs)
+- Service provider communities (agencies, freelancer DAOs, contractor networks)
 - Web3 Twitter / Farcaster
-- Content marketing (tutorials for freelancers)
-- Direct outreach to freelancer communities
+- Content marketing (tutorials for invoice protection)
+- Direct outreach to B2B service providers
 
 **First 100 users:**
 
-Target web3 freelancers (Solidity devs, designers) doing cross-border work. Pilot with 10 freelancers on testnet. Mainnet launch with zero-fee first month.
+Target web3 service providers (dev shops, designers, agencies) doing cross-border work. Pilot with
+10 providers on testnet. Mainnet launch with zero-fee first month.
 
 ---
 
@@ -125,8 +132,8 @@ Target web3 freelancers (Solidity devs, designers) doing cross-border work. Pilo
 
 ## 7. Branding
 
-- **App name:** FreelanceShield
-- **Tagline:** Secure your freelance income
+- **App name:** InvoiceShield
+- **Tagline:** Protect every invoice, from milestone to payout
 - **Colors:**
   - Primary: #2563EB
   - Secondary: #1E40AF
@@ -146,5 +153,5 @@ Target web3 freelancers (Solidity devs, designers) doing cross-border work. Pilo
 ## 8. Priorities
 
 1. Build invoice + milestone CRUD with backend vertical slices
-2. Set up frontend with freelancer dashboard, contract creation, milestone tracking
+2. Set up frontend with provider dashboard, invoice creation, milestone tracking
 3. Wire escrow creation flow end-to-end (frontend → backend → protocol)
