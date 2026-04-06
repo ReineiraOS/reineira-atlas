@@ -5,7 +5,8 @@
 ## 1. Identity
 
 - **Venture name:** InvoiceShield
-- **One-liner:** Confidential milestone-based invoicing with escrow settlement and chargeback protection
+- **One-liner:** Confidential milestone-based invoicing with escrow settlement and chargeback
+  protection
 - **Domain:** Confidential programmable finance (FHE-encrypted settlement)
 - **Protocol:** ReineiraOS on Arbitrum (Fhenix CoFHE)
 - **Stage:** MVP
@@ -14,11 +15,13 @@
 
 ## 2. Problem
 
-- Service providers lose money to non-paying clients — 29% of freelancers and contractors report unpaid invoices
+- Service providers lose money to non-paying clients — 29% of freelancers and contractors report
+  unpaid invoices
 - Clients fear paying upfront with no guarantee of delivery
 - Existing escrow solutions (Escrow.com, PayPal) expose transaction amounts and take 5-8% fees
 - Dispute resolution is slow, opaque, and expensive
-- Our edge: FHE-encrypted milestone escrows release on zkTLS proof of delivery, with invoice amounts hidden from everyone except the parties involved
+- Our edge: FHE-encrypted milestone escrows release on zkTLS proof of delivery, with invoice amounts
+  hidden from everyone except the parties involved
 
 ---
 
@@ -34,12 +37,15 @@
 
 **User flow:**
 
-Provider creates invoice with milestones → Client funds escrow (FHE-encrypted total) → Provider completes milestone → submits zkTLS proof → escrow releases milestone amount → repeat until contract complete → Client can dispute within 48h window
+Provider creates invoice with milestones → Client funds escrow (FHE-encrypted total) → Provider
+completes milestone → submits zkTLS proof → escrow releases milestone amount → repeat until contract
+complete → Client can dispute within 48h window
 
 **Tech stack** (pre-filled — adjust if needed):
 
 - **Smart contracts:** Solidity ^0.8.24 on Arbitrum Sepolia (via `reineira-code`)
-- **Frontend:** React 19 + TypeScript + Vite + Zustand + TanStack Router + TailwindCSS (via `platform-modules/app`)
+- **Frontend:** React 19 + TypeScript + Vite + Zustand + TanStack Router + TailwindCSS (via
+  `platform-modules/app`)
 - **Backend:** TypeScript + Clean Architecture, DB-agnostic (via `platform-modules/backend`)
 - **Wallet (primary):** ZeroDev — ERC-4337 smart accounts, passkey auth
 - **Encryption:** Fhenix CoFHE (FHE on-chain), cofhejs SDK
@@ -97,7 +103,8 @@ Provider creates invoice with milestones → Client funds escrow (FHE-encrypted 
 
 **First 100 users:**
 
-Target web3 service providers (dev shops, designers, agencies) doing cross-border work. Pilot with 10 providers on testnet. Mainnet launch with zero-fee first month.
+Target web3 service providers (dev shops, designers, agencies) doing cross-border work. Pilot with
+10 providers on testnet. Mainnet launch with zero-fee first month.
 
 ---
 

@@ -14,11 +14,13 @@
 
 ## 2. Problem
 
-- B2B commodity trades ($5T+ market) rely on letters of credit — slow (2-4 weeks), expensive (1.5-3%), paper-heavy
+- B2B commodity trades ($5T+ market) rely on letters of credit — slow (2-4 weeks), expensive
+  (1.5-3%), paper-heavy
 - Trade credit insurance is accessible only to large corporates ($50M+ annual volume)
 - Small-medium exporters face 60-90 day payment terms with zero protection
 - Insurance underwriters have no way to price risk on-chain without exposing competitive data
-- Our edge: FHE-encrypted risk scoring + parametric insurance triggered by shipping proofs, making trade insurance accessible to any B2B deal size
+- Our edge: FHE-encrypted risk scoring + parametric insurance triggered by shipping proofs, making
+  trade insurance accessible to any B2B deal size
 
 ---
 
@@ -34,12 +36,16 @@
 
 **User flow:**
 
-Exporter creates trade order → Importer funds escrow → Exporter purchases insurance coverage → Exporter ships goods → submits zkTLS shipment proof → escrow releases on delivery confirmation → If shipment fails/delayed → exporter files insurance claim → FHE-encrypted dispute evaluation → payout from insurance pool
+Exporter creates trade order → Importer funds escrow → Exporter purchases insurance coverage →
+Exporter ships goods → submits zkTLS shipment proof → escrow releases on delivery confirmation → If
+shipment fails/delayed → exporter files insurance claim → FHE-encrypted dispute evaluation → payout
+from insurance pool
 
 **Tech stack** (pre-filled — adjust if needed):
 
 - **Smart contracts:** Solidity ^0.8.24 on Arbitrum Sepolia (via `reineira-code`)
-- **Frontend:** React 19 + TypeScript + Vite + Zustand + TanStack Router + TailwindCSS (via `platform-modules/app`)
+- **Frontend:** React 19 + TypeScript + Vite + Zustand + TanStack Router + TailwindCSS (via
+  `platform-modules/app`)
 - **Backend:** TypeScript + Clean Architecture, DB-agnostic (via `platform-modules/backend`)
 - **Wallet (primary):** ZeroDev — ERC-4337 smart accounts, passkey auth
 - **Encryption:** Fhenix CoFHE (FHE on-chain), cofhejs SDK
@@ -60,10 +66,12 @@ Exporter creates trade order → Importer funds escrow → Exporter purchases in
 
 **Data entities:**
 
-- TradeOrders (exporter, importer, commodity, quantity, unit price, total, incoterm, status, escrow ID)
+- TradeOrders (exporter, importer, commodity, quantity, unit price, total, incoterm, status, escrow
+  ID)
 - ShipmentProofs (trade order ID, carrier, tracking number, proof type, proof URL, verified, status)
 - CoveragePolicies (trade order ID, premium, coverage amount, risk score, pool ID, status)
-- InsuranceClaims (coverage policy ID, trade order ID, reason, evidence, verdict, payout amount, status)
+- InsuranceClaims (coverage policy ID, trade order ID, reason, evidence, verdict, payout amount,
+  status)
 - Escrows (encrypted: owner, amount, paidAmount, isRedeemed) — from protocol
 - Users (wallet, business profile, KYC status) — from protocol
 
@@ -84,6 +92,7 @@ Exporter creates trade order → Importer funds escrow → Exporter purchases in
 - Cross-chain surcharge: 0.2% on CCTP transfers
 
 **Pricing:**
+
 - Insurance: 2-5% of trade value (risk-dependent, FHE-priced)
 - Settlement fee: 0.5% flat
 - Cross-chain: 0.2% surcharge
@@ -108,7 +117,8 @@ Exporter creates trade order → Importer funds escrow → Exporter purchases in
 
 **First 100 users:**
 
-Target small-medium exporters in electronics and textile supply chains. Partner with 2-3 freight forwarders for shipment tracking integration. Testnet pilot with simulated trades.
+Target small-medium exporters in electronics and textile supply chains. Partner with 2-3 freight
+forwarders for shipment tracking integration. Testnet pilot with simulated trades.
 
 ---
 

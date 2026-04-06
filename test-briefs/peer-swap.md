@@ -4,7 +4,7 @@
 
 ## 1. Identity
 
-- **Venture name:** PeerShield
+- **Venture name:** PeerSwap
 - **One-liner:** Confidential P2P marketplace with escrow-backed trades and chargeback protection
 - **Domain:** Confidential programmable finance (FHE-encrypted settlement)
 - **Protocol:** ReineiraOS on Arbitrum (Fhenix CoFHE)
@@ -14,11 +14,16 @@
 
 ## 2. Problem
 
-- P2P trading (crypto, gift cards, gaming assets, digital goods) is plagued by scams — buyers pay and sellers vanish, or sellers deliver and buyers reverse payments
-- Centralized platforms (Paxful, LocalBitcoins) charge 1-5% fees, require KYC for both sides, and expose trade amounts publicly
-- Existing P2P escrow solutions are either custodial (counterparty risk) or manual (slow dispute resolution)
-- Sellers of gaming assets and gift cards have no way to prove delivery without exposing account credentials
-- Our edge: FHE-encrypted escrow keeps trade amounts private, zkTLS proves payment/delivery from real platforms (PayPal, Revolut, Steam, Epic, gift card balances) without exposing credentials
+- P2P trading (crypto, gift cards, gaming assets, digital goods) is plagued by scams — buyers pay
+  and sellers vanish, or sellers deliver and buyers reverse payments
+- Centralized platforms (Paxful, LocalBitcoins) charge 1-5% fees, require KYC for both sides, and
+  expose trade amounts publicly
+- Existing P2P escrow solutions are either custodial (counterparty risk) or manual (slow dispute
+  resolution)
+- Sellers of gaming assets and gift cards have no way to prove delivery without exposing account
+  credentials
+- Our edge: FHE-encrypted escrow keeps trade amounts private, zkTLS proves payment/delivery from
+  real platforms (PayPal, Revolut, Steam, Epic, gift card balances) without exposing credentials
 
 ---
 
@@ -34,12 +39,15 @@
 
 **User flow:**
 
-Seller lists offer → Buyer accepts and funds escrow (FHE-encrypted amount) → Seller delivers asset/card/crypto → Buyer submits zkTLS proof of receipt OR Seller submits zkTLS proof of delivery → escrow releases → If disputed → evidence window (48h) → resolution
+Seller lists offer → Buyer accepts and funds escrow (FHE-encrypted amount) → Seller delivers
+asset/card/crypto → Buyer submits zkTLS proof of receipt OR Seller submits zkTLS proof of delivery →
+escrow releases → If disputed → evidence window (48h) → resolution
 
 **Tech stack** (pre-filled — adjust if needed):
 
 - **Smart contracts:** Solidity ^0.8.24 on Arbitrum Sepolia (via `reineira-code`)
-- **Frontend:** React 19 + TypeScript + Vite + Zustand + TanStack Router + TailwindCSS (via `platform-modules/app`)
+- **Frontend:** React 19 + TypeScript + Vite + Zustand + TanStack Router + TailwindCSS (via
+  `platform-modules/app`)
 - **Backend:** TypeScript + Clean Architecture, DB-agnostic (via `platform-modules/backend`)
 - **Wallet (primary):** ZeroDev — ERC-4337 smart accounts, passkey auth
 - **Encryption:** Fhenix CoFHE (FHE on-chain), cofhejs SDK
@@ -99,7 +107,8 @@ Seller lists offer → Buyer accepts and funds escrow (FHE-encrypted amount) →
 
 **First 100 users:**
 
-Target existing P2P crypto and gift card traders on Telegram. Pilot with 10 active traders on testnet. Mainnet launch with zero-fee first month.
+Target existing P2P crypto and gift card traders on Telegram. Pilot with 10 active traders on
+testnet. Mainnet launch with zero-fee first month.
 
 ---
 
@@ -127,7 +136,7 @@ Target existing P2P crypto and gift card traders on Telegram. Pilot with 10 acti
 
 ## 7. Branding
 
-- **App name:** PeerShield
+- **App name:** PeerSwap
 - **Tagline:** Trade anything, trust the protocol
 - **Colors:**
   - Primary: #8B5CF6
