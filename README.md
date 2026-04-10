@@ -166,21 +166,63 @@ After bootstrap, use these in your venture project with Claude Code:
 | `/compliance`  | Crypto regulatory compliance review     |
 | `/weekly-plan` | Weekly sprint review and planning       |
 
+## Using with Cursor IDE
+
+Atlas fully supports Cursor IDE alongside Claude Code. Open `reineira-atlas/` in Cursor and rules
+load automatically.
+
+### Bootstrap (phased)
+
+Bootstrap is split into 5 sequential commands for reliability in Cursor:
+
+| Command                | Phase                         |
+| ---------------------- | ----------------------------- |
+| `/bootstrap`           | Check progress, next step     |
+| `/bootstrap-docs`      | Phase 1: Generate OS docs     |
+| `/bootstrap-scaffold`  | Phase 2: Scaffold & brand app |
+| `/bootstrap-entities`  | Phase 3: Generate entities    |
+| `/bootstrap-dashboard` | Phase 4: Build dashboard      |
+| `/bootstrap-verify`    | Phase 5: Verify build         |
+
+Run them in order. Each phase creates a checkpoint in `pipeline_state.md`.
+
+### Regular commands
+
+| Command       | What it does                          |
+| ------------- | ------------------------------------- |
+| `/resolver`   | Design a condition resolver           |
+| `/strategy`   | Strategic analysis and recommendation |
+| `/integrate`  | Wire protocol to app end-to-end       |
+| `/weekly-plan` | Weekly sprint review                 |
+| `/pitch-prep` | Investor readiness assessment         |
+| `/content`    | Create tutorials, blogs, threads      |
+| `/compliance` | Crypto regulatory review              |
+
+### How it works
+
+- `.cursor/rules/00-system.mdc` loads automatically (project context, protocol, conventions)
+- Domain rules (protocol, product, strategy, etc.) activate based on your prompt keywords
+- All tools share the same docs in `.claude/docs/` and data in `.claude/data/`
+
 ## Structure
 
 ```
 reineira-atlas/
 ├── reineira.json          ← Platform version
 ├── CLAUDE.md              ← Protocol context, ecosystem, tech stack
+├── AGENTS.md              ← Cross-tool entry point (Cursor, Zed, etc.)
 ├── brief.template.md      ← Venture brief template (copy to brief.md)
 ├── test-briefs/           ← Example briefs for reference
-└── .claude/
-    ├── SYSTEM.md          ← Phase, conventions, economy roles
-    ├── agents/            ← Agent definitions (12 roles)
-    ├── commands/          ← Slash command entry points
-    ├── skills/            ← Skill implementations (scaffold, brand, gen-entity, etc.)
-    ├── docs/              ← Doc TEMPLATES with {placeholders} (populated in venture project)
-    └── data/              ← Data templates (populated in venture project)
+├── .claude/               ← Claude Code config
+│   ├── SYSTEM.md          ← Phase, conventions, economy roles
+│   ├── agents/            ← Agent definitions (12 roles)
+│   ├── commands/          ← Slash command entry points
+│   ├── skills/            ← Skill implementations
+│   ├── docs/              ← Doc TEMPLATES with {placeholders}
+│   └── data/              ← Data templates
+└── .cursor/               ← Cursor IDE config
+    ├── rules/             ← MDC rules (system + 10 domain rules)
+    └── commands/          ← Slash commands (bootstrap phases + 7 regular)
 ```
 
 ## Compatibility
@@ -188,7 +230,7 @@ reineira-atlas/
 | Component        | Requirement                                              |
 | ---------------- | -------------------------------------------------------- |
 | Platform         | ReineiraOS 0.1                                           |
-| Claude Code      | Required                                                 |
+| AI Tool          | Claude Code or Cursor IDE                                |
 | platform-modules | Sibling directory (`../platform-modules/`)               |
 | Node.js          | 18+                                                      |
 | pnpm             | 9+                                                       |
