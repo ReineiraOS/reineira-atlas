@@ -1,3 +1,9 @@
+## [0.2.0](https://github.com/ReineiraOS/reineira-atlas/compare/v0.1.1...v0.2.0) (2026-04-10)
+
+### Features
+
+* add Cursor IDE support alongside Claude Code ([58147f1](https://github.com/ReineiraOS/reineira-atlas/commit/58147f1d84e56d77b98aefa7aaf053b420da521a))
+
 ## [0.1.1](https://github.com/ReineiraOS/reineira-atlas/compare/v0.1.0...v0.1.1) (2026-04-05)
 
 ### Bug Fixes
