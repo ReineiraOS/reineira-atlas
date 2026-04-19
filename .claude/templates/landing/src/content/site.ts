@@ -33,6 +33,7 @@ export interface CtaConfig {
 export interface MetaConfig {
   siteUrl: string | null
   brandName: string | null
+  tagline?: string | null
   title: string | null
   description: string | null
   keywords?: string[]
@@ -43,17 +44,18 @@ export interface MetaConfig {
 export interface BrandingConfig {
   accent: string
   accentSoft?: string
+  accentBorder?: string
   background?: string
   foreground?: string
   fontSans?: string
   fontMono?: string
-  faviconInitial?: string
 }
 
 export interface HeroConfig {
   eyebrow?: string | null
   title: string
   subtitle?: string | null
+  tagline?: string | null
   primaryCta?: CtaConfig | null
   secondaryCta?: CtaConfig | null
 }
@@ -63,130 +65,21 @@ export interface TopBannerConfig {
   href?: string | null
 }
 
-export interface TrustedByConfig {
-  eyebrow?: string | null
-  title?: string | null
-  items: string[]
-}
-
-export interface MetricItem {
-  value: string
+export interface HeaderNavItem {
   label: string
-  caption?: string | null
+  href?: string
+  items?: Array<{
+    label: string
+    description?: string
+    href: string
+    icon?: IconName
+    external?: boolean
+  }>
 }
-export interface MetricsSection {
-  eyebrow?: string | null
-  title?: string | null
-  items: MetricItem[]
-}
-
-export interface ProblemSection {
-  eyebrow?: string | null
-  title: string
-  body: string
-}
-
-export interface FeatureItem {
-  title: string
-  description: string
-  icon?: IconName | null
-  gradient?: string | null
-}
-export interface FeaturesSection {
-  eyebrow?: string | null
-  title: string
-  subtitle?: string | null
-  items: FeatureItem[]
-}
-
-export interface HowItWorksStep {
-  title: string
-  description: string
-}
-export interface HowItWorksSection {
-  eyebrow?: string | null
-  title: string
-  subtitle?: string | null
-  outro?: string | null
-  steps: HowItWorksStep[]
-}
-
-export interface ProductItem {
-  title: string
-  description: string
-  href?: string | null
-  cta?: string | null
-  icon?: IconName | null
-}
-export interface ProductsSection {
-  eyebrow?: string | null
-  title: string
-  subtitle?: string | null
-  items: ProductItem[]
-}
-
-export interface ProtocolFlowStep {
-  title: string
-  description: string
-}
-export interface ProtocolFlowSection {
-  eyebrow?: string | null
-  title: string
-  subtitle?: string | null
-  steps: ProtocolFlowStep[]
-}
-
-export interface BusinessModelRow {
-  segment: string
-  fee: string
-  volume?: string | null
-  notes?: string | null
-}
-export interface BusinessModelSection {
-  eyebrow?: string | null
-  title: string
-  subtitle?: string | null
-  rows: BusinessModelRow[]
-}
-
-export interface FiveYearItem {
-  year: string
-  milestone: string
-  target?: string | null
-}
-export interface FiveYearArcSection {
-  eyebrow?: string | null
-  title: string
-  subtitle?: string | null
-  items: FiveYearItem[]
-}
-
-export interface CompetitiveAdvantageItem {
-  claim: string
-  proof: string
-}
-export interface CompetitiveAdvantageSection {
-  eyebrow?: string | null
-  title: string
-  subtitle?: string | null
-  items: CompetitiveAdvantageItem[]
-}
-
-export interface FaqItem {
-  question: string
-  answer: string
-}
-export interface FaqSection {
-  eyebrow?: string | null
-  title: string
-  items: FaqItem[]
-}
-
-export interface CtaSection {
-  title: string
-  subtitle?: string | null
-  primary?: CtaConfig | null
-  secondary?: CtaConfig | null
+export interface HeaderConfig {
+  nav: HeaderNavItem[]
+  primaryCta?: CtaConfig | null
+  secondaryCta?: CtaConfig | null
 }
 
 export interface FooterLink {
@@ -210,109 +103,163 @@ export interface FooterConfig {
   copyrightSuffix?: string | null
 }
 
-export interface HeaderNavItem {
+export interface BlockBase {
+  id?: string
+  eyebrow?: string | null
+  title?: string | null
+  subtitle?: string | null
+}
+
+export interface ProseBlock extends BlockBase {
+  kind: 'prose'
+  body: string
+  tone?: 'neutral' | 'accent' | 'muted'
+  layout?: 'center' | 'wide' | 'two-col'
+}
+
+export interface StatStripItem {
+  value: string
   label: string
-  href?: string
-  items?: Array<{
-    label: string
-    description?: string
-    href: string
-    icon?: IconName
-    external?: boolean
-  }>
+  footnote?: string | null
 }
-export interface HeaderConfig {
-  nav: HeaderNavItem[]
-  primaryCta?: CtaConfig | null
-  secondaryCta?: CtaConfig | null
+export interface StatStripBlock extends BlockBase {
+  kind: 'stat-strip'
+  items: StatStripItem[]
+  tone?: 'banner' | 'inline' | 'bordered'
 }
 
-export interface BusinessPageConfig {
-  hero: {
-    eyebrow?: string | null
-    title: string
-    subtitle?: string | null
-    cta?: CtaConfig | null
-  }
-  segments?: Array<{ title: string; description: string; icon?: IconName | null }> | null
-  trust?: {
-    title?: string | null
-    stats: Array<{ value: string; label: string }>
-  } | null
-  compliance?: {
-    title: string
-    bullets: string[]
-  } | null
-  faq?: FaqSection | null
-  cta?: CtaSection | null
-}
-
-export interface MobilePageConfig {
-  hero: {
-    eyebrow?: string | null
-    title: string
-    subtitle?: string | null
-    cta?: CtaConfig | null
-  }
-  features?: Array<{ title: string; description: string; icon?: IconName | null }> | null
-  faq?: FaqSection | null
-  cta?: CtaSection | null
-}
-
-export interface PricingPlan {
-  name: string
-  price: string
-  priceSuffix?: string | null
-  description?: string | null
-  features: string[]
-  cta?: CtaConfig | null
-  featured?: boolean
-}
-export interface PricingPageConfig {
-  hero: {
-    eyebrow?: string | null
-    title: string
-    subtitle?: string | null
-  }
-  plans: PricingPlan[]
-  faq?: FaqSection | null
-}
-
-export interface ContactPageConfig {
-  hero: {
-    title: string
-    subtitle?: string | null
-  }
-  channels: Array<{
-    label: string
-    value: string
-    href: string
-    icon?: IconName | null
-  }>
-}
-
-export interface LegalPageConfig {
+export interface BulletItem {
   title: string
+  description?: string | null
+  icon?: IconName | null
+}
+export interface BulletsBlock extends BlockBase {
+  kind: 'bullets'
+  items: BulletItem[]
+  layout?: 'grid' | 'list'
+}
+
+export interface StepItem {
+  title: string
+  description: string
+}
+export interface StepsBlock extends BlockBase {
+  kind: 'steps'
+  items: StepItem[]
+  numbering?: 'decimal' | 'alpha' | 'none'
+}
+
+export interface CardItem {
+  title: string
+  description: string
+  icon?: IconName | null
+  badge?: string | null
+  href?: string | null
+}
+export interface CardsBlock extends BlockBase {
+  kind: 'cards'
+  items: CardItem[]
+  columns?: 2 | 3 | 4
+}
+
+export type ComparisonMark = 'yes' | 'no' | 'partial' | 'roadmap' | string
+export interface ComparisonColumn {
+  key: string
+  label: string
+  highlight?: boolean
+}
+export interface ComparisonRow {
+  label: string
+  values: Record<string, ComparisonMark>
+}
+export interface ComparisonBlock extends BlockBase {
+  kind: 'comparison'
+  columns: ComparisonColumn[]
+  rows: ComparisonRow[]
+}
+
+export interface DataCell {
+  value: string
+  emphasis?: 'primary' | 'mono' | 'badge' | 'muted'
+  badgeTone?: 'neutral' | 'accent' | 'warning'
+}
+export interface DataGridBlock extends BlockBase {
+  kind: 'data-grid'
+  headers: string[]
+  rows: DataCell[][]
+  caption?: string | null
+}
+
+export interface TimelineItem {
+  label: string
+  title: string
+  description?: string | null
+  target?: string | null
+}
+export interface TimelineBlock extends BlockBase {
+  kind: 'timeline'
+  items: TimelineItem[]
+}
+
+export interface TaglineBlock extends BlockBase {
+  kind: 'tagline'
+  body: string
+  footnotes?: string[]
+  label?: string | null
+}
+
+export interface CtaBlock extends BlockBase {
+  kind: 'cta'
+  primary?: CtaConfig | null
+  secondary?: CtaConfig | null
+}
+
+export interface FaqItem {
+  question: string
+  answer: string
+}
+export interface FaqBlock extends BlockBase {
+  kind: 'faq'
+  items: FaqItem[]
+}
+
+export interface ContactItem {
+  label: string
+  value: string
+  href: string
+  icon?: IconName | null
+}
+export interface ContactBlock extends BlockBase {
+  kind: 'contact'
+  items: ContactItem[]
+}
+
+export interface LegalBlock extends BlockBase {
+  kind: 'legal'
   updatedAt?: string | null
   body: string
 }
 
-export interface CustomPageSection {
-  kind: 'text' | 'cards' | 'stats' | 'steps' | 'table'
-  title?: string | null
-  subtitle?: string | null
-  body?: string | null
-  items?: Array<Record<string, string>> | null
-}
-export interface CustomPageConfig {
-  slug: string
-  label: string
-  hero: {
-    eyebrow?: string | null
-    title: string
-    subtitle?: string | null
-  }
-  sections: CustomPageSection[]
+export type SectionBlock =
+  | ProseBlock
+  | StatStripBlock
+  | BulletsBlock
+  | StepsBlock
+  | CardsBlock
+  | ComparisonBlock
+  | DataGridBlock
+  | TimelineBlock
+  | TaglineBlock
+  | CtaBlock
+  | FaqBlock
+  | ContactBlock
+  | LegalBlock
+
+export interface PageConfig {
+  title: string
+  description?: string | null
+  hero?: HeroConfig | null
+  sections: SectionBlock[]
 }
 
 export interface SiteConfig {
@@ -323,34 +270,16 @@ export interface SiteConfig {
   topBanner: TopBannerConfig | null
   home: {
     hero: HeroConfig | null
-    trustedBy: TrustedByConfig | null
-    metrics: MetricsSection | null
-    problem: ProblemSection | null
-    features: FeaturesSection | null
-    howItWorks: HowItWorksSection | null
-    products: ProductsSection | null
-    protocolFlow: ProtocolFlowSection | null
-    businessModel: BusinessModelSection | null
-    fiveYearArc: FiveYearArcSection | null
-    competitiveAdvantage: CompetitiveAdvantageSection | null
-    faq: FaqSection | null
-    cta: CtaSection | null
+    sections: SectionBlock[]
   }
-  pages: {
-    business: BusinessPageConfig | null
-    mobile: MobilePageConfig | null
-    pricing: PricingPageConfig | null
-    contact: ContactPageConfig | null
-    privacy: LegalPageConfig | null
-    terms: LegalPageConfig | null
-  }
-  customPages: CustomPageConfig[]
+  pages: Record<string, PageConfig | null>
 }
 
 export const site: SiteConfig = {
   meta: {
     siteUrl: null,
     brandName: null,
+    tagline: null,
     title: null,
     description: null,
     keywords: [],
@@ -360,12 +289,12 @@ export const site: SiteConfig = {
   branding: {
     accent: '#3b8bff',
     accentSoft: 'rgba(59, 139, 255, 0.12)',
+    accentBorder: 'rgba(59, 139, 255, 0.22)',
     background: '#000000',
     foreground: '#ffffff',
     fontSans:
       "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif",
     fontMono: "'SF Mono', ui-monospace, monospace",
-    faviconInitial: 'V',
   },
   header: {
     nav: [],
@@ -381,34 +310,15 @@ export const site: SiteConfig = {
   topBanner: null,
   home: {
     hero: null,
-    trustedBy: null,
-    metrics: null,
-    problem: null,
-    features: null,
-    howItWorks: null,
-    products: null,
-    protocolFlow: null,
-    businessModel: null,
-    fiveYearArc: null,
-    competitiveAdvantage: null,
-    faq: null,
-    cta: null,
+    sections: [],
   },
-  pages: {
-    business: null,
-    mobile: null,
-    pricing: null,
-    contact: null,
-    privacy: null,
-    terms: null,
-  },
-  customPages: [],
-}
-
-export function isPageEnabled(page: unknown): boolean {
-  return page !== null && page !== undefined
+  pages: {},
 }
 
 export function hasItems<T>(list: T[] | null | undefined): list is T[] {
   return Array.isArray(list) && list.length > 0
+}
+
+export function isPageEnabled(page: PageConfig | null | undefined): page is PageConfig {
+  return page !== null && page !== undefined
 }

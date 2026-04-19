@@ -5,43 +5,19 @@ interface LogoWithTextProps {
   className?: string
 }
 
-export default function LogoWithText({ height = 32, className = '' }: LogoWithTextProps) {
-  const initial = site.branding.faviconInitial ?? site.meta.brandName?.charAt(0).toUpperCase() ?? 'V'
+export default function LogoWithText({ height = 28, className = '' }: LogoWithTextProps) {
   const brandLabel = site.meta.brandName ?? 'Venture'
-  const accent = site.branding.accent
-  const markSize = Math.round(height * 0.95)
+  const fontSize = Math.round(height * 0.72)
 
   return (
     <span
-      className={`inline-flex items-center gap-2.5 ${className}`}
-      style={{ height }}
+      className={`inline-flex items-center ${className}`}
+      style={{ height, color: 'var(--foreground)' }}
       aria-label={brandLabel}
     >
-      <svg
-        width={markSize}
-        height={markSize}
-        viewBox="0 0 64 64"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
-        role="img"
-        aria-hidden="true"
-      >
-        <rect width="64" height="64" rx="14" fill={accent} />
-        <text
-          x="32"
-          y="42"
-          textAnchor="middle"
-          fontFamily="var(--font-sans)"
-          fontSize="30"
-          fontWeight="600"
-          fill="#ffffff"
-        >
-          {initial}
-        </text>
-      </svg>
       <span
-        className="font-semibold tracking-tight"
-        style={{ fontSize: Math.round(height * 0.58), color: 'currentColor' }}
+        className="font-semibold tracking-[-0.02em] leading-none"
+        style={{ fontSize }}
       >
         {brandLabel}
       </span>

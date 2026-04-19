@@ -100,12 +100,12 @@ export default function Footer() {
               &copy; {CURRENT_YEAR} {brandLabel}
               {footer.copyrightSuffix ? `. ${footer.copyrightSuffix}` : '.'}
             </span>
-            {site.pages.terms ? (
+            {site.pages['terms'] ? (
               <Link href="/terms" className="hover:text-white/50 transition-colors">
                 Terms
               </Link>
             ) : null}
-            {site.pages.privacy ? (
+            {site.pages['privacy'] ? (
               <Link href="/privacy" className="hover:text-white/50 transition-colors">
                 Privacy
               </Link>

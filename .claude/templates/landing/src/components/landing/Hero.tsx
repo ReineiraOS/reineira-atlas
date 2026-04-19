@@ -18,9 +18,8 @@ function CtaLink({
 }) {
   const className =
     variant === 'primary'
-      ? 'inline-flex items-center px-8 py-3.5 text-base font-medium rounded-full transition-all hover:opacity-90 cursor-pointer text-white'
-      : 'inline-flex items-center justify-center px-8 py-3.5 text-base font-medium rounded-full whitespace-nowrap transition-colors text-white/70 hover:text-white border border-white/20 hover:border-white/40'
-
+      ? 'inline-flex items-center px-7 py-3.5 text-[15px] font-medium rounded-full transition-all hover:opacity-90 text-white'
+      : 'inline-flex items-center justify-center px-7 py-3.5 text-[15px] font-medium rounded-full transition-colors text-white/70 hover:text-white border border-white/20 hover:border-white/40'
   const style = variant === 'primary' ? { backgroundColor: 'var(--accent)' } : undefined
 
   if (external) {
@@ -48,15 +47,15 @@ export default function Hero() {
   return (
     <section
       ref={sectionRef}
-      className="relative pt-28 sm:pt-28 lg:pt-36 pb-20 sm:pb-24 lg:pb-28 overflow-hidden"
+      className="relative pt-28 sm:pt-32 lg:pt-40 pb-16 sm:pb-20 lg:pb-24 overflow-hidden"
       style={{ backgroundColor: 'var(--background)' }}
     >
       <div className="absolute inset-0 hero-backdrop pointer-events-none" aria-hidden="true" />
       <div className="container relative">
-        <div className="max-w-4xl mx-auto text-center">
+        <div className="max-w-4xl">
           {hero.eyebrow ? (
             <m.p
-              className="text-xs sm:text-sm font-semibold tracking-[0.22em] uppercase mb-6"
+              className="text-[11px] sm:text-xs font-semibold tracking-[0.24em] uppercase mb-5"
               style={{ color: 'var(--accent)' }}
               initial={prefersReducedMotion ? false : { opacity: 0 }}
               animate={isInView || prefersReducedMotion ? { opacity: 1 } : { opacity: 0 }}
@@ -67,7 +66,7 @@ export default function Hero() {
           ) : null}
 
           <m.h1
-            className="text-[36px] sm:text-[56px] md:text-[72px] lg:text-[84px] font-semibold text-white leading-[1.12] sm:leading-[1.05] tracking-[-0.035em] mb-6 sm:mb-8"
+            className="text-[36px] sm:text-[56px] md:text-[68px] lg:text-[80px] font-semibold text-white leading-[1.05] tracking-[-0.035em] mb-5 sm:mb-6"
             initial={prefersReducedMotion ? false : { opacity: 0 }}
             animate={isInView || prefersReducedMotion ? { opacity: 1 } : { opacity: 0 }}
             transition={{ duration: prefersReducedMotion ? 0 : 0.5, ease: 'easeOut' }}
@@ -77,7 +76,7 @@ export default function Hero() {
 
           {hero.subtitle ? (
             <m.p
-              className="text-[20px] sm:text-[22px] lg:text-[26px] text-white/60 leading-[1.5] mb-10 sm:mb-12 max-w-2xl mx-auto"
+              className="text-[18px] sm:text-[22px] lg:text-[26px] text-white/65 leading-[1.5] mb-8 sm:mb-10 max-w-3xl"
               initial={prefersReducedMotion ? false : { opacity: 0 }}
               animate={isInView || prefersReducedMotion ? { opacity: 1 } : { opacity: 0 }}
               transition={{ duration: prefersReducedMotion ? 0 : 0.5, ease: 'easeOut' }}
@@ -86,9 +85,20 @@ export default function Hero() {
             </m.p>
           ) : null}
 
+          {hero.tagline ? (
+            <m.p
+              className="italic text-[15px] sm:text-base text-white/45 mb-8 sm:mb-10 max-w-2xl"
+              initial={prefersReducedMotion ? false : { opacity: 0 }}
+              animate={isInView || prefersReducedMotion ? { opacity: 1 } : { opacity: 0 }}
+              transition={{ duration: prefersReducedMotion ? 0 : 0.5, ease: 'easeOut' }}
+            >
+              {hero.tagline}
+            </m.p>
+          ) : null}
+
           {hero.primaryCta || hero.secondaryCta ? (
             <m.div
-              className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4"
+              className="flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-4"
               initial={prefersReducedMotion ? false : { opacity: 0 }}
               animate={isInView || prefersReducedMotion ? { opacity: 1 } : { opacity: 0 }}
               transition={{ duration: prefersReducedMotion ? 0 : 0.5, ease: 'easeOut' }}
