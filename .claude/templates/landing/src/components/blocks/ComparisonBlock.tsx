@@ -1,7 +1,9 @@
 'use client'
 
+import { m } from 'framer-motion'
 import { Check, X, Minus, Circle } from '@phosphor-icons/react'
 import SectionFrame from './SectionFrame'
+import { MOTION, viewportOnce } from '@/lib/motion'
 import type { ComparisonBlock, ComparisonMark } from '@/content/site'
 
 function MarkCell({ mark, highlight }: { mark: ComparisonMark; highlight?: boolean }) {
@@ -51,7 +53,7 @@ export default function ComparisonBlockView({ block }: { block: ComparisonBlock 
   return (
     <SectionFrame id={block.id} eyebrow={block.eyebrow} title={block.title} subtitle={block.subtitle}>
       <div
-        className="rounded-2xl border overflow-hidden"
+        className="rounded-[var(--radius-card)] border overflow-hidden"
         style={{
           borderColor: 'var(--border-dark)',
           backgroundColor: 'var(--color-surface-card)',
@@ -76,15 +78,22 @@ export default function ComparisonBlockView({ block }: { block: ComparisonBlock 
           ))}
         </div>
 
-        <div className="hidden md:block">
+        <m.div
+          className="hidden md:block"
+          variants={MOTION.staggerContainer}
+          initial="hidden"
+          whileInView="visible"
+          viewport={viewportOnce()}
+        >
           {block.rows.map((row, ri) => (
-            <div
+            <m.div
               key={`${row.label}-${ri}`}
-              className="grid border-t transition-colors hover:bg-white/[0.02]"
+              className="grid border-t row-hover-accent"
               style={{
                 gridTemplateColumns: `2fr repeat(${colCount}, minmax(120px, 1fr))`,
                 borderColor: 'var(--border-dark)',
               }}
+              variants={MOTION.staggerItem}
             >
               <div className="px-5 py-5 text-[14px] text-white font-medium">{row.label}</div>
               {block.columns.map((col) => (
@@ -96,9 +105,9 @@ export default function ComparisonBlockView({ block }: { block: ComparisonBlock 
                   <MarkCell mark={row.values[col.key] ?? 'no'} highlight={col.highlight} />
                 </div>
               ))}
-            </div>
+            </m.div>
           ))}
-        </div>
+        </m.div>
 
         <div className="md:hidden">
           {block.rows.map((row, ri) => (

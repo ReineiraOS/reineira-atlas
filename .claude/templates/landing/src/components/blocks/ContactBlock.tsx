@@ -19,7 +19,7 @@ export default function ContactBlockView({ block }: { block: ContactBlock }) {
               href={channel.href}
               target={isExternal ? '_blank' : undefined}
               rel={isExternal ? 'noopener noreferrer' : undefined}
-              className="flex items-center gap-4 rounded-2xl border p-5 transition-colors hover:border-white/20"
+              className="flex items-center gap-4 rounded-[var(--radius-card)] border p-5 transition-colors hover:border-white/20"
               style={{
                 backgroundColor: 'var(--color-surface-card)',
                 borderColor: 'var(--border-dark)',

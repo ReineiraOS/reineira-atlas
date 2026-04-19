@@ -1,9 +1,11 @@
 'use client'
 
 import Link from 'next/link'
+import { m } from 'framer-motion'
 import { ArrowRight } from '@phosphor-icons/react'
 import SectionFrame from './SectionFrame'
 import { resolveIcon } from '@/content/icons'
+import { MOTION, viewportOnce } from '@/lib/motion'
 import type { CardsBlock } from '@/content/site'
 
 export default function CardsBlockView({ block }: { block: CardsBlock }) {
@@ -14,13 +16,19 @@ export default function CardsBlockView({ block }: { block: CardsBlock }) {
 
   return (
     <SectionFrame id={block.id} eyebrow={block.eyebrow} title={block.title} subtitle={block.subtitle}>
-      <div className={`grid grid-cols-1 ${gridCols} gap-4 sm:gap-5`}>
+      <m.div
+        className={`grid grid-cols-1 ${gridCols} gap-4 sm:gap-5`}
+        variants={MOTION.staggerContainer}
+        initial="hidden"
+        whileInView="visible"
+        viewport={viewportOnce()}
+      >
         {block.items.map((item, index) => {
           const Icon = resolveIcon(item.icon)
           const isExternal = item.href?.startsWith('http')
           const inner = (
             <article
-              className="group relative h-full rounded-2xl p-7 sm:p-8 border transition-colors hover:border-white/20"
+              className="group relative h-full rounded-[var(--radius-card)] p-7 sm:p-8 border transition-colors hover:border-white/20"
               style={{
                 backgroundColor: 'var(--color-surface-card)',
                 borderColor: 'var(--border-dark)',
@@ -63,20 +71,30 @@ export default function CardsBlockView({ block }: { block: CardsBlock }) {
           if (item.href) {
             if (isExternal) {
               return (
-                <a key={`${item.title}-${index}`} href={item.href} target="_blank" rel="noopener noreferrer">
+                <m.a
+                  key={`${item.title}-${index}`}
+                  href={item.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  variants={MOTION.staggerItem}
+                >
                   {inner}
-                </a>
+                </m.a>
               )
             }
             return (
-              <Link key={`${item.title}-${index}`} href={item.href}>
-                {inner}
-              </Link>
+              <m.div key={`${item.title}-${index}`} variants={MOTION.staggerItem}>
+                <Link href={item.href}>{inner}</Link>
+              </m.div>
             )
           }
-          return <div key={`${item.title}-${index}`}>{inner}</div>
+          return (
+            <m.div key={`${item.title}-${index}`} variants={MOTION.staggerItem}>
+              {inner}
+            </m.div>
+          )
         })}
-      </div>
+      </m.div>
     </SectionFrame>
   )
 }

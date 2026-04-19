@@ -1,95 +1,129 @@
 ---
 name: claude-design
-description: 'Polish landing design after scaffold: audit brief vs site.ts, pick aesthetic direction, refine tokens, tune composition'
+description: 'Self-contained design polish for landing: audit content, compute accent scale, patch design.ts (editorial-only)'
 agent: _builder
 argument-hint: '<venture-name>'
 ---
 
-# /claude-design — Polish Landing Design
+# /claude-design — Polish Landing Design (editorial-only, self-contained)
 
-> Runs **after** `/scaffold-landing`. This is an orchestrator skill — it delegates aesthetic
-> decisions to `frontend-design` and token work to `tailwind-design-system`, then applies
-> results to the landing's `site.ts`, `globals.css`, and (optionally) `design.ts`.
+> Runs **after** `/scaffold-landing`. Fully self-contained — no external plugin dependencies.
+> All design tokens, motion profiles, and wow-effects are part of the template
+> (`src/content/directions.ts`, `src/lib/motion.ts`, `src/app/globals.css`).
 
 ## What It Does
 
-1. **Content audit** — walk `site.ts` `home.sections[]` and each `pages[slug].sections[]`. For
-   every block, verify the content matches the brief's depth. Signal three outcomes per section:
-   - `ok` — content is rich enough, structure matches brief
-   - `thin` — in brief there is more; pull it in OR convert to a visual form (paragraph → bullets)
-   - `weak` — nothing substantial in brief; remove section entirely
-2. **Aesthetic direction** — invoke `frontend-design` skill (Skill tool, `skill=frontend-design`).
-   Pass: venture domain, one-liner, target audience, existing accent. Receive one BOLD direction
-   name (editorial / brutalist / organic / luxury / playful / minimal / industrial) + typography
-   pairing + motion guidance.
-3. **Design tokens** — invoke `tailwind-design-system` skill (Skill tool,
-   `skill=tailwind-design-system`). Pass: accent HEX, chosen direction, dark/light mode. Receive:
-   full token scale (50→900 for accent), surface palette, spacing scale, `@theme` block.
-4. **Apply tokens** — replace the top `@theme inline` block in `globals.css` with the new token
-   set. Keep component-level utility classes untouched.
-5. **Composition tuning** — alternate `tone: 'default'` and `tone: 'elevated'` in
-   `SectionFrame` usage across home.sections to produce visual rhythm. Avoid 3 consecutive
-   default-tone sections.
-6. **Record decisions** — write `src/content/design.ts` next to `site.ts`:
-   ```ts
-   export const design = {
-     direction: 'editorial',
-     typography: { sans: 'Inter', mono: 'JetBrains Mono', hero: 'display' },
-     accent: { hex: '#2e7d4a', scale: { 50: '...', 500: '...', 900: '...' } },
-     rationale: 'Agri-finance venture, institutional tone — editorial chosen over brutalist...',
-   }
-   ```
+1. **Content audit** — walk `site.ts` `home.sections[]` and `pages[slug].sections[]`. Classify
+   each block as `ok` / `thin` / `weak`:
+   - `ok` — content matches brief depth, structure is clear
+   - `thin` — brief has more; pull in more text or convert to a more visual form (paragraph → bullets, prose → comparison, etc.)
+   - `weak` — nothing substantial in brief; remove the block
+2. **Accent scale** — ensure `branding.accent` is set; derive `accentSoft` / `accentBorder` if missing
+3. **Luminance check** — if accent is very dark or very bright, note override in `design.ts`
+4. **Decision record** — write `src/content/design.ts` with rationale
+5. **Section-number toggle** — decide `overrides.showSectionNumbers` (default `true`; set `false`
+   only for minimal briefs with ≤3 top-level sections where numbering feels heavy)
 
-## How to Invoke Global Skills
+## Editorial is the only direction
 
-Use the native Skill tool:
+This template uses a single visual direction — **editorial**:
+- Display: Instrument Serif (italic), body: Inter, mono: JetBrains Mono
+- Motion: gentle (0.6s), stagger reveal in lists (60-80ms), per-word text-reveal in hero
+- Surface: bordered cards (18px radius), noise backdrop with 40s drift
+- Backdrop: noise fabric + radial accent orb in hero
+- Numbering: `01 — EYEBROW` prefix before each section heading
+- Numbers animate (CountUp) in stat-strips and mono data-grid cells
+- Tables (DataGrid, Comparison) show accent slide on row hover
+- Primary CTA has shimmer effect every 6s
+- Top 2px scroll-progress bar
+- Long paragraphs get editorial drop-cap
 
+**Do not add other directions.** The template no longer supports `industrial` or `minimal` —
+editorial proved to work across all venture types (fintech, logistics, research) when paired
+with venture-specific accent color and content.
+
+Per-venture differentiation comes from:
+- `branding.accent` HEX (drives 9-step accent scale auto-generated)
+- `branding.background` / `foreground` (rare override)
+- Optional `design.overrides.noiseOpacity` / `accentOrbOpacity` (visual tuning)
+- Content itself (brief-driven)
+
+## Accent scale formulas
+
+Given `branding.accent` as HEX (e.g. `#2e7d4a`):
+- **accentSoft** = `rgba(R, G, B, 0.12)` — icon backgrounds, subtle fills
+- **accentBorder** = `rgba(R, G, B, 0.28)` — card borders, accent dividers
+- **accentGlow** = `rgba(R, G, B, 0.18)` — hero radial glow, shadow spread
+
+Convert HEX to RGB, multiply opacity. Write to `branding.accentSoft` / `branding.accentBorder`
+in `site.ts` if not already set. The 9-step scale (`--accent-50` ... `--accent-900`) is auto-
+generated by `src/lib/accent-scale.ts` from `branding.accent` — no manual work.
+
+## Luminance check (rarely needed)
+
+For dark mode (default) with accent already dark (deep green, navy):
+- If accent luminance < 0.35 → usually fine, but consider `background: '#0a0a0a'` for contrast
+- If accent luminance 0.35–0.7 → defaults work
+- If accent luminance > 0.7 (very bright accent) → pin `background: '#0a0a0a'`, reduce
+  `design.overrides.accentOrbOpacity` to `0.4` so the orb doesn't dominate
+
+These are optional; apply only if a human visual smoke check reveals contrast issues.
+
+## How to write `design.ts`
+
+```ts
+import type { DesignConfig } from './design'
+
+export const design: DesignConfig = {
+  rationale:
+    'AgriLend — editorial direction with green accent (#2e7d4a). Noise backdrop + accent orb + stagger + CountUp on stat-strip creates pitch-deck feel appropriate for emerging-markets credit narrative.',
+  overrides: {
+    // showSectionNumbers: false,      // only if <3 sections and numbering feels heavy
+    // accentOrbOpacity: 0.4,           // only if accent is very bright
+    // noiseOpacity: 0.08,              // only if noise needs to be more or less visible
+  },
+}
 ```
-Skill(skill: "frontend-design", args: "
-  Venture: {venture_name}
-  Domain: {one-liner from brief}
-  Audience: {from brief}
-  Accent: {HEX from branding}
-  Task: choose a BOLD aesthetic direction from the options in your skill doc.
-  Return: direction name + 2-sentence rationale + typography pair + motion guidance.
-")
-```
 
-```
-Skill(skill: "tailwind-design-system", args: "
-  Accent HEX: {accent}
-  Direction: {from previous skill}
-  Mode: dark
-  Task: generate Tailwind v4 @theme block with full accent scale (50-900),
-        surface palette (3 elevation levels), spacing, typography scale.
-  Return: the @theme block ready to paste into globals.css.
-")
-```
+The `rationale` is for future audit — future Claude reading this venture's landing should
+understand why specific overrides (if any) were chosen. `design.ts` contains NO `direction`
+field (editorial is implicit).
 
-## Rules
+## Procedure
 
-- **Do not rewrite components.** Only touch `site.ts` (content), `globals.css` (tokens),
-  `design.ts` (rationale record). The block primitives stay as-is.
-- **Do not invent content.** If the brief has no data for a section, remove that block from
-  `home.sections`. Never fabricate text.
-- **Keep the bold direction consistent.** If `frontend-design` picks "editorial", every
-  decision (typography, spacing, motion) follows. No mixing.
-- **Never touch `page.tsx` or primitive components.** Those are stable.
-- **Accent fallback.** If brief has no accent HEX, default to `#3b8bff` and pick direction
-  "minimal".
-- **Dark mode first.** Landing is dark by default unless brief explicitly says otherwise.
+1. **Read** `brief.md` (or `../<venture>/brief.md`) and
+   `../<venture>/packages/landing/src/content/site.ts`
+2. **Audit sections** — walk `home.sections[]`. For each, classify ok/thin/weak:
+   - `thin` → add more text from brief OR switch `kind` to more expressive (prose → bullets, bullets → cards)
+   - `weak` → remove from array
+3. **Compute accent** — fill `accentSoft` / `accentBorder` in `branding` if missing
+4. **Luminance check** — if accent is edge-case, note overrides
+5. **Write** `../<venture>/packages/landing/src/content/design.ts` with rationale + optional overrides
+6. **Build check** — `pnpm --filter @<venture>/landing build` should succeed
 
 ## Acceptance Criteria
 
-- [ ] `site.ts` `home.sections[]` has no `thin`/`weak` blocks remaining
-- [ ] `globals.css` `@theme inline` block has full accent scale (50-900) matching brief accent
-- [ ] `src/content/design.ts` exists with direction + rationale
-- [ ] Alternating tone rhythm — no 3 consecutive `default`-tone SectionFrame sections
-- [ ] `pnpm build` succeeds, visual smoke test on `pnpm dev` shows coherent aesthetic
+- [ ] `design.ts` exists with `rationale` field (no `direction` field)
+- [ ] `branding.accent` + `accentSoft` + `accentBorder` all set and consistent
+- [ ] No `thin` or `weak` sections remain in `home.sections[]`
+- [ ] `pnpm build` succeeds
+- [ ] Visual spot-check on localhost: section-number prefixes (`01 — PROBLEM`) visible, hero
+      title reveals word-by-word, stat-strip numbers count up, CTA shimmers every 6s
 
 ## What This Skill Does NOT Do
 
-- Writing new block primitives → already in `components/blocks/`, use those
-- Inventing brand identity → that comes from `frontend-design` + brief
-- Generating imagery → out of scope for landing v1
-- Changing page layout structure → that's `scaffold-landing`'s job
+- Add new direction presets — the template is editorial-only by design
+- Write new block primitives — reuse existing `components/blocks/*`
+- Edit `globals.css` — all editorial styles already live there (defaults in `:root`)
+- Load new fonts — Google Fonts auto-loaded by `layout.tsx`
+- Touch `page.tsx` or UI primitives (TextReveal, CountUp, ScrollProgress, etc.)
+- Fabricate content — only use what's in the brief; unused fields → `null`
+- Depend on external plugins — fully self-contained
+
+## Self-containment check
+
+```bash
+grep -E "Skill\(" SKILL.md
+```
+
+Should return **zero** matches. If any step invokes an external skill — that's a bug.

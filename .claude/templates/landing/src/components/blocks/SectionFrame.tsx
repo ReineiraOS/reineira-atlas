@@ -2,6 +2,9 @@
 
 import { useRef } from 'react'
 import { m, useInView, useReducedMotion } from 'framer-motion'
+import SectionNumber from '@/components/ui/SectionNumber'
+import RuleLine from '@/components/ui/RuleLine'
+import { useSectionNumber } from '@/components/ui/SectionNumberContext'
 
 interface SectionFrameProps {
   id?: string
@@ -25,6 +28,7 @@ export default function SectionFrame({
   const ref = useRef(null)
   const isInView = useInView(ref, { once: true, margin: '-60px' })
   const prefersReducedMotion = useReducedMotion()
+  const sectionNumber = useSectionNumber()
 
   const headingAlignment = align === 'center' ? 'text-center mx-auto max-w-3xl' : 'max-w-3xl'
   const bgStyle =
@@ -33,7 +37,12 @@ export default function SectionFrame({
       : { backgroundColor: 'var(--background)' }
 
   return (
-    <section ref={ref} id={id} className="relative py-20 sm:py-24 lg:py-28 scroll-mt-20" style={bgStyle}>
+    <section
+      ref={ref}
+      id={id}
+      className="relative scroll-mt-20"
+      style={{ ...bgStyle, paddingTop: 'var(--section-padding)', paddingBottom: 'var(--section-padding)' }}
+    >
       <div className="container">
         {(eyebrow || title || subtitle) && (
           <m.header
@@ -44,14 +53,22 @@ export default function SectionFrame({
           >
             {eyebrow ? (
               <p
-                className="text-[11px] sm:text-xs font-semibold tracking-[0.22em] uppercase mb-3 sm:mb-4"
+                className="text-[11px] sm:text-xs font-semibold tracking-[0.22em] uppercase mb-3 sm:mb-4 flex items-center gap-0"
                 style={{ color: 'var(--accent)' }}
               >
-                {eyebrow}
+                {sectionNumber !== null ? <SectionNumber index={sectionNumber} /> : null}
+                <span>{eyebrow}</span>
               </p>
             ) : null}
+            <RuleLine className="mb-5 sm:mb-6" />
             {title ? (
-              <h2 className="text-[26px] sm:text-[32px] md:text-[38px] lg:text-[44px] font-semibold text-white leading-[1.15] tracking-tight">
+              <h2
+                className="display-font text-[28px] sm:text-[36px] md:text-[44px] lg:text-[52px] text-white leading-[1.1]"
+                style={{
+                  fontWeight: 'var(--display-weight)' as unknown as number,
+                  letterSpacing: 'var(--letter-spacing-hero)',
+                }}
+              >
                 {title}
               </h2>
             ) : null}

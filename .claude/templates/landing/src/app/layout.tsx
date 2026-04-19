@@ -1,7 +1,11 @@
 import type { Metadata, Viewport } from 'next'
 import './globals.css'
 import MotionProvider from '@/components/MotionProvider'
+import ScrollProgress from '@/components/ui/ScrollProgress'
 import { site } from '@/content/site'
+import { design } from '@/content/design'
+import { EDITORIAL, buildGoogleFontsHref } from '@/content/directions'
+import { buildAccentScale, accentRgba } from '@/lib/accent-scale'
 
 export const viewport: Viewport = {
   width: 'device-width',
@@ -57,22 +61,52 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   const { branding } = site
+  const fontsHref = buildGoogleFontsHref(EDITORIAL)
+  const scale = buildAccentScale(branding.accent)
+  const noiseOpacity = design.overrides?.noiseOpacity ?? 0.06
+  const orbOpacity = design.overrides?.accentOrbOpacity ?? 0.55
+
   const cssVars: Record<string, string> = {
     '--accent': branding.accent,
-    '--accent-hover': branding.accent,
-    '--accent-soft': branding.accentSoft ?? 'rgba(255,255,255,0.08)',
-    '--accent-border': branding.accentSoft ?? 'rgba(255,255,255,0.14)',
-    '--accent-glow': branding.accentSoft ?? 'rgba(255,255,255,0.14)',
+    '--accent-hover': scale['400'],
+    '--accent-soft': branding.accentSoft ?? accentRgba(branding.accent, 0.12),
+    '--accent-border': branding.accentBorder ?? accentRgba(branding.accent, 0.22),
+    '--accent-glow': accentRgba(branding.accent, 0.18),
+    '--accent-50': scale['50'],
+    '--accent-100': scale['100'],
+    '--accent-200': scale['200'],
+    '--accent-300': scale['300'],
+    '--accent-400': scale['400'],
+    '--accent-500': scale['500'],
+    '--accent-600': scale['600'],
+    '--accent-700': scale['700'],
+    '--accent-800': scale['800'],
+    '--accent-900': scale['900'],
     '--background': branding.background ?? '#000000',
     '--foreground': branding.foreground ?? '#ffffff',
+    '--font-sans': EDITORIAL.fontSans.family,
+    '--font-mono': EDITORIAL.fontMono.family,
+    '--font-display': EDITORIAL.fontDisplay.family,
+    '--noise-opacity': String(noiseOpacity),
+    '--accent-orb-opacity': String(orbOpacity),
   }
-  if (branding.fontSans) cssVars['--font-sans'] = branding.fontSans
-  if (branding.fontMono) cssVars['--font-mono'] = branding.fontMono
+  if (design.overrides?.radiusCard) cssVars['--radius-card'] = design.overrides.radiusCard
+  if (design.overrides?.radiusButton) cssVars['--radius-button'] = design.overrides.radiusButton
 
   return (
     <html lang="en">
+      {fontsHref ? (
+        <head>
+          <link rel="preconnect" href="https://fonts.googleapis.com" />
+          <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
+          <link rel="stylesheet" href={fontsHref} />
+        </head>
+      ) : null}
       <body className="antialiased" style={cssVars as React.CSSProperties}>
-        <MotionProvider>{children}</MotionProvider>
+        <MotionProvider>
+          <ScrollProgress />
+          {children}
+        </MotionProvider>
       </body>
     </html>
   )

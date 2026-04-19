@@ -1,10 +1,20 @@
 import { Header, TopBanner, Hero, Footer } from '@/components/landing'
 import { Block } from '@/components/blocks'
+import { SectionNumberContext } from '@/components/ui/SectionNumberContext'
 import { site } from '@/content/site'
+import { design } from '@/content/design'
+import type { SectionBlock } from '@/content/site'
+
+function hasEyebrow(block: SectionBlock): boolean {
+  return 'eyebrow' in block && !!(block as { eyebrow?: string | null }).eyebrow
+}
 
 export default function Home() {
   const brandLabel = site.meta.brandName ?? 'Untitled Venture'
   const hasAnySection = site.home.sections.length > 0
+  const showSectionNumbers = design.overrides?.showSectionNumbers ?? true
+
+  let runningIndex = 0
 
   return (
     <div className="min-h-screen" style={{ backgroundColor: 'var(--background)' }}>
@@ -26,9 +36,18 @@ export default function Home() {
       )}
       {hasAnySection ? (
         <main>
-          {site.home.sections.map((block, index) => (
-            <Block key={block.id ?? `block-${index}`} block={block} />
-          ))}
+          {site.home.sections.map((block, index) => {
+            let value: number | null = null
+            if (showSectionNumbers && hasEyebrow(block)) {
+              runningIndex += 1
+              value = runningIndex
+            }
+            return (
+              <SectionNumberContext.Provider key={block.id ?? `block-${index}`} value={value}>
+                <Block block={block} />
+              </SectionNumberContext.Provider>
+            )
+          })}
         </main>
       ) : null}
       <Footer />

@@ -1,6 +1,7 @@
 'use client'
 
 import SectionFrame from './SectionFrame'
+import CountUp from '@/components/ui/CountUp'
 import type { DataGridBlock, DataCell } from '@/content/site'
 
 function Cell({ cell }: { cell: DataCell }) {
@@ -28,9 +29,11 @@ function Cell({ cell }: { cell: DataCell }) {
   }
   if (emphasis === 'mono') {
     return (
-      <span className="mono text-[15px] font-semibold" style={{ color: 'var(--accent)' }}>
-        {cell.value}
-      </span>
+      <CountUp
+        value={cell.value}
+        className="mono text-[15px] font-semibold"
+        style={{ color: 'var(--accent)' }}
+      />
     )
   }
   if (emphasis === 'muted') {
@@ -46,7 +49,7 @@ export default function DataGridBlockView({ block }: { block: DataGridBlock }) {
   return (
     <SectionFrame id={block.id} eyebrow={block.eyebrow} title={block.title} subtitle={block.subtitle}>
       <div
-        className="rounded-2xl border overflow-hidden"
+        className="rounded-[var(--radius-card)] border overflow-hidden"
         style={{ borderColor: 'var(--border-dark)', backgroundColor: 'var(--color-surface-card)' }}
       >
         <div
@@ -67,7 +70,7 @@ export default function DataGridBlockView({ block }: { block: DataGridBlock }) {
           {block.rows.map((row, ri) => (
             <div
               key={`row-${ri}`}
-              className="grid border-t transition-colors hover:bg-white/[0.02]"
+              className="grid border-t row-hover-accent"
               style={{
                 gridTemplateColumns: `repeat(${colCount}, minmax(140px, 1fr))`,
                 borderColor: 'var(--border-dark)',

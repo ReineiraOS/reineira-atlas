@@ -2,6 +2,7 @@
 
 import { useRef } from 'react'
 import { m, useInView, useReducedMotion } from 'framer-motion'
+import CountUp from '@/components/ui/CountUp'
 import type { StatStripBlock } from '@/content/site'
 
 export default function StatStripBlockView({ block }: { block: StatStripBlock }) {
@@ -40,12 +41,11 @@ export default function StatStripBlockView({ block }: { block: StatStripBlock })
           className="px-5 py-7 sm:px-7 sm:py-9 lg:px-9 lg:py-10 text-center"
           style={{ borderColor: 'var(--border-dark)' }}
         >
-          <p
-            className="mono text-[26px] sm:text-[34px] lg:text-[44px] font-semibold leading-[1.05] tracking-tight mb-2"
+          <CountUp
+            value={item.value}
+            className="mono block text-[26px] sm:text-[34px] lg:text-[44px] font-semibold leading-[1.05] tracking-tight mb-2"
             style={{ color: 'var(--accent)' }}
-          >
-            {item.value}
-          </p>
+          />
           <p className="text-[11px] sm:text-xs uppercase tracking-[0.18em] text-white/65">{item.label}</p>
           {item.footnote ? <p className="mt-1.5 text-[10px] text-white/35">{item.footnote}</p> : null}
         </div>
@@ -66,7 +66,7 @@ export default function StatStripBlockView({ block }: { block: StatStripBlock })
             </p>
           ) : null}
           <div
-            className="rounded-2xl border overflow-hidden"
+            className="rounded-[var(--radius-card)] border overflow-hidden"
             style={{ borderColor: 'var(--border-dark)', backgroundColor: 'var(--color-surface-card)' }}
           >
             {content}
@@ -105,7 +105,7 @@ export default function StatStripBlockView({ block }: { block: StatStripBlock })
         ) : null}
         {isBanner && block.tone === 'bordered' ? (
           <div
-            className="rounded-2xl border overflow-hidden"
+            className="rounded-[var(--radius-card)] border overflow-hidden"
             style={{ borderColor: 'var(--border-dark)', backgroundColor: 'var(--color-surface-card)' }}
           >
             {content}

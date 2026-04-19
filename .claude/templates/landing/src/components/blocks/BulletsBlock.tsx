@@ -1,7 +1,9 @@
 'use client'
 
+import { m } from 'framer-motion'
 import SectionFrame from './SectionFrame'
 import { resolveIcon } from '@/content/icons'
+import { MOTION, viewportOnce } from '@/lib/motion'
 import type { BulletsBlock } from '@/content/site'
 
 export default function BulletsBlockView({ block }: { block: BulletsBlock }) {
@@ -10,11 +12,21 @@ export default function BulletsBlockView({ block }: { block: BulletsBlock }) {
   if (block.layout === 'list') {
     return (
       <SectionFrame id={block.id} eyebrow={block.eyebrow} title={block.title} subtitle={block.subtitle}>
-        <ul className="max-w-3xl space-y-5 sm:space-y-6">
+        <m.ul
+          className="max-w-3xl space-y-5 sm:space-y-6"
+          variants={MOTION.staggerContainer}
+          initial="hidden"
+          whileInView="visible"
+          viewport={viewportOnce()}
+        >
           {block.items.map((item, index) => {
             const Icon = resolveIcon(item.icon)
             return (
-              <li key={`${item.title}-${index}`} className="flex gap-4 sm:gap-5">
+              <m.li
+                key={`${item.title}-${index}`}
+                className="flex gap-4 sm:gap-5"
+                variants={MOTION.staggerItem}
+              >
                 <span
                   className="mt-1 w-1.5 h-1.5 rounded-full shrink-0 self-start sm:mt-2"
                   style={{ backgroundColor: 'var(--accent)' }}
@@ -35,10 +47,10 @@ export default function BulletsBlockView({ block }: { block: BulletsBlock }) {
                     <p className="text-[14px] sm:text-[15px] leading-[1.7] text-white/60">{item.description}</p>
                   ) : null}
                 </div>
-              </li>
+              </m.li>
             )
           })}
-        </ul>
+        </m.ul>
       </SectionFrame>
     )
   }
@@ -47,17 +59,24 @@ export default function BulletsBlockView({ block }: { block: BulletsBlock }) {
 
   return (
     <SectionFrame id={block.id} eyebrow={block.eyebrow} title={block.title} subtitle={block.subtitle}>
-      <div className={`grid grid-cols-1 ${cols} gap-4 sm:gap-5`}>
+      <m.div
+        className={`grid grid-cols-1 ${cols} gap-4 sm:gap-5`}
+        variants={MOTION.staggerContainer}
+        initial="hidden"
+        whileInView="visible"
+        viewport={viewportOnce()}
+      >
         {block.items.map((item, index) => {
           const Icon = resolveIcon(item.icon)
           return (
-            <article
+            <m.article
               key={`${item.title}-${index}`}
-              className="rounded-2xl p-6 sm:p-7 border flex gap-4"
+              className="rounded-[var(--radius-card)] p-6 sm:p-7 border flex gap-4"
               style={{
                 backgroundColor: 'var(--color-surface-card)',
                 borderColor: 'var(--border-dark)',
               }}
+              variants={MOTION.staggerItem}
             >
               {Icon ? (
                 <div
@@ -80,10 +99,10 @@ export default function BulletsBlockView({ block }: { block: BulletsBlock }) {
                   <p className="text-[14px] leading-[1.65] text-white/60">{item.description}</p>
                 ) : null}
               </div>
-            </article>
+            </m.article>
           )
         })}
-      </div>
+      </m.div>
     </SectionFrame>
   )
 }

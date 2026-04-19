@@ -1,6 +1,8 @@
 'use client'
 
+import { m } from 'framer-motion'
 import SectionFrame from './SectionFrame'
+import { MOTION, viewportOnce } from '@/lib/motion'
 import type { TimelineBlock } from '@/content/site'
 
 export default function TimelineBlockView({ block }: { block: TimelineBlock }) {
@@ -8,7 +10,13 @@ export default function TimelineBlockView({ block }: { block: TimelineBlock }) {
 
   return (
     <SectionFrame id={block.id} eyebrow={block.eyebrow} title={block.title} subtitle={block.subtitle}>
-      <ol className="relative max-w-4xl">
+      <m.ol
+        className="relative max-w-4xl"
+        variants={MOTION.staggerContainer}
+        initial="hidden"
+        whileInView="visible"
+        viewport={viewportOnce()}
+      >
         <div
           className="absolute left-[26px] sm:left-[30px] top-3 bottom-3 w-px"
           style={{ backgroundColor: 'var(--accent-border)' }}
@@ -17,9 +25,13 @@ export default function TimelineBlockView({ block }: { block: TimelineBlock }) {
         {block.items.map((item, index) => {
           const progress = (index + 1) / block.items.length
           return (
-            <li key={`${item.label}-${index}`} className="relative pl-[76px] sm:pl-[88px] pb-8 last:pb-0">
+            <m.li
+              key={`${item.label}-${index}`}
+              className="relative pl-[76px] sm:pl-[88px] pb-8 last:pb-0"
+              variants={MOTION.staggerItem}
+            >
               <div
-                className="absolute left-0 top-0 w-[52px] h-[52px] sm:w-[60px] sm:h-[60px] flex items-center justify-center rounded-2xl mono text-[13px] sm:text-sm font-semibold"
+                className="absolute left-0 top-0 w-[52px] h-[52px] sm:w-[60px] sm:h-[60px] flex items-center justify-center rounded-[var(--radius-card)] mono text-[13px] sm:text-sm font-semibold"
                 style={{
                   background: `rgba(59, 139, 255, ${0.05 + progress * 0.18})`,
                   border: '1px solid var(--accent-border)',
@@ -44,10 +56,10 @@ export default function TimelineBlockView({ block }: { block: TimelineBlock }) {
                   </p>
                 ) : null}
               </div>
-            </li>
+            </m.li>
           )
         })}
-      </ol>
+      </m.ol>
     </SectionFrame>
   )
 }

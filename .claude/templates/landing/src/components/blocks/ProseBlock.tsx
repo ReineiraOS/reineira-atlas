@@ -6,6 +6,7 @@ import type { ProseBlock } from '@/content/site'
 export default function ProseBlockView({ block }: { block: ProseBlock }) {
   const paragraphs = block.body.split(/\n\s*\n/).filter(Boolean)
   const textColor = block.tone === 'muted' ? 'text-white/55' : 'text-white/75'
+  const useDropCap = block.layout !== 'center' && paragraphs[0] && paragraphs[0].length > 180
 
   if (block.layout === 'two-col') {
     return (
@@ -21,7 +22,9 @@ export default function ProseBlockView({ block }: { block: ProseBlock }) {
           </div>
           <div className={`space-y-4 sm:space-y-5 text-[15px] sm:text-base lg:text-lg leading-[1.7] ${textColor}`}>
             {paragraphs.map((p, i) => (
-              <p key={i}>{p}</p>
+              <p key={i} className={i === 0 && useDropCap ? 'drop-cap' : undefined}>
+                {p}
+              </p>
             ))}
           </div>
         </div>
@@ -35,7 +38,9 @@ export default function ProseBlockView({ block }: { block: ProseBlock }) {
         className={`${block.layout === 'center' ? 'mx-auto text-center' : ''} max-w-3xl space-y-4 sm:space-y-5 text-[15px] sm:text-base lg:text-lg leading-[1.7] ${textColor}`}
       >
         {paragraphs.map((p, i) => (
-          <p key={i}>{p}</p>
+          <p key={i} className={i === 0 && useDropCap ? 'drop-cap' : undefined}>
+            {p}
+          </p>
         ))}
       </div>
     </SectionFrame>

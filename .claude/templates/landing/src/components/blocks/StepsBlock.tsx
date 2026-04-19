@@ -1,6 +1,8 @@
 'use client'
 
+import { m } from 'framer-motion'
 import SectionFrame from './SectionFrame'
+import { MOTION, viewportOnce } from '@/lib/motion'
 import type { StepsBlock } from '@/content/site'
 
 function formatNumber(index: number, numbering: 'decimal' | 'alpha' | 'none') {
@@ -15,11 +17,18 @@ export default function StepsBlockView({ block }: { block: StepsBlock }) {
 
   return (
     <SectionFrame id={block.id} eyebrow={block.eyebrow} title={block.title} subtitle={block.subtitle}>
-      <ol className="relative grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6">
+      <m.ol
+        className="relative grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6"
+        variants={MOTION.staggerContainer}
+        initial="hidden"
+        whileInView="visible"
+        viewport={viewportOnce()}
+      >
         {block.items.map((step, index) => (
-          <li
+          <m.li
             key={`${step.title}-${index}`}
-            className="relative rounded-2xl p-6 sm:p-7 border"
+            className="relative rounded-[var(--radius-card)] p-6 sm:p-7 border"
+            variants={MOTION.staggerItem}
             style={{
               backgroundColor: 'var(--color-surface-card)',
               borderColor: 'var(--border-dark)',
@@ -39,9 +48,9 @@ export default function StepsBlockView({ block }: { block: StepsBlock }) {
             ) : null}
             <h3 className="text-[17px] sm:text-lg font-semibold text-white mb-2 leading-snug">{step.title}</h3>
             <p className="text-[14px] sm:text-[15px] leading-[1.65] text-white/60">{step.description}</p>
-          </li>
+          </m.li>
         ))}
-      </ol>
+      </m.ol>
     </SectionFrame>
   )
 }
