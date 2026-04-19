@@ -1,0 +1,102 @@
+name: Tests and Linting
+
+on:
+  pull_request:
+    types: [assigned, edited, opened, synchronize, reopened]
+    branches:
+      - main
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '24'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run tests with coverage
+        run: npm run test:cov
+
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v5
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: ./coverage/lcov.info
+          fail_ci_if_error: false
+
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '24'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm install
+
+      # TODO: Uncomment these when we have a way to test the linting
+      # - name: Lint scripts
+      #   run: yarn run lint:scripts
+
+      # TODO: Uncomment these when we have a way to test the linting
+      # - name: Lint styles
+      #   run: yarn run lint:styles
+
+      # - name: Type check
+      #   run: yarn run type-check
+
+      - name: Build the project
+        run: npm run build
+
+  commitlint:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Fetch all branches
+        run: git fetch --all
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '24'
+
+      - name: Install Commitlint
+        run: npm add --dev "@commitlint/config-conventional" "@commitlint/cli"
+
+      - name: Create Commitlint config
+        run: |
+          echo '{"extends": ["@commitlint/config-conventional"]}' > .commitlintrc.json
+
+      - name: Check commit messages
+        run: |
+          git fetch origin main
+          git log origin/main..HEAD --pretty=format:'%s' | npx commitlint --verbose
+
+      - name: Check PR title
+        run: |
+          PR_TITLE="${{ github.event.pull_request.title }}"
+          echo "$PR_TITLE" | npx commitlint --verbose

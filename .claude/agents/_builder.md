@@ -18,12 +18,13 @@ last-reviewed: 2026-04-05
 ## Pipeline
 
 ```
-/scaffold     → copy template, rebrand all files
-/brand        → apply color palette, typography, mode
-/cleanup      → remove sample entities not in brief
-/gen-entity   → one entity vertical slice (BE + FE) — called per entity
-/gen-dashboard → dashboard page with Recent blocks per entity
-/verify       → build + test + report
+/scaffold         → copy platform-modules template (backend + app), rebrand
+/scaffold-landing → copy anonymized landing template, populate from brief
+/brand            → apply color palette, typography, mode (to app + landing)
+/cleanup          → remove sample entities not in brief
+/gen-entity       → one entity vertical slice (BE + FE) — called per entity
+/gen-dashboard    → dashboard page with Recent blocks per entity
+/verify           → build + test + report
 ```
 
 ## Execution
@@ -34,8 +35,19 @@ Extract:
 - `venture_name` (kebab-case), `display_name`, `tagline`
 - `entities[]` — each with name, fields, statuses, operations
 - `features[]` — pages and flows
-- `branding` — colors, typography, border-radius, mode, logo
+- `branding` — accent hex, typography, border-radius, mode, logo
 - `sample_to_remove[]` — entities from template NOT in brief (e.g., transactions, withdrawals UI)
+- **Landing-specific fields** (consumed by `/scaffold-landing`):
+  - `hero_title`, `hero_subtitle`, `hero_cta`
+  - `metrics[]` — 3-5 pitch KPIs (value/label/caption)
+  - `problem` — sharp restatement + 2-3 sentence body
+  - `product_features[]` — for home features section
+  - `protocol_flow[]` — 3-5 step mechanics
+  - `business_model[]` — segment/fee/volume rows
+  - `five_year_arc[]` — year/milestone/target
+  - `competitive_advantage[]` — claim/proof pairs
+  - `contacts` — email, social channels for `/contact`
+  - `custom_pages[]` — unique thematic routes (regulatory, research, integrations) if the brief has such content
 
 ### 2. Run pipeline
 
@@ -43,12 +55,13 @@ Execute skills in order. Each skill reads brief.md itself for context.
 
 ```
 1. /scaffold <venture_name>
-2. /brand
-3. /cleanup
-4. For each entity in brief:
+2. /scaffold-landing <venture_name>
+3. /brand
+4. /cleanup
+5. For each entity in brief:
      /gen-entity <EntityName>
-5. /gen-dashboard
-6. /verify
+6. /gen-dashboard
+7. /verify
 ```
 
 ### 3. Report
