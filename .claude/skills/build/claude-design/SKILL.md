@@ -106,9 +106,23 @@ field (editorial is implicit).
 - [ ] `design.ts` exists with `rationale` field (no `direction` field)
 - [ ] `branding.accent` + `accentSoft` + `accentBorder` all set and consistent
 - [ ] No `thin` or `weak` sections remain in `home.sections[]`
-- [ ] `pnpm build` succeeds
-- [ ] Visual spot-check on localhost: section-number prefixes (`01 — PROBLEM`) visible, hero
-      title reveals word-by-word, stat-strip numbers count up, CTA shimmers every 6s
+- [ ] **`pnpm tsc --noEmit` exits 0** (catches type errors early)
+- [ ] **`pnpm build` exits 0** (catches prerender-time errors like invalid server/client boundaries)
+- [ ] **`pnpm dev` responds 200 at localhost:3000** (smoke that runtime works, not just build)
+- [ ] Visual spot-check: section-number prefixes (`01 — PROBLEM`) visible, hero title reveals
+      word-by-word, stat-strip numbers count up, CTA shimmers every 6s
+
+## Common failures to fix (don't hand work off with these unfixed)
+
+- **`Element type is invalid`** at prerender → a server component is using
+  `Context.Provider` directly. Wrap the Provider loop in a client component (see
+  `components/blocks/SectionList.tsx` as the canonical pattern).
+- **`Event handlers cannot be passed to Client Component props`** → passing a function as prop
+  from server to client component. Move the handler into the client component.
+- **`useState/useEffect/useRef cannot be used in Server Components`** → missing `'use client'`
+  at the top of the file.
+- **Phosphor icon crash** → `@phosphor-icons/react` uses React context and must render from
+  `'use client'` files only.
 
 ## What This Skill Does NOT Do
 

@@ -91,6 +91,17 @@ Do not ship a Privara favicon. The template includes a generic `public/favicon.s
 - [ ] `site.meta.brandName` is set; `site.branding.accent` is a valid hex
 - [ ] `site.home.hero` is filled (minimum viable landing)
 - [ ] Navigation only lists pages with non-null data in `site.pages`
-- [ ] `pnpm --filter @<venture-name>/landing build` succeeds
-- [ ] `pnpm --filter @<venture-name>/landing dev` serves a page at `localhost:3000` that shows
-      venture content (not "Untitled Venture")
+- [ ] **Pre-build typecheck:** `cd ../<venture-name>/packages/landing && pnpm tsc --noEmit` exits 0
+- [ ] **Full build:** `cd ../<venture-name>/packages/landing && pnpm install && pnpm build` exits 0 (catches prerender errors that typecheck misses)
+- [ ] **Dev smoke:** `pnpm dev` and `curl -s -o /dev/null -w "%{http_code}" http://localhost:3000` returns `200`
+
+## Common failures to watch for
+
+- **`Element type is invalid`** at prerender → server component imported a client-side
+  `Context.Provider`. Fix: wrap the Provider usage in a client component (see
+  `components/blocks/SectionList.tsx` as the canonical pattern).
+- **Static export fails on `[slug]`** → `generateStaticParams` returning empty array without
+  `dynamicParams = false`. Fix: if venture has no custom pages, the `_placeholder` slug handler
+  in the template already covers this — don't remove it.
+- **Phosphor icon crash in server component** → Icon components from `@phosphor-icons/react`
+  use React context internally and must be rendered from `'use client'` files only.
