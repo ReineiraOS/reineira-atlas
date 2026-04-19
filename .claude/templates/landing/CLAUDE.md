@@ -46,6 +46,21 @@ pnpm dev             # runtime check — curl localhost:3000 returns 200
 - Empty arrays / null fields = section doesn't render (condition at block component level).
 - `design.ts` is the editorial-only decision record; no `direction` field.
 
+## Page structure is dynamic
+
+The set of internal pages (`site.pages`) and the route names are **decided by
+`/scaffold-landing`** based on brief density and logical clusters — not from a fixed
+canon. A venture with a compliance-heavy brief gets `/compliance`; a dev-tool gets
+`/docs` or `/integrations`; a research protocol may have no `/business` page at all.
+
+**Do not rename routes manually** without updating `design.ts.rationale` to reflect
+the new intent. The rationale is the audit trail for why this site has exactly these
+pages with exactly these names. Breaking the connection between rationale and routes
+makes the next regeneration of the site nondeterministic.
+
+If you need a new page, add it to `site.pages` with ≥3 blocks and its own hero; drop
+a one-line note in `design.ts.rationale` explaining the cluster that produced it.
+
 ## Brand tokens flow
 
 `src/content/site.ts` `branding.accent` (hex) →
