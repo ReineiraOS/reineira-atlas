@@ -9,7 +9,7 @@ export default function BulletsBlockView({ block }: { block: BulletsBlock }) {
 
   if (block.layout === 'list') {
     return (
-      <SectionFrame eyebrow={block.eyebrow} title={block.title} subtitle={block.subtitle}>
+      <SectionFrame id={block.id} eyebrow={block.eyebrow} title={block.title} subtitle={block.subtitle}>
         <ul className="max-w-3xl space-y-5 sm:space-y-6">
           {block.items.map((item, index) => {
             const Icon = resolveIcon(item.icon)
@@ -46,7 +46,7 @@ export default function BulletsBlockView({ block }: { block: BulletsBlock }) {
   const cols = block.items.length >= 4 ? 'lg:grid-cols-3' : 'md:grid-cols-2'
 
   return (
-    <SectionFrame eyebrow={block.eyebrow} title={block.title} subtitle={block.subtitle}>
+    <SectionFrame id={block.id} eyebrow={block.eyebrow} title={block.title} subtitle={block.subtitle}>
       <div className={`grid grid-cols-1 ${cols} gap-4 sm:gap-5`}>
         {block.items.map((item, index) => {
           const Icon = resolveIcon(item.icon)

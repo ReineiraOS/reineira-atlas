@@ -27,7 +27,8 @@ function Button({ cta, variant }: { cta: CtaConfig; variant: 'primary' | 'ghost'
 export default function CtaBlockView({ block }: { block: CtaBlock }) {
   return (
     <section
-      className="relative overflow-hidden py-20 sm:py-24 lg:py-28"
+      id={block.id}
+      className="relative overflow-hidden py-20 sm:py-24 lg:py-28 scroll-mt-20"
       style={{ backgroundColor: 'var(--color-surface-elevated)' }}
     >
       <div

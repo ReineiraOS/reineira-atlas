@@ -14,7 +14,7 @@ export default function StepsBlockView({ block }: { block: StepsBlock }) {
   const numbering = block.numbering ?? 'decimal'
 
   return (
-    <SectionFrame eyebrow={block.eyebrow} title={block.title} subtitle={block.subtitle}>
+    <SectionFrame id={block.id} eyebrow={block.eyebrow} title={block.title} subtitle={block.subtitle}>
       <ol className="relative grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6">
         {block.items.map((step, index) => (
           <li

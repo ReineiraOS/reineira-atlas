@@ -49,7 +49,7 @@ export default function ComparisonBlockView({ block }: { block: ComparisonBlock 
   const colCount = block.columns.length
 
   return (
-    <SectionFrame eyebrow={block.eyebrow} title={block.title} subtitle={block.subtitle}>
+    <SectionFrame id={block.id} eyebrow={block.eyebrow} title={block.title} subtitle={block.subtitle}>
       <div
         className="rounded-2xl border overflow-hidden"
         style={{

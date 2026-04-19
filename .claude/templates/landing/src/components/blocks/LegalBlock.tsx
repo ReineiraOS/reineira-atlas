@@ -9,7 +9,7 @@ export default function LegalBlockView({ block }: { block: LegalBlock }) {
     .filter(Boolean)
 
   return (
-    <section className="relative py-16 sm:py-20" style={{ backgroundColor: 'var(--background)' }}>
+    <section id={block.id} className="relative py-16 sm:py-20 scroll-mt-20" style={{ backgroundColor: 'var(--background)' }}>
       <div className="container">
         <div className="max-w-[720px] mx-auto">
           {block.title ? (

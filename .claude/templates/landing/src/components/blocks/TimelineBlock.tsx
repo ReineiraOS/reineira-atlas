@@ -7,7 +7,7 @@ export default function TimelineBlockView({ block }: { block: TimelineBlock }) {
   if (!block.items || block.items.length === 0) return null
 
   return (
-    <SectionFrame eyebrow={block.eyebrow} title={block.title} subtitle={block.subtitle}>
+    <SectionFrame id={block.id} eyebrow={block.eyebrow} title={block.title} subtitle={block.subtitle}>
       <ol className="relative max-w-4xl">
         <div
           className="absolute left-[26px] sm:left-[30px] top-3 bottom-3 w-px"

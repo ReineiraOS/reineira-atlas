@@ -5,7 +5,8 @@ import type { TaglineBlock } from '@/content/site'
 export default function TaglineBlockView({ block }: { block: TaglineBlock }) {
   return (
     <section
-      className="relative py-10 sm:py-14 border-y"
+      id={block.id}
+      className="relative py-10 sm:py-14 border-y scroll-mt-20"
       style={{
         borderColor: 'var(--accent-border)',
         backgroundColor: 'var(--background)',

@@ -9,7 +9,7 @@ export default function ProseBlockView({ block }: { block: ProseBlock }) {
 
   if (block.layout === 'two-col') {
     return (
-      <SectionFrame eyebrow={block.eyebrow} title={null}>
+      <SectionFrame id={block.id} eyebrow={block.eyebrow} title={null}>
         <div className="grid grid-cols-1 lg:grid-cols-[1fr_2fr] gap-10 lg:gap-16">
           <div>
             {block.title ? (
@@ -30,7 +30,7 @@ export default function ProseBlockView({ block }: { block: ProseBlock }) {
   }
 
   return (
-    <SectionFrame eyebrow={block.eyebrow} title={block.title} subtitle={block.subtitle} align={block.layout === 'center' ? 'center' : 'left'}>
+    <SectionFrame id={block.id} eyebrow={block.eyebrow} title={block.title} subtitle={block.subtitle} align={block.layout === 'center' ? 'center' : 'left'}>
       <div
         className={`${block.layout === 'center' ? 'mx-auto text-center' : ''} max-w-3xl space-y-4 sm:space-y-5 text-[15px] sm:text-base lg:text-lg leading-[1.7] ${textColor}`}
       >

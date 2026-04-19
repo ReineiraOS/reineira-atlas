@@ -8,7 +8,7 @@ export default function ContactBlockView({ block }: { block: ContactBlock }) {
   if (!block.items || block.items.length === 0) return null
 
   return (
-    <SectionFrame eyebrow={block.eyebrow} title={block.title} subtitle={block.subtitle}>
+    <SectionFrame id={block.id} eyebrow={block.eyebrow} title={block.title} subtitle={block.subtitle}>
       <div className="grid grid-cols-1 sm:grid-cols-2 max-w-3xl gap-4 sm:gap-5">
         {block.items.map((channel, index) => {
           const Icon = resolveIcon(channel.icon)

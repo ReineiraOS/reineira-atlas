@@ -55,7 +55,7 @@ export default function StatStripBlockView({ block }: { block: StatStripBlock })
 
   if (block.tone === 'inline') {
     return (
-      <section className="relative" style={{ backgroundColor: 'var(--background)' }}>
+      <section id={block.id} className="relative scroll-mt-20" style={{ backgroundColor: 'var(--background)' }}>
         <div className="container">
           {block.eyebrow ? (
             <p
@@ -78,7 +78,8 @@ export default function StatStripBlockView({ block }: { block: StatStripBlock })
 
   return (
     <section
-      className="relative py-10 sm:py-14 border-y"
+      id={block.id}
+      className="relative py-10 sm:py-14 border-y scroll-mt-20"
       style={{
         backgroundColor: 'var(--background)',
         borderColor: 'var(--border-dark)',

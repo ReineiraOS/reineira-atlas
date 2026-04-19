@@ -4,6 +4,7 @@ import { useRef } from 'react'
 import { m, useInView, useReducedMotion } from 'framer-motion'
 
 interface SectionFrameProps {
+  id?: string
   eyebrow?: string | null
   title?: string | null
   subtitle?: string | null
@@ -13,6 +14,7 @@ interface SectionFrameProps {
 }
 
 export default function SectionFrame({
+  id,
   eyebrow,
   title,
   subtitle,
@@ -31,7 +33,7 @@ export default function SectionFrame({
       : { backgroundColor: 'var(--background)' }
 
   return (
-    <section ref={ref} className="relative py-20 sm:py-24 lg:py-28" style={bgStyle}>
+    <section ref={ref} id={id} className="relative py-20 sm:py-24 lg:py-28 scroll-mt-20" style={bgStyle}>
       <div className="container">
         {(eyebrow || title || subtitle) && (
           <m.header

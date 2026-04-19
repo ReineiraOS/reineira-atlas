@@ -88,6 +88,14 @@ Update `packages/landing/package.json` name to `@<venture-name>/landing`.
 
 See full mapping table in `.claude/skills/build/scaffold-landing/SKILL.md`.
 
+### Step 1c: Polish Landing Design
+Run `/claude-design <venture-name>`. This skill audits content (brief vs site.ts), picks a
+BOLD aesthetic direction via the global `frontend-design` plugin skill, then extracts a full
+Tailwind v4 `@theme` token set via `tailwind-design-system` plugin skill. Applies to
+`packages/landing/src/app/globals.css` and records rationale to `packages/landing/src/content/design.ts`.
+
+See `.claude/skills/build/claude-design/SKILL.md`.
+
 ### Step 2: Brand
 Read Section 7 (Branding) from brief. Edit `packages/app/src/styles/main.css` — replace CSS custom property values:
 ```css

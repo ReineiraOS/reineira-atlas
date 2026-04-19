@@ -20,6 +20,7 @@ last-reviewed: 2026-04-05
 ```
 /scaffold         → copy platform-modules template (backend + app), rebrand
 /scaffold-landing → copy anonymized landing template, populate from brief
+/claude-design    → polish landing: content audit + aesthetic direction + tokens
 /brand            → apply color palette, typography, mode (to app + landing)
 /cleanup          → remove sample entities not in brief
 /gen-entity       → one entity vertical slice (BE + FE) — called per entity
@@ -56,12 +57,13 @@ Execute skills in order. Each skill reads brief.md itself for context.
 ```
 1. /scaffold <venture_name>
 2. /scaffold-landing <venture_name>
-3. /brand
-4. /cleanup
-5. For each entity in brief:
+3. /claude-design <venture_name>
+4. /brand
+5. /cleanup
+6. For each entity in brief:
      /gen-entity <EntityName>
-6. /gen-dashboard
-7. /verify
+7. /gen-dashboard
+8. /verify
 ```
 
 ### 3. Report

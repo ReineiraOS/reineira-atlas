@@ -44,7 +44,7 @@ export default function DataGridBlockView({ block }: { block: DataGridBlock }) {
   const colCount = block.headers.length
 
   return (
-    <SectionFrame eyebrow={block.eyebrow} title={block.title} subtitle={block.subtitle}>
+    <SectionFrame id={block.id} eyebrow={block.eyebrow} title={block.title} subtitle={block.subtitle}>
       <div
         className="rounded-2xl border overflow-hidden"
         style={{ borderColor: 'var(--border-dark)', backgroundColor: 'var(--color-surface-card)' }}
