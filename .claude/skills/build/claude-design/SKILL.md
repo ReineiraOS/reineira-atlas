@@ -1,138 +1,86 @@
 ---
 name: claude-design
-description: 'Self-contained design polish for landing: audit content, compute accent scale, patch design.ts (editorial-only)'
+description: 'Token-only design polish for landing: accent scale check, optional font / radius overrides in design.ts'
 agent: _builder
 argument-hint: '<venture-name>'
 ---
 
-# /claude-design — Polish Landing Design (editorial-only, self-contained)
+# /claude-design — Polish Landing Design (tokens-only, canonical structure)
 
-> Runs **after** `/scaffold-landing`. Fully self-contained — no external plugin dependencies.
-> All design tokens, motion profiles, and wow-effects are part of the template
-> (`src/content/directions.ts`, `src/lib/motion.ts`, `src/app/globals.css`).
+> Runs **after** `/scaffold-landing`. Canonical-structure policy means this skill **only** touches
+> the token system — never layout, never component markup, never page set.
 
 ## What It Does
 
-1. **Content audit** — walk `site.ts` `home.sections[]` and `pages[slug].sections[]`. Classify
-   each block as `ok` / `thin` / `weak`:
-   - `ok` — content matches brief depth, structure is clear
-   - `thin` — brief has more; pull in more text or convert to a more visual form (paragraph → bullets, prose → comparison, etc.)
-   - `weak` — nothing substantial in brief; remove the block
-2. **Accent scale** — ensure `branding.accent` is set; derive `accentSoft` / `accentBorder` if missing
-3. **Luminance check** — if accent is very dark or very bright, note override in `design.ts`
-4. **Decision record** — write `src/content/design.ts` with rationale
-5. **Section-number toggle** — decide `overrides.showSectionNumbers` (default `true`; set `false`
-   only for minimal briefs with ≤3 top-level sections where numbering feels heavy)
+1. **Verify `branding.accent`** — ensure it's a valid hex. If not set, abort with error.
+2. **Accent scale smoke** — render a test, confirm `--accent`, `--accent-hover`, `--accent-bg`,
+   `--accent-border`, `--accent-glow` all render on the page via `accentCssOverrides(hex)` in
+   `src/lib/accent-scale.ts`.
+3. **Optional token overrides in `design.ts`:**
+   - `overrides.borderRadius.{button, block, xl}` — only when brief explicitly requests a
+     different radius language (sharper corners, pill vs slab, etc.).
+   - `overrides.borderWidth` — only when brief requests a thicker/thinner border aesthetic.
+   - `overrides.fontSans` / `overrides.fontMono` — only when brief specifies a non-default font
+     stack (the default is the Apple system font stack).
+4. **Write a rationale sentence** in `design.ts` explaining any overrides chosen, or stating
+   "defaults — brief gave no token-level direction."
 
-## Editorial is the only direction
+## Hard rules — do NOT
 
-This template uses a single visual direction — **editorial**:
-- Display: Instrument Serif (italic), body: Inter, mono: JetBrains Mono
-- Motion: gentle (0.6s), stagger reveal in lists (60-80ms), per-word text-reveal in hero
-- Surface: bordered cards (18px radius), noise backdrop with 40s drift
-- Backdrop: noise fabric + radial accent orb in hero
-- Numbering: `01 — EYEBROW` prefix before each section heading
-- Numbers animate (CountUp) in stat-strips and mono data-grid cells
-- Tables (DataGrid, Comparison) show accent slide on row hover
-- Primary CTA has shimmer effect every 6s
-- Top 2px scroll-progress bar
-- Long paragraphs get editorial drop-cap
+- Change the set of pages or the order of components on any page.
+- Edit any file under `src/components/*`, `src/app/*`, `src/lib/*`, or `globals.css`.
+- Add `showSectionNumbers`, `noiseOpacity`, `accentOrbOpacity`, or any other layout-affecting
+  knob to `design.overrides`. Those fields no longer exist in the schema.
+- Log "dropped brief content" or otherwise record excess-content decisions.
+- Attempt to improve "visual polish" by adding new UI flourishes. Editorial flourishes, if any,
+  are inherent to the canonical components and not tunable per-venture.
 
-**Do not add other directions.** The template no longer supports `industrial` or `minimal` —
-editorial proved to work across all venture types (fintech, logistics, research) when paired
-with venture-specific accent color and content.
+## Accent hex → token injection
 
-Per-venture differentiation comes from:
-- `branding.accent` HEX (drives 9-step accent scale auto-generated)
-- `branding.background` / `foreground` (rare override)
-- Optional `design.overrides.noiseOpacity` / `accentOrbOpacity` (visual tuning)
-- Content itself (brief-driven)
+Given `branding.accent = "#168e8e"`:
+- `src/lib/accent-scale.ts` `accentCssOverrides(hex)` emits a `:root` block overriding both
+  `--accent*` (generic) and `--accent-teal*` (back-compat) names.
+- `src/app/layout.tsx` injects this block inline via `<style dangerouslySetInnerHTML>`.
+- All components read via `var(--accent-teal)` / `bg-accent-teal` class / etc. — no edits needed.
 
-## Accent scale formulas
+The 9-step `buildAccentScale()` helper is available for any future component that needs a full
+scale; current canonical components use the 6 derived tokens.
 
-Given `branding.accent` as HEX (e.g. `#2e7d4a`):
-- **accentSoft** = `rgba(R, G, B, 0.12)` — icon backgrounds, subtle fills
-- **accentBorder** = `rgba(R, G, B, 0.28)` — card borders, accent dividers
-- **accentGlow** = `rgba(R, G, B, 0.18)` — hero radial glow, shadow spread
-
-Convert HEX to RGB, multiply opacity. Write to `branding.accentSoft` / `branding.accentBorder`
-in `site.ts` if not already set. The 9-step scale (`--accent-50` ... `--accent-900`) is auto-
-generated by `src/lib/accent-scale.ts` from `branding.accent` — no manual work.
-
-## Luminance check (rarely needed)
-
-For dark mode (default) with accent already dark (deep green, navy):
-- If accent luminance < 0.35 → usually fine, but consider `background: '#0a0a0a'` for contrast
-- If accent luminance 0.35–0.7 → defaults work
-- If accent luminance > 0.7 (very bright accent) → pin `background: '#0a0a0a'`, reduce
-  `design.overrides.accentOrbOpacity` to `0.4` so the orb doesn't dominate
-
-These are optional; apply only if a human visual smoke check reveals contrast issues.
-
-## How to write `design.ts`
+## `design.ts` shape
 
 ```ts
 import type { DesignConfig } from './design'
 
 export const design: DesignConfig = {
   rationale:
-    'AgriLend — editorial direction with green accent (#2e7d4a). Noise backdrop + accent orb + stagger + CountUp on stat-strip creates pitch-deck feel appropriate for emerging-markets credit narrative.',
-  overrides: {
-    // showSectionNumbers: false,      // only if <3 sections and numbering feels heavy
-    // accentOrbOpacity: 0.4,           // only if accent is very bright
-    // noiseOpacity: 0.08,              // only if noise needs to be more or less visible
-  },
+    '<venture-name> — canonical structure. Accent #<hex> derived from brief. No token overrides — default Apple font stack, default radii.',
+  // overrides: {
+  //   borderRadius: { button: '9999px', block: '16px', xl: '28px' },
+  //   borderWidth: '1px',
+  //   fontSans: '"Inter", sans-serif',
+  //   fontMono: '"JetBrains Mono", monospace',
+  // },
 }
 ```
 
-The `rationale` is for future audit — future Claude reading this venture's landing should
-understand why specific overrides (if any) were chosen. `design.ts` contains NO `direction`
-field (editorial is implicit).
-
-## Procedure
-
-1. **Read** `brief.md` (or `../<venture>/brief.md`) and
-   `../<venture>/packages/landing/src/content/site.ts`
-2. **Audit sections** — walk `home.sections[]`. For each, classify ok/thin/weak:
-   - `thin` → add more text from brief OR switch `kind` to more expressive (prose → bullets, bullets → cards)
-   - `weak` → remove from array
-3. **Compute accent** — fill `accentSoft` / `accentBorder` in `branding` if missing
-4. **Luminance check** — if accent is edge-case, note overrides
-5. **Write** `../<venture>/packages/landing/src/content/design.ts` with rationale + optional overrides
-6. **Build check** — `pnpm --filter @<venture>/landing build` should succeed
-
 ## Acceptance Criteria
 
-- [ ] `design.ts` exists with `rationale` field (no `direction` field)
-- [ ] `branding.accent` + `accentSoft` + `accentBorder` all set and consistent
-- [ ] No `thin` or `weak` sections remain in `home.sections[]`
-- [ ] **`pnpm tsc --noEmit` exits 0** (catches type errors early)
-- [ ] **`pnpm build` exits 0** (catches prerender-time errors like invalid server/client boundaries)
-- [ ] **`pnpm dev` responds 200 at localhost:3000** (smoke that runtime works, not just build)
-- [ ] Visual spot-check: section-number prefixes (`01 — PROBLEM`) visible, hero title reveals
-      word-by-word, stat-strip numbers count up, CTA shimmers every 6s
+- [ ] `design.ts` exists with a one-sentence `rationale`.
+- [ ] `branding.accent` is a valid hex.
+- [ ] `overrides` contains **only** `borderRadius`, `borderWidth`, `fontSans`, `fontMono` (or is
+      omitted entirely).
+- [ ] `pnpm tsc --noEmit` exits 0.
+- [ ] `pnpm build` exits 0.
+- [ ] `pnpm dev` responds 200 at `localhost:3000` and on every canonical route.
+- [ ] Token swap test: flipping `branding.accent` to a very different hex (e.g. `#2e7d4a`)
+      rebuilds with no layout change — only accent-colored elements shift.
 
-## Common failures to fix (don't hand work off with these unfixed)
+## What this skill does NOT do
 
-- **`Element type is invalid`** at prerender → a server component is using
-  `Context.Provider` directly. Wrap the Provider loop in a client component (see
-  `components/blocks/SectionList.tsx` as the canonical pattern).
-- **`Event handlers cannot be passed to Client Component props`** → passing a function as prop
-  from server to client component. Move the handler into the client component.
-- **`useState/useEffect/useRef cannot be used in Server Components`** → missing `'use client'`
-  at the top of the file.
-- **Phosphor icon crash** → `@phosphor-icons/react` uses React context and must render from
-  `'use client'` files only.
-
-## What This Skill Does NOT Do
-
-- Add new direction presets — the template is editorial-only by design
-- Write new block primitives — reuse existing `components/blocks/*`
-- Edit `globals.css` — all editorial styles already live there (defaults in `:root`)
-- Load new fonts — Google Fonts auto-loaded by `layout.tsx`
-- Touch `page.tsx` or UI primitives (TextReveal, CountUp, ScrollProgress, etc.)
-- Fabricate content — only use what's in the brief; unused fields → `null`
-- Depend on external plugins — fully self-contained
+- Pick page structure (that's `scaffold-landing`'s job, and it's canonical there).
+- Edit any component code.
+- Fabricate content.
+- Add new direction presets or visual treatments.
 
 ## Self-containment check
 
@@ -140,4 +88,4 @@ field (editorial is implicit).
 grep -E "Skill\(" SKILL.md
 ```
 
-Should return **zero** matches. If any step invokes an external skill — that's a bug.
+Should return zero matches. No external skill dependencies.

@@ -1,57 +1,71 @@
 @import 'tailwindcss';
 
 :root {
+  /* Brand Colors - Dark-First Design System */
   --color-bg-primary: #000000;
   --color-bg-secondary: #1a1a1a;
   --color-bg-tertiary: #2a2a2a;
   --color-bg-light: #ffffff;
   --color-bg-light-secondary: #f5f5f5;
 
-  --accent: #3b8bff;
-  --accent-hover: #5a9dff;
-  --accent-bright: #7ab1ff;
-  --accent-soft: rgba(59, 139, 255, 0.12);
-  --accent-soft-hover: rgba(59, 139, 255, 0.18);
-  --accent-border: rgba(59, 139, 255, 0.22);
-  --accent-glow: rgba(59, 139, 255, 0.18);
+  /* Primary Accent Colors */
+  --accent-teal: #168e8e;
+  --accent-teal-hover: #1aa5a5;
+  --accent-teal-bright: #22c5c5;
+  --accent-gold: #d6b948;
+  --accent-gold-hover: #e5c85a;
 
+  /* Text Colors on Dark */
   --text-on-dark-primary: #ffffff;
   --text-on-dark-secondary: rgba(255, 255, 255, 0.85);
   --text-on-dark-muted: rgba(255, 255, 255, 0.6);
   --text-on-dark-subtle: rgba(255, 255, 255, 0.45);
 
+  /* Standardized Text Opacity Scale */
   --opacity-high: 0.85;
   --opacity-medium: 0.7;
   --opacity-low: 0.5;
   --opacity-subtle: 0.4;
 
+  /* Text Colors on Light */
   --text-on-light-primary: #000000;
   --text-on-light-secondary: rgba(0, 0, 0, 0.85);
   --text-on-light-muted: rgba(0, 0, 0, 0.5);
 
+  /* Border Colors */
   --border-dark: rgba(255, 255, 255, 0.1);
   --border-dark-hover: rgba(255, 255, 255, 0.2);
   --border-light: rgba(0, 0, 0, 0.1);
   --border-light-hover: rgba(0, 0, 0, 0.2);
 
+  /* Semantic Colors */
   --background: #000000;
   --foreground: #ffffff;
   --background-secondary: #1a1a1a;
-  --accent-primary: var(--accent);
-  --accent-secondary: var(--accent-hover);
+  --accent-primary: #168e8e;
+  --accent-secondary: #1aa5a5;
+  --accent-warm: #1aa5a5;
   --text-muted: rgba(255, 255, 255, 0.7);
   --text-subtle: rgba(255, 255, 255, 0.5);
   --border-color: rgba(255, 255, 255, 0.1);
 
+  /* Accent Backgrounds (standardized) */
+  --accent-teal-bg: rgba(22, 142, 142, 0.12);
+  --accent-teal-bg-hover: rgba(22, 142, 142, 0.18);
+  --accent-teal-border: rgba(22, 142, 142, 0.2);
+
+  /* Status Colors */
   --color-error: #dc2626;
   --color-success: #16a34a;
 
+  /* Overlay & Surface Colors */
   --color-surface-elevated: #0a0a0a;
   --color-surface-card: #141414;
-  --color-surface-slate: #151821;
-  --color-surface-slate-mid: #1f2431;
-  --color-surface-slate-light: #262c3e;
+  --color-surface-slate: #1a1f2e;
+  --color-surface-slate-mid: #2d3548;
+  --color-surface-slate-light: #3d4559;
 
+  /* Border Radius Scale */
   --radius-minimal: 4px;
   --radius-subtle: 8px;
   --radius-button: 9999px;
@@ -61,186 +75,23 @@
   --radius-xl: 28px;
   --radius-full: 9999px;
 
-  --shadow-accent-glow: 0 0 40px var(--accent-glow);
-  --shadow-accent-glow-strong: 0 0 20px var(--accent-glow);
+  /* Shadows */
+  --shadow-teal-glow: 0 0 40px rgba(22, 142, 142, 0.08);
+  --shadow-teal-glow-strong: 0 0 20px rgba(22, 142, 142, 0.15);
   --shadow-dark-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.1);
   --shadow-dark-md: 0 2px 4px -1px rgba(0, 0, 0, 0.15);
   --shadow-dark-lg: 0 4px 8px -2px rgba(0, 0, 0, 0.2);
   --shadow-dark-xl: 0 8px 12px -3px rgba(0, 0, 0, 0.25);
-
-  /* Editorial display + tone tokens */
-  --font-display: 'Instrument Serif', 'Times New Roman', serif;
-  --display-weight: 400;
-  --display-case: none;
-  --letter-spacing-hero: -0.03em;
-  --radius-card: 18px;
-  --radius-button: 9999px;
-  --section-padding: 7rem;
-  --motion-duration: 0.6s;
-  --motion-ease: cubic-bezier(0.22, 1, 0.36, 1);
-  --noise-opacity: 0.06;
-  --accent-orb-opacity: 0.55;
-}
-
-h1,
-h2.display-font,
-.display-font {
-  font-family: var(--font-display);
-  font-weight: 400;
-  font-style: italic;
-  letter-spacing: var(--letter-spacing-hero);
-}
-
-/* Editorial backdrop — animated noise fabric */
-.backdrop-pattern {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  z-index: 0;
-  overflow: hidden;
-}
-
-.backdrop-pattern::before {
-  content: '';
-  position: absolute;
-  inset: -40px;
-  opacity: var(--noise-opacity);
-  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
-  background-repeat: repeat;
-  mix-blend-mode: screen;
-  animation: noiseDrift 40s linear infinite;
-}
-
-@keyframes noiseDrift {
-  0% {
-    transform: translate3d(0, 0, 0);
-  }
-  50% {
-    transform: translate3d(-20px, 16px, 0);
-  }
-  100% {
-    transform: translate3d(0, 0, 0);
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .backdrop-pattern::before {
-    animation: none;
-  }
-}
-
-/* Editorial surface */
-.surface-card {
-  background-color: var(--color-surface-card);
-  border: 1px solid var(--border-dark);
-  border-radius: var(--radius-card);
-}
-
-/* Table row-hover accent slide */
-.row-hover-accent {
-  position: relative;
-  transition: background-color 0.25s ease;
-}
-
-.row-hover-accent::before {
-  content: '';
-  position: absolute;
-  left: 0;
-  top: 0;
-  bottom: 0;
-  width: 0;
-  background-color: var(--accent);
-  transition: width 0.3s cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-.row-hover-accent:hover::before {
-  width: 3px;
-}
-
-.row-hover-accent:hover {
-  background-color: rgba(255, 255, 255, 0.02);
-}
-
-/* Shimmer on primary CTA */
-.shimmer-cta {
-  position: relative;
-  overflow: hidden;
-  isolation: isolate;
-}
-
-.shimmer-cta::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(
-    110deg,
-    transparent 35%,
-    rgba(255, 255, 255, 0.22) 50%,
-    transparent 65%
-  );
-  transform: translateX(-110%);
-  animation: shimmer 6s ease-in-out 2s infinite;
-  pointer-events: none;
-  z-index: 1;
-}
-
-@keyframes shimmer {
-  0%,
-  72%,
-  100% {
-    transform: translateX(-110%);
-  }
-  40% {
-    transform: translateX(110%);
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .shimmer-cta::after {
-    animation: none;
-    display: none;
-  }
-}
-
-/* Scroll progress bar */
-.scroll-progress {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 2px;
-  background-color: var(--accent);
-  transform-origin: left center;
-  z-index: 60;
-  pointer-events: none;
-}
-
-/* Rule-line primitive */
-.rule-line {
-  display: block;
-  height: 1px;
-  background-color: var(--accent-border);
-  transform-origin: left center;
-}
-
-/* Drop-cap (ProseBlock) */
-.drop-cap::first-letter {
-  font-family: var(--font-display);
-  font-style: italic;
-  float: left;
-  font-size: 4em;
-  line-height: 0.9;
-  padding: 0.1em 0.12em 0 0;
-  color: var(--accent);
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --color-accent: var(--accent);
-  --color-accent-hover: var(--accent-hover);
-  --color-accent-soft: var(--accent-soft);
-  --color-accent-border: var(--accent-border);
+  --color-accent-primary: var(--accent-primary);
+  --color-accent-secondary: var(--accent-secondary);
+  --color-accent-teal: var(--accent-teal);
+  --color-accent-teal-hover: var(--accent-teal-hover);
+  --color-accent-warm: var(--accent-warm);
   --color-text-muted: var(--text-muted);
   --color-text-subtle: var(--text-subtle);
   --color-text-on-dark-primary: var(--text-on-dark-primary);
@@ -249,6 +100,8 @@ h2.display-font,
   --color-text-on-dark-subtle: var(--text-on-dark-subtle);
   --color-border-dark: var(--border-dark);
   --color-border-dark-hover: var(--border-dark-hover);
+  --color-accent-teal-bg: var(--accent-teal-bg);
+  --color-accent-teal-border: var(--accent-teal-border);
   --color-error: var(--color-error);
   --color-success: var(--color-success);
   --color-surface-elevated: var(--color-surface-elevated);
@@ -259,6 +112,7 @@ h2.display-font,
   --font-mono: 'SF Mono', ui-monospace, monospace;
 }
 
+/* Base styles */
 * {
   box-sizing: border-box;
 }
@@ -266,6 +120,7 @@ h2.display-font,
 html {
   font-size: 16px;
   overflow-x: hidden;
+  /* Support for iOS safe areas (notch) */
   padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
 }
 
@@ -283,6 +138,7 @@ body {
   line-height: 1.5;
 }
 
+/* Typography Scale - Swiss Design */
 h1,
 h2,
 h3,
@@ -303,6 +159,7 @@ h2 {
   letter-spacing: -0.025em;
 }
 
+/* Container */
 .container {
   width: 100%;
   max-width: 1440px;
@@ -328,10 +185,12 @@ h2 {
   }
 }
 
+/* Utility Classes */
 .text-balance {
   text-wrap: balance;
 }
 
+/* Button base styles */
 .btn {
   display: inline-flex;
   align-items: center;
@@ -346,13 +205,13 @@ h2 {
   transition: all 0.2s ease-out;
   text-decoration: none;
   position: relative;
-  min-height: 52px;
+  min-height: 52px; /* Comfortable touch target */
   -webkit-tap-highlight-color: transparent;
 }
 
 @media (max-width: 640px) {
   .btn {
-    min-height: 56px;
+    min-height: 56px; /* Larger on mobile for easier tapping */
     padding: 16px 24px;
   }
 }
@@ -369,14 +228,14 @@ h2 {
 }
 
 .btn-primary {
-  background-color: var(--accent);
+  background-color: var(--accent-teal);
   color: #ffffff;
 }
 
 .btn-primary:hover {
-  background-color: var(--accent-hover);
+  background-color: var(--accent-teal-hover);
   transform: translateY(-2px);
-  box-shadow: var(--shadow-accent-glow);
+  box-shadow: var(--shadow-teal-glow);
 }
 
 .btn-secondary {
@@ -392,6 +251,7 @@ h2 {
   transform: translateY(-2px);
 }
 
+/* Link styles */
 a {
   color: inherit;
   text-decoration: none;
@@ -399,18 +259,20 @@ a {
   cursor: pointer;
 }
 
+/* Focus states for accessibility */
 :focus-visible {
-  outline: 2px solid var(--accent);
+  outline: 2px solid var(--accent-teal);
   outline-offset: 2px;
 }
 
+/* Skip link for accessibility */
 .skip-link {
   position: absolute;
   top: -100px;
   left: 16px;
   z-index: 100;
   padding: 16px 24px;
-  background-color: var(--accent);
+  background-color: var(--accent-teal);
   color: #ffffff;
   font-weight: 500;
   border-radius: var(--radius-button);
@@ -421,6 +283,7 @@ a {
   top: 16px;
 }
 
+/* Header backdrop */
 .header-backdrop {
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
@@ -428,15 +291,18 @@ a {
   border-bottom: 1px solid var(--border-dark);
 }
 
+/* Selection styling */
 ::selection {
-  background-color: var(--accent);
+  background-color: var(--accent-teal);
   color: #ffffff;
 }
 
+/* Section base */
 section {
   position: relative;
 }
 
+/* Input autofill styling */
 input:-webkit-autofill,
 input:-webkit-autofill:hover,
 input:-webkit-autofill:focus {
@@ -444,6 +310,10 @@ input:-webkit-autofill:focus {
   -webkit-text-fill-color: #ffffff;
   transition: background-color 5000s ease-in-out 0s;
 }
+
+/* ========================================
+   Legal Page Styles
+   ======================================== */
 
 .legal-content {
   font-size: 16px;
@@ -599,6 +469,7 @@ input:-webkit-autofill:focus {
   }
 }
 
+/* Button with hover text color change */
 .btn-outline-white {
   color: #fff;
   background: transparent;
@@ -644,22 +515,7 @@ input:-webkit-autofill:focus {
 }
 
 .btn-cta-outline:hover {
-  background-color: var(--accent);
-  border-color: var(--accent);
-  box-shadow: 0 0 30px var(--accent-glow);
-}
-
-.mono {
-  font-family: var(--font-mono);
-  font-variant-numeric: tabular-nums;
-  letter-spacing: -0.01em;
-}
-
-.accent-gradient {
-  background-image: radial-gradient(ellipse at 20% 0%, var(--accent-soft) 0%, transparent 55%),
-    radial-gradient(ellipse at 80% 100%, var(--accent-soft) 0%, transparent 55%);
-}
-
-.hero-backdrop {
-  background: radial-gradient(ellipse at 50% 0%, var(--accent-soft-hover) 0%, transparent 60%);
+  background-color: var(--accent-teal);
+  border-color: var(--accent-teal);
+  box-shadow: 0 0 30px rgba(22, 142, 142, 0.2);
 }

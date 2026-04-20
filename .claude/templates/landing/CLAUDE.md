@@ -2,70 +2,55 @@
 
 > Generated project conventions. Copied into `<venture>/packages/landing/` on `/scaffold-landing`.
 
-## Server / client boundary rules (Next.js App Router)
+## Page structure is canonical — never change it
 
-This template uses Next.js 16 with static export (`output: 'export'`). Mistakes here only show
-up at `pnpm build` time (prerender), not at dev-time, so always run a full build before
-declaring a task done.
+This template is a **1:1 clone** of the reference landing (`web-landing-app`). The page set,
+component sequence, block roles, markup, and animations are **fixed across every venture**.
 
-### Rules
+**What varies per venture:**
+- Token system (`branding.accent` → 9-step scale + hover/bg/border variants; `branding.fontSans`
+  / `fontMono`; `branding.borderRadius`; `branding.borderWidth`).
+- Text content (every string in every slot of `src/content/site.ts`).
+- Image URLs (replace `src: null` → real asset, or keep `null` for `[IMAGE PLACEHOLDER]`).
 
-1. **`Context.Provider` only from client files.** If you create a React Context to share state,
-   you must consume it from a `'use client'` component. Using `<MyContext.Provider>` inside a
-   server component (e.g. `page.tsx`, `layout.tsx`) throws `Element type is invalid` at
-   prerender. Canonical pattern: extract the Provider loop into a separate client component
-   (see `src/components/blocks/SectionList.tsx`).
+**What never varies:**
+- Set of pages (`/`, `/mobile`, `/business`, `/pricing`, `/blog`, `/contact`, `/privacy`,
+  `/terms`).
+- Order of components on each page.
+- Role/goal/markup/animation of each component.
+- Component internals (don't edit files in `src/components/*` — edit `site.ts`).
 
-2. **Phosphor icons are client-only.** `@phosphor-icons/react` uses `createContext` internally.
-   Any component that renders an icon must have `'use client'` at the top.
+**Missing content** → `lorem(kind)` helper for text, `ImagePlaceholder` for images.
+**Excess content in brief** → silently ignore. Data overload hurts conversion.
 
-3. **Animation hooks are client-only.** `useInView`, `useReducedMotion`, `useMotionValue`,
-   `useScroll` from `framer-motion` — `'use client'` required.
+## Token system
 
-4. **Dynamic routes need `generateStaticParams`.** For `app/[slug]/page.tsx` under
-   `output: 'export'`, return at least one entry. When the venture has no custom pages, the
-   template returns `[{ slug: '_placeholder' }]` + `dynamicParams = false`. Don't remove that
-   unless replacing with real slugs.
+`site.ts` `branding.accent` (hex) →
+`src/lib/accent-scale.ts` `accentCssOverrides(hex)` →
+`src/app/layout.tsx` injects `<style>` with `--accent*` + `--accent-teal*` (back-compat) →
+components consume via `var(--accent)` / `bg-accent-teal` class / etc.
 
-5. **Metadata goes in `layout.tsx`, not client pages.** `export const metadata`,
-   `export const viewport` — only from server components. Leave `layout.tsx` as server.
+Change accent in one place (`site.branding.accent`). Never edit `globals.css` just to recolor.
 
-### Verify before claiming done
+## Server / client boundary rules
+
+1. **Context.Provider only from client files.** Prerender fails otherwise.
+2. **Phosphor icons are client-only** (`@phosphor-icons/react` uses React context).
+3. **Animation hooks from framer-motion are client-only** (`useInView`, `useReducedMotion`, etc.).
+4. **Dynamic routes need `generateStaticParams`** for `output: 'export'`. `/blog/[slug]` handles
+   this with a `_placeholder` fallback when `site.blog.grid.posts` is empty.
+5. **Metadata goes in `layout.tsx`, not client pages.**
+
+## Verify before claiming done
 
 ```bash
 pnpm tsc --noEmit    # type errors
-pnpm build           # prerender errors (THIS catches server/client boundary bugs)
-pnpm dev             # runtime check — curl localhost:3000 returns 200
+pnpm build           # prerender errors (catches server/client boundary bugs)
+pnpm dev             # runtime check — curl localhost:3000/{,mobile,business,pricing,blog,contact,privacy,terms}
 ```
 
 ## Content conventions
 
 - All content lives in `src/content/site.ts` — do not hardcode strings elsewhere.
-- `home.sections: SectionBlock[]` — order matters, section-numbering derived from array index.
-- A section with no eyebrow does NOT get a section number.
-- Empty arrays / null fields = section doesn't render (condition at block component level).
-- `design.ts` is the editorial-only decision record; no `direction` field.
-
-## Page structure is dynamic
-
-The set of internal pages (`site.pages`) and the route names are **decided by
-`/scaffold-landing`** based on brief density and logical clusters — not from a fixed
-canon. A venture with a compliance-heavy brief gets `/compliance`; a dev-tool gets
-`/docs` or `/integrations`; a research protocol may have no `/business` page at all.
-
-**Do not rename routes manually** without updating `design.ts.rationale` to reflect
-the new intent. The rationale is the audit trail for why this site has exactly these
-pages with exactly these names. Breaking the connection between rationale and routes
-makes the next regeneration of the site nondeterministic.
-
-If you need a new page, add it to `site.pages` with ≥3 blocks and its own hero; drop
-a one-line note in `design.ts.rationale` explaining the cluster that produced it.
-
-## Brand tokens flow
-
-`src/content/site.ts` `branding.accent` (hex) →
-`src/lib/accent-scale.ts` derives 9 shades →
-`src/app/layout.tsx` injects `--accent-50` ... `--accent-900` CSS vars into `:root` →
-components consume via `var(--accent)` etc.
-
-Change accent in one place (`branding.accent`). Never edit `globals.css` just to recolor.
+- `design.ts` only overrides token-level knobs (borderRadius, borderWidth, fonts). Never adjusts
+  layout or structural behavior.

@@ -18,6 +18,9 @@ coverage
 .eslintcache
 .vite_cache
 
+# TypeScript incremental build cache
+*.tsbuildinfo
+
 /cypress/videos/
 /cypress/screenshots/
 

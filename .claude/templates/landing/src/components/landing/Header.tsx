@@ -8,7 +8,7 @@ import { useScrolled } from '@/hooks/useScrolled'
 import { useScrollLock } from '@/hooks/useScrollLock'
 import { useEscapeKey } from '@/hooks/useEscapeKey'
 import { site } from '@/content/site'
-import { resolveIcon } from '@/content/icons'
+import { getIcon } from '@/lib/icons'
 
 const HEADER_SCROLLED_STYLE = {
   backgroundColor: 'rgba(0, 0, 0, 0.85)',
@@ -24,13 +24,15 @@ const HEADER_DEFAULT_STYLE = {
   borderBottom: '1px solid var(--border-dark)',
 }
 
-function DropdownMenu({
-  items,
-  isOpen,
-}: {
-  items: NonNullable<(typeof site.header.nav)[number]['items']>
-  isOpen: boolean
-}) {
+interface DropdownItem {
+  label: string
+  description?: string
+  href: string
+  icon?: string
+  external?: boolean
+}
+
+function DropdownMenu({ items, isOpen }: { items: DropdownItem[]; isOpen: boolean }) {
   return (
     <div
       className={`absolute top-full left-0 pt-3 transition-all duration-200 ${
@@ -47,30 +49,22 @@ function DropdownMenu({
         }}
       >
         {items.map((item) => {
-          const Icon = resolveIcon(item.icon)
+          const Icon = getIcon(item.icon)
           const content = (
             <div className="flex items-start gap-3.5 p-3 rounded-xl hover:bg-white/[0.04] transition-colors group/item">
-              {Icon ? (
-                <div className="w-9 h-9 flex items-center justify-center rounded-lg bg-white/[0.06] text-white/50 group-hover/item:text-white group-hover/item:bg-white/[0.1] transition-colors shrink-0 mt-0.5">
-                  <Icon size={18} weight="light" />
-                </div>
-              ) : null}
+              <div className="w-9 h-9 flex items-center justify-center rounded-lg bg-white/[0.06] text-white/50 group-hover/item:text-white group-hover/item:bg-white/[0.1] transition-colors shrink-0 mt-0.5">
+                <Icon size={18} weight="light" />
+              </div>
               <div className="flex-1 min-w-0">
                 <p className="text-sm font-medium text-white mb-0.5 flex items-center gap-1.5">
                   {item.label}
-                  {item.external && (
+                  {item.external ? (
                     <svg width="10" height="10" viewBox="0 0 12 12" fill="none" className="text-white/30">
-                      <path
-                        d="M3 9L9 3M9 3H4.5M9 3V7.5"
-                        stroke="currentColor"
-                        strokeWidth="1.5"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
+                      <path d="M3 9L9 3M9 3H4.5M9 3V7.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                     </svg>
-                  )}
+                  ) : null}
                 </p>
-                {item.description && <p className="text-[13px] text-white/50 leading-snug">{item.description}</p>}
+                {item.description ? <p className="text-[13px] text-white/50 leading-snug">{item.description}</p> : null}
               </div>
             </div>
           )
@@ -94,8 +88,6 @@ function DropdownMenu({
 }
 
 export default function Header() {
-  const { nav, primaryCta, secondaryCta } = site.header
-  const brandLabel = site.meta.brandName ?? 'Venture'
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [openDropdown, setOpenDropdown] = useState<string | null>(null)
   const [mobileExpandedSection, setMobileExpandedSection] = useState<string | null>(null)
@@ -104,15 +96,16 @@ export default function Header() {
   const menuRef = useRef<HTMLDivElement>(null)
   const previousIsMenuOpenRef = useRef(false)
   const dropdownTimeoutRef = useRef<NodeJS.Timeout | null>(null)
+  const brandName = site.meta.brandName
+  const navItems = site.header.nav
+  const primaryCta = site.header.primaryCta
+  const secondaryCta = site.header.secondaryCta
 
   useScrollLock(isMenuOpen)
   useEscapeKey(
     useCallback(() => {
-      if (openDropdown) {
-        setOpenDropdown(null)
-      } else {
-        setIsMenuOpen(false)
-      }
+      if (openDropdown) setOpenDropdown(null)
+      else setIsMenuOpen(false)
     }, [openDropdown])
   )
 
@@ -143,9 +136,7 @@ export default function Header() {
   }
 
   const handleDropdownLeave = () => {
-    dropdownTimeoutRef.current = setTimeout(() => {
-      setOpenDropdown(null)
-    }, 150)
+    dropdownTimeoutRef.current = setTimeout(() => setOpenDropdown(null), 150)
   }
 
   const handleLinkClick = () => {
@@ -157,31 +148,6 @@ export default function Header() {
     setMobileExpandedSection(mobileExpandedSection === label ? null : label)
   }
 
-  const renderCta = (cta: typeof primaryCta, variant: 'primary' | 'secondary', onClick?: () => void) => {
-    if (!cta) return null
-    const className =
-      variant === 'primary'
-        ? 'px-5 py-2.5 text-sm font-medium rounded-full transition-all cursor-pointer text-white'
-        : 'px-5 py-2.5 text-sm font-medium rounded-full transition-colors text-white/70 hover:text-white border border-white/20 hover:border-white/40'
-    const style: React.CSSProperties | undefined =
-      variant === 'primary' ? { backgroundColor: 'var(--accent)' } : undefined
-    if (cta.external) {
-      return (
-        <a href={cta.href} target="_blank" rel="noopener noreferrer" className={className} style={style} onClick={onClick}>
-          {cta.label}
-        </a>
-      )
-    }
-    return (
-      <Link href={cta.href} className={className} style={style} onClick={onClick}>
-        {cta.label}
-      </Link>
-    )
-  }
-
-  const hasNav = nav.length > 0
-  const hasCtas = Boolean(primaryCta || secondaryCta)
-
   return (
     <>
       <header
@@ -189,194 +155,229 @@ export default function Header() {
         style={isScrolled ? HEADER_SCROLLED_STYLE : HEADER_DEFAULT_STYLE}
       >
         <nav className="container flex items-center h-[72px]" aria-label="Main navigation">
-          <Link href="/" className="flex items-center shrink-0" aria-label={`${brandLabel} Home`}>
+          <Link href="/" className="flex items-center shrink-0" aria-label={`${brandName} Home`}>
             <LogoWithText height={26} />
           </Link>
 
-          {hasNav ? (
-            <div className="hidden lg:flex items-center gap-1 ml-8">
-              {nav.map((item) => {
-                if (item.href) {
-                  return (
-                    <Link
-                      key={item.label}
-                      href={item.href}
-                      className="px-4 py-2.5 text-sm font-medium transition-colors rounded-lg hover:bg-white/5 text-white/60 hover:text-white"
-                    >
-                      {item.label}
-                    </Link>
-                  )
-                }
-
-                return (
-                  <div
-                    key={item.label}
-                    className="relative"
-                    onMouseEnter={() => handleDropdownEnter(item.label)}
-                    onMouseLeave={handleDropdownLeave}
-                  >
-                    <button
-                      className="flex items-center gap-1 px-4 py-2.5 text-sm font-medium transition-colors rounded-lg hover:bg-white/5 text-white/60 hover:text-white cursor-pointer"
-                      aria-expanded={openDropdown === item.label}
-                      onClick={() => setOpenDropdown(openDropdown === item.label ? null : item.label)}
-                    >
-                      {item.label}
-                      <CaretDown
-                        size={14}
-                        weight="light"
-                        className={`transition-transform duration-200 ${openDropdown === item.label ? 'rotate-180' : ''}`}
-                      />
-                    </button>
-                    {item.items && item.items.length > 0 ? (
-                      <DropdownMenu items={item.items} isOpen={openDropdown === item.label} />
-                    ) : null}
-                  </div>
-                )
-              })}
-            </div>
-          ) : null}
-
-          {hasCtas ? (
-            <div className="hidden lg:flex items-center gap-3 ml-auto">
-              {renderCta(secondaryCta, 'secondary')}
-              {renderCta(primaryCta, 'primary')}
-            </div>
-          ) : null}
-
-          {hasNav || hasCtas ? (
-            <button
-              ref={hamburgerRef}
-              className="lg:hidden ml-auto flex items-center justify-center w-11 h-11 rounded-lg transition-colors hover:bg-white/5"
-              onClick={() => setIsMenuOpen(!isMenuOpen)}
-              aria-expanded={isMenuOpen}
-              aria-controls="mobile-menu"
-              aria-label={isMenuOpen ? 'Close menu' : 'Open menu'}
-            >
-              <div className="relative w-5 h-4">
-                <span
-                  className={`absolute left-0 w-5 h-0.5 bg-white transition-all duration-300 ease-out ${
-                    isMenuOpen ? 'top-[7px] rotate-45' : 'top-0 rotate-0'
-                  }`}
-                />
-                <span
-                  className={`absolute left-0 top-[7px] w-5 h-0.5 bg-white transition-all duration-300 ease-out ${
-                    isMenuOpen ? 'opacity-0 scale-0' : 'opacity-100 scale-100'
-                  }`}
-                />
-                <span
-                  className={`absolute left-0 w-5 h-0.5 bg-white transition-all duration-300 ease-out ${
-                    isMenuOpen ? 'top-[7px] -rotate-45' : 'top-[14px] rotate-0'
-                  }`}
-                />
-              </div>
-            </button>
-          ) : null}
-        </nav>
-      </header>
-
-      {(hasNav || hasCtas) && (
-        <div
-          ref={menuRef}
-          id="mobile-menu"
-          className={`fixed inset-0 z-[60] lg:hidden transition-transform duration-300 ease-out bg-[var(--color-surface-elevated)] ${
-            isMenuOpen ? 'translate-x-0' : '-translate-x-full'
-          }`}
-          aria-hidden={!isMenuOpen}
-        >
-          <div className="flex items-center justify-between px-5 sm:px-6 h-[72px] border-b border-white/[0.06]">
-            <Link href="/" onClick={handleLinkClick} aria-label={`${brandLabel} Home`}>
-              <LogoWithText height={24} />
-            </Link>
-            <button
-              onClick={() => setIsMenuOpen(false)}
-              className="flex items-center justify-center w-11 h-11 rounded-full transition-colors bg-white/[0.06] cursor-pointer"
-              aria-label="Close menu"
-            >
-              <X size={18} weight="light" />
-            </button>
-          </div>
-
-          <nav className="px-5 sm:px-6 pt-6 overflow-y-auto max-h-[calc(100vh-72px)]">
-            {nav.map((item) => {
+          <div className="hidden lg:flex items-center gap-1 ml-8">
+            {navItems.map((item) => {
               if (item.href) {
                 return (
                   <Link
                     key={item.label}
                     href={item.href}
-                    onClick={handleLinkClick}
-                    className="block py-3.5 text-lg font-medium text-white transition-opacity hover:opacity-70"
+                    className="px-4 py-2.5 text-sm font-medium transition-colors rounded-lg hover:bg-white/5 text-white/60 hover:text-white"
                   >
                     {item.label}
                   </Link>
                 )
               }
 
-              const isExpanded = mobileExpandedSection === item.label
               return (
-                <div key={item.label} className="border-b border-white/[0.06]">
+                <div
+                  key={item.label}
+                  className="relative"
+                  onMouseEnter={() => handleDropdownEnter(item.label)}
+                  onMouseLeave={handleDropdownLeave}
+                >
                   <button
-                    onClick={() => toggleMobileSection(item.label)}
-                    className="flex items-center justify-between w-full py-3.5 text-lg font-medium text-white cursor-pointer"
+                    className="flex items-center gap-1 px-4 py-2.5 text-sm font-medium transition-colors rounded-lg hover:bg-white/5 text-white/60 hover:text-white cursor-pointer"
+                    aria-expanded={openDropdown === item.label}
+                    onClick={() => setOpenDropdown(openDropdown === item.label ? null : item.label)}
                   >
                     {item.label}
                     <CaretDown
-                      size={18}
+                      size={14}
                       weight="light"
-                      className={`text-white/40 transition-transform duration-200 ${isExpanded ? 'rotate-180' : ''}`}
+                      className={`transition-transform duration-200 ${openDropdown === item.label ? 'rotate-180' : ''}`}
                     />
                   </button>
-                  {isExpanded && item.items && (
-                    <div className="pb-3 pl-1 space-y-1">
-                      {item.items.map((subItem) => {
-                        const SubIcon = resolveIcon(subItem.icon)
-                        const content = (
-                          <div className="flex items-center gap-3 py-2.5 px-3 rounded-xl">
-                            {SubIcon ? (
-                              <div className="w-8 h-8 flex items-center justify-center rounded-lg bg-white/[0.06] text-white/40 shrink-0">
-                                <SubIcon size={18} weight="light" />
-                              </div>
-                            ) : null}
-                            <div>
-                              <p className="text-[15px] font-medium text-white/80">{subItem.label}</p>
-                              {subItem.description && <p className="text-xs text-white/50">{subItem.description}</p>}
-                            </div>
-                          </div>
-                        )
-
-                        if (subItem.external) {
-                          return (
-                            <a
-                              key={subItem.label}
-                              href={subItem.href}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              onClick={handleLinkClick}
-                            >
-                              {content}
-                            </a>
-                          )
-                        }
-                        return (
-                          <Link key={subItem.label} href={subItem.href} onClick={handleLinkClick}>
-                            {content}
-                          </Link>
-                        )
-                      })}
-                    </div>
-                  )}
+                  {item.items ? <DropdownMenu items={item.items} isOpen={openDropdown === item.label} /> : null}
                 </div>
               )
             })}
+          </div>
 
-            {hasCtas ? (
-              <div className="mt-8 pt-6 space-y-4 border-t border-white/[0.06]">
-                {renderCta(primaryCta, 'primary', handleLinkClick)}
-                {renderCta(secondaryCta, 'secondary', handleLinkClick)}
-              </div>
+          <div className="hidden lg:flex items-center gap-3 ml-auto">
+            {secondaryCta ? (
+              secondaryCta.external ? (
+                <a
+                  href={secondaryCta.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="px-5 py-2.5 text-sm font-medium rounded-full transition-colors text-white/70 hover:text-white border border-white/20 hover:border-white/40"
+                >
+                  {secondaryCta.label}
+                </a>
+              ) : (
+                <Link
+                  href={secondaryCta.href}
+                  className="px-5 py-2.5 text-sm font-medium rounded-full transition-colors text-white/70 hover:text-white border border-white/20 hover:border-white/40"
+                >
+                  {secondaryCta.label}
+                </Link>
+              )
             ) : null}
-          </nav>
+            {primaryCta.external ? (
+              <a
+                href={primaryCta.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="px-5 py-2.5 text-sm font-medium rounded-full transition-all cursor-pointer bg-accent-teal text-foreground"
+              >
+                {primaryCta.label}
+              </a>
+            ) : (
+              <Link
+                href={primaryCta.href}
+                className="px-5 py-2.5 text-sm font-medium rounded-full transition-all cursor-pointer bg-accent-teal text-foreground"
+              >
+                {primaryCta.label}
+              </Link>
+            )}
+          </div>
+
+          <button
+            ref={hamburgerRef}
+            className="lg:hidden ml-auto flex items-center justify-center w-11 h-11 rounded-lg transition-colors hover:bg-white/5"
+            onClick={() => setIsMenuOpen(!isMenuOpen)}
+            aria-expanded={isMenuOpen}
+            aria-controls="mobile-menu"
+            aria-label={isMenuOpen ? 'Close menu' : 'Open menu'}
+          >
+            <div className="relative w-5 h-4">
+              <span className={`absolute left-0 w-5 h-0.5 bg-white transition-all duration-300 ease-out ${isMenuOpen ? 'top-[7px] rotate-45' : 'top-0 rotate-0'}`} />
+              <span className={`absolute left-0 top-[7px] w-5 h-0.5 bg-white transition-all duration-300 ease-out ${isMenuOpen ? 'opacity-0 scale-0' : 'opacity-100 scale-100'}`} />
+              <span className={`absolute left-0 w-5 h-0.5 bg-white transition-all duration-300 ease-out ${isMenuOpen ? 'top-[7px] -rotate-45' : 'top-[14px] rotate-0'}`} />
+            </div>
+          </button>
+        </nav>
+      </header>
+
+      <div
+        ref={menuRef}
+        id="mobile-menu"
+        className={`fixed inset-0 z-[60] lg:hidden transition-transform duration-300 ease-out bg-[var(--color-surface-elevated)] ${isMenuOpen ? 'translate-x-0' : '-translate-x-full'}`}
+        aria-hidden={!isMenuOpen}
+      >
+        <div className="flex items-center justify-between px-5 sm:px-6 h-[72px] border-b border-white/[0.06]">
+          <Link href="/" onClick={handleLinkClick} aria-label={`${brandName} Home`}>
+            <LogoWithText height={24} />
+          </Link>
+          <button
+            onClick={() => setIsMenuOpen(false)}
+            className="flex items-center justify-center w-11 h-11 rounded-full transition-colors bg-white/[0.06] cursor-pointer"
+            aria-label="Close menu"
+          >
+            <X size={18} weight="light" />
+          </button>
         </div>
-      )}
+
+        <nav className="px-5 sm:px-6 pt-6 overflow-y-auto max-h-[calc(100vh-72px)]">
+          {navItems.map((item) => {
+            if (item.href) {
+              return (
+                <Link
+                  key={item.label}
+                  href={item.href}
+                  onClick={handleLinkClick}
+                  className="block py-3.5 text-lg font-medium text-white transition-opacity hover:opacity-70"
+                >
+                  {item.label}
+                </Link>
+              )
+            }
+
+            const isExpanded = mobileExpandedSection === item.label
+            return (
+              <div key={item.label} className="border-b border-white/[0.06]">
+                <button
+                  onClick={() => toggleMobileSection(item.label)}
+                  className="flex items-center justify-between w-full py-3.5 text-lg font-medium text-white cursor-pointer"
+                >
+                  {item.label}
+                  <CaretDown
+                    size={18}
+                    weight="light"
+                    className={`text-white/40 transition-transform duration-200 ${isExpanded ? 'rotate-180' : ''}`}
+                  />
+                </button>
+                {isExpanded && item.items ? (
+                  <div className="pb-3 pl-1 space-y-1">
+                    {item.items.map((subItem) => {
+                      const Icon = getIcon(subItem.icon)
+                      const content = (
+                        <div className="flex items-center gap-3 py-2.5 px-3 rounded-xl">
+                          <div className="w-8 h-8 flex items-center justify-center rounded-lg bg-white/[0.06] text-white/40 shrink-0">
+                            <Icon size={18} weight="light" />
+                          </div>
+                          <div>
+                            <p className="text-[15px] font-medium text-white/80">{subItem.label}</p>
+                            {subItem.description ? <p className="text-xs text-white/50">{subItem.description}</p> : null}
+                          </div>
+                        </div>
+                      )
+
+                      if (subItem.external) {
+                        return (
+                          <a
+                            key={subItem.label}
+                            href={subItem.href}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            onClick={handleLinkClick}
+                          >
+                            {content}
+                          </a>
+                        )
+                      }
+                      return (
+                        <Link key={subItem.label} href={subItem.href} onClick={handleLinkClick}>
+                          {content}
+                        </Link>
+                      )
+                    })}
+                  </div>
+                ) : null}
+              </div>
+            )
+          })}
+
+          <div className="mt-8 pt-6 space-y-4 border-t border-white/[0.06]">
+            {primaryCta.external ? (
+              <a
+                href={primaryCta.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center justify-center gap-2 w-full py-4 text-base font-medium transition-opacity hover:opacity-90 cursor-pointer bg-white text-black"
+                style={{ borderRadius: 'var(--radius-button)' }}
+                onClick={handleLinkClick}
+              >
+                {primaryCta.label}
+              </a>
+            ) : (
+              <Link
+                href={primaryCta.href}
+                className="flex items-center justify-center gap-2 w-full py-4 text-base font-medium transition-opacity hover:opacity-90 cursor-pointer bg-white text-black"
+                style={{ borderRadius: 'var(--radius-button)' }}
+                onClick={handleLinkClick}
+              >
+                {primaryCta.label}
+              </Link>
+            )}
+            {secondaryCta ? (
+              <Link
+                href={secondaryCta.href}
+                className="btn-outline-white flex items-center justify-center w-full py-4 text-base font-medium"
+                style={{ borderRadius: 'var(--radius-button)' }}
+                onClick={handleLinkClick}
+              >
+                {secondaryCta.label}
+              </Link>
+            ) : null}
+          </div>
+        </nav>
+      </div>
     </>
   )
 }

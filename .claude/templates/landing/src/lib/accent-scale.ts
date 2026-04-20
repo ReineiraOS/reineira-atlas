@@ -85,3 +85,65 @@ export function accentRgba(hex: string, alpha: number): string {
   const [r, g, b] = hexToRgb(hex)
   return `rgba(${r}, ${g}, ${b}, ${alpha})`
 }
+
+function lighten(hex: string, deltaL: number): string {
+  const [r, g, b] = hexToRgb(hex)
+  const [h, s, l] = rgbToHsl(r, g, b)
+  return hslToHex(h, s, Math.min(100, Math.max(0, l + deltaL)))
+}
+
+export interface AccentTokens {
+  accent: string
+  accentHover: string
+  accentBright: string
+  accentBg: string
+  accentBgHover: string
+  accentBorder: string
+  shadowGlow: string
+  shadowGlowStrong: string
+}
+
+export function buildAccentTokens(hex: string): AccentTokens {
+  return {
+    accent: hex,
+    accentHover: lighten(hex, 6),
+    accentBright: lighten(hex, 15),
+    accentBg: accentRgba(hex, 0.12),
+    accentBgHover: accentRgba(hex, 0.18),
+    accentBorder: accentRgba(hex, 0.2),
+    shadowGlow: `0 0 40px ${accentRgba(hex, 0.08)}`,
+    shadowGlowStrong: `0 0 20px ${accentRgba(hex, 0.15)}`,
+  }
+}
+
+/**
+ * Produces a CSS string (for inline <style>) that overrides every accent-related
+ * CSS variable so the whole template re-colors from a single hex.
+ *
+ * Uses the `--accent-teal*` variable names used by the upstream web-landing-app —
+ * component classes reference those names directly, and this keeps them working
+ * without edits to the components.
+ */
+export function accentCssOverrides(hex: string): string {
+  const t = buildAccentTokens(hex)
+  return `:root {
+  --accent: ${t.accent};
+  --accent-hover: ${t.accentHover};
+  --accent-bright: ${t.accentBright};
+  --accent-bg: ${t.accentBg};
+  --accent-bg-hover: ${t.accentBgHover};
+  --accent-border: ${t.accentBorder};
+  --accent-glow: ${t.shadowGlow};
+  --accent-teal: ${t.accent};
+  --accent-teal-hover: ${t.accentHover};
+  --accent-teal-bright: ${t.accentBright};
+  --accent-primary: ${t.accent};
+  --accent-secondary: ${t.accentHover};
+  --accent-warm: ${t.accentHover};
+  --accent-teal-bg: ${t.accentBg};
+  --accent-teal-bg-hover: ${t.accentBgHover};
+  --accent-teal-border: ${t.accentBorder};
+  --shadow-teal-glow: ${t.shadowGlow};
+  --shadow-teal-glow-strong: ${t.shadowGlowStrong};
+}`
+}
