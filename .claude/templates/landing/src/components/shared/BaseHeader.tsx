@@ -6,6 +6,7 @@ import { LogoWithText } from '@/components/ui'
 import { useScrolled } from '@/hooks/useScrolled'
 import { useScrollLock } from '@/hooks/useScrollLock'
 import { useEscapeKey } from '@/hooks/useEscapeKey'
+import { site } from '@/content/site'
 
 // Extracted style constants
 const HEADER_SCROLLED_STYLE = {
@@ -100,7 +101,7 @@ export default function BaseHeader({ navLinks, desktopCTA, mobileCTA, ariaLabel,
         style={isScrolled ? HEADER_SCROLLED_STYLE : HEADER_DEFAULT_STYLE}
       >
         <nav className="container flex items-center justify-between h-[72px]" aria-label={ariaLabel}>
-          <Link href={logoHref} className="flex items-center" aria-label="Privara Home">
+          <Link href={logoHref} className="flex items-center" aria-label={`${site.meta.brandName} Home`}>
             <LogoWithText height={26} />
           </Link>
 
@@ -158,7 +159,7 @@ export default function BaseHeader({ navLinks, desktopCTA, mobileCTA, ariaLabel,
         onKeyDown={handleMenuKeyDown}
       >
         <div className="flex items-center justify-between px-5 sm:px-6 h-[72px] border-b border-white/[0.08]">
-          <Link href={logoHref} onClick={handleLinkClick} aria-label="Privara Home">
+          <Link href={logoHref} onClick={handleLinkClick} aria-label={`${site.meta.brandName} Home`}>
             <LogoWithText height={24} />
           </Link>
           <button

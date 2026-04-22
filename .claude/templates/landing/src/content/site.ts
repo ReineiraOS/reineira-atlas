@@ -283,6 +283,15 @@ export const site: SiteConfig = {
         items: [
           { label: 'Platform', description: lorem('item-description'), href: '#', icon: 'Monitor', external: true },
           { label: 'Mobile', description: lorem('item-description'), href: '/mobile', icon: 'DeviceMobile' },
+          { label: 'API & SDK', description: lorem('item-description'), href: '#', icon: 'Code' },
+        ],
+      },
+      {
+        label: 'Developers',
+        items: [
+          { label: 'Documentation', description: lorem('item-description'), href: '#', icon: 'BookOpen', external: true },
+          { label: 'GitHub', description: lorem('item-description'), href: '#', icon: 'GithubLogo', external: true },
+          { label: 'Web Demo', description: lorem('item-description'), href: '#', icon: 'Browser', external: true },
         ],
       },
       {
