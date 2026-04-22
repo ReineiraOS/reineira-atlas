@@ -54,3 +54,28 @@ pnpm dev             # runtime check — curl localhost:3000/{,mobile,business,p
 - All content lives in `src/content/site.ts` — do not hardcode strings elsewhere.
 - `design.ts` only overrides token-level knobs (borderRadius, borderWidth, fonts). Never adjusts
   layout or structural behavior.
+
+## Text fit — write for the viewport, not the document
+
+Every UI slot has fixed visual proportions. If source text is too long, **rewrite it shorter and
+sharper** — never paste paragraph-length copy from a brief directly into a UI slot.
+
+| Slot | Visual role | Writing rule |
+|---|---|---|
+| `hero.title` | `<h1>` ~64 px, centered, 1–2 lines | 4–7 punchy words. Rewrite long headlines to a single bold claim. |
+| `hero.subtitle` | Lead text ~22 px, max-w-2xl | One sentence. Two short sentences max. Distil to the strongest idea. |
+| CTA labels | Pill button | Verb-first, ≤ 4 words: "Start for free", "See pricing". |
+| `eyebrow` | Small uppercase badge | One noun phrase, no verb. |
+| Section `title` | `<h2>` ~36–42 px | Tight claim or question, not a description. Rewrite if verbose. |
+| Section `subtitle` | Sub-copy below h2 | One sentence. If you have two ideas, pick the stronger one. |
+| `items[].title` | Card / feature heading | 2–4 words — a label, not a sentence. |
+| `items[].description` | Card body, fixed-height grid | One sentence written as a benefit. All cards in a grid must be visually even — trim the longest to match the others. |
+| `steps[].description` | Step body | One sentence. |
+| `trustStats items[].value` | Large stat | Compact symbol: `"$1B+"`, `"99.9%"`, `"< 2 s"`. Never prose. |
+| `trustStats items[].label` | Stat caption | Short noun phrase, no verb. |
+| `faq[].answer` | Accordion body | 2–3 sentences max. Lead with the direct answer. |
+| `pricing plan.description` | Plan sub-copy | One sentence, outcome-focused. |
+| `pricing plan.features[]` | Checklist line | One short phrase per line. |
+| `prose paragraphs[]` | Prose section, each paragraph | One idea per paragraph. Split or trim rather than run on. |
+
+**Test:** read any string you wrote aloud. If it sounds like a document or a README, rewrite it as a UI label.
