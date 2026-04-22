@@ -86,6 +86,42 @@ skeleton. Only text, images, and token values differ.
 | Branding → fonts | `branding.fontSans`, `branding.fontMono` |
 | Branding → radii / border | `branding.borderRadius`, `branding.borderWidth` |
 
+### Text fit — UI/UX writing rules
+
+UI slots have fixed visual proportions. Text that does not fit the slot's visual role breaks layout
+and hurts conversion. When populating any slot from `brief.md`, apply these rules:
+
+**Hero (`hero.title`, `hero.subtitle`)**
+- `hero.title` is a full-width `<h1>` at ~64 px, centered. It should fit 1–2 lines max.
+  If the brief supplies a long headline, **rewrite it as a short punchy claim** (4–7 words).
+  Example: "Confidential stablecoin payment infrastructure for modern B2B" → "Payments without the paper trail."
+- `hero.subtitle` sits below at ~22 px, max-w-2xl. One sentence, two at most.
+  If the brief has a paragraph here, **distill it to the single strongest idea**.
+
+**Section titles and subtitles (`title`, `subtitle`, `eyebrow`)**
+- `eyebrow` is a small uppercase badge — one short noun phrase, no verbs.
+- `title` should be a tight claim or question, not a description. Rewrite verbose headlines.
+- `subtitle` is one sentence. If you have two ideas, pick the more powerful one.
+
+**Cards and list items (`items[].title`, `items[].description`)**
+- Cards sit side-by-side in a grid. Their body text must be visually even across all cards —
+  if one description is three times longer than the others, **shorten it to match**.
+- `items[].title` is a label, not a sentence — 2–4 words.
+- `items[].description` is one sentence. Write it as a benefit, not a feature list.
+
+**Stats (`items[].value`, `items[].label`)**
+- `value` must be a compact number/symbol: `"$1B+"`, `"99.9%"`, `"< 2 s"`. Never prose.
+- `label` is a short noun phrase below the number — no verbs.
+
+**FAQ, pricing, prose**
+- `faq[].answer` — 2–3 sentences max. If longer, cut to the most direct answer.
+- `pricing plan.description` — one sentence, outcome-focused.
+- `prose paragraphs[]` — each paragraph is one idea. Split or trim rather than run on.
+
+**General principle:** if you find yourself copying text directly from the brief into a UI slot,
+stop and ask: *does this read as a UI label or as a document?* If it reads like a document,
+rewrite it shorter and sharper before filling the slot.
+
 ### Icons
 
 Component `icon` fields are **strings** resolved via `@/lib/icons.ts`. Use whitelisted names:
