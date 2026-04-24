@@ -18,8 +18,8 @@ last-reviewed: 2026-04-05
 ## Pipeline
 
 ```
-/scaffold         → copy platform-modules template (backend + app), rebrand
-/scaffold-landing → copy anonymized landing template, populate from brief
+/scaffold         → copy platform-modules template (backend + app + landing), rebrand
+/populate-landing → fill packages/landing/src/content/site.ts from brief
 /claude-design    → polish landing: content audit + aesthetic direction + tokens
 /brand            → apply color palette, typography, mode (to app + landing)
 /cleanup          → remove sample entities not in brief
@@ -38,7 +38,7 @@ Extract:
 - `features[]` — pages and flows
 - `branding` — accent hex, typography, border-radius, mode, logo
 - `sample_to_remove[]` — entities from template NOT in brief (e.g., transactions, withdrawals UI)
-- **Landing-specific fields** (consumed by `/scaffold-landing`):
+- **Landing-specific fields** (consumed by `/populate-landing`):
   - `hero_title`, `hero_subtitle`, `hero_cta`
   - `metrics[]` — 3-5 pitch KPIs (value/label/caption)
   - `problem` — sharp restatement + 2-3 sentence body
@@ -56,7 +56,7 @@ Execute skills in order. Each skill reads brief.md itself for context.
 
 ```
 1. /scaffold <venture_name>
-2. /scaffold-landing <venture_name>
+2. /populate-landing <venture_name>
 3. /claude-design <venture_name>
 4. /brand
 5. /cleanup

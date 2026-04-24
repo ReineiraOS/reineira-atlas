@@ -63,18 +63,15 @@ Then rebrand — find and replace in these files ONLY:
 - `reineira.json` → name: `<venture-name>`, type: `venture`
 - `packages/backend/package.json` → name: `@<venture-name>/backend`
 - `packages/app/package.json` → name: `@<venture-name>/app`
+- `packages/landing/package.json` → name: `@<venture-name>/landing`
 - `packages/app/index.html` → `<title>` tag
 - `CLAUDE.md` → first heading and description
 - `README.md` → first heading and description
 
-### Step 1b: Scaffold Landing
-```bash
-rsync -a --exclude='node_modules' --exclude='.next' \
-  ../reineira-atlas/.claude/templates/landing/ \
-  ../<venture-name>/packages/landing/
-```
-Then populate `packages/landing/src/content/site.ts` from the brief. Only fill sections that the
-brief actually describes — leave everything else `null` / empty so the component stays hidden.
+### Step 1b: Populate Landing
+Run `/populate-landing <venture-name>` — fills `packages/landing/src/content/site.ts` from the
+brief. Only populate sections that the brief actually describes — leave everything else `null` /
+empty so the component stays hidden.
 
 Minimum fields to populate: `meta.brandName`, `meta.title`, `meta.description`, `branding.accent`
 (HEX from brief section 7), `branding.faviconInitial` (first letter of brandName), `home.hero`,
@@ -84,9 +81,7 @@ Assemble `site.header.nav` and `site.footer.groups` from active pages only. If t
 describes unique themes not covered by `/business`, `/mobile`, `/pricing`, `/contact`, add them
 to `site.customPages[]` (up to 2 extras).
 
-Update `packages/landing/package.json` name to `@<venture-name>/landing`.
-
-See full mapping table in `.claude/skills/build/scaffold-landing/SKILL.md`.
+See full mapping table in `.claude/skills/build/populate-landing/SKILL.md`.
 
 ### Step 1c: Polish Landing Design
 Run `/claude-design <venture-name>`. This skill audits content (brief vs site.ts), picks a

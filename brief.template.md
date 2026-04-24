@@ -159,7 +159,7 @@ Example:
 
 ## 8. Landing Sections (fill only what applies)
 
-All sub-sections here feed `/scaffold-landing`. **Leave a section blank or delete it if it does
+All sub-sections here feed `/populate-landing`. **Leave a section blank or delete it if it does
 not apply** — on the venture's landing, blank sections simply do not render.
 
 ### Hero
@@ -194,7 +194,7 @@ and counterparties. Neither is acceptable for enterprise buyers. -->
 |---|---|---|
 |  |  |  |
 
-<!-- Icon hint is a free-text label — scaffold-landing picks the nearest of:
+<!-- Icon hint is a free-text label — populate-landing picks the nearest of:
 escrow→vault, FHE/privacy→lock|shield-check, ML→brain, agro→plant, freight→truck,
 stablecoin→currency, dev API→code, growth→chart, partnerships→handshake, regulation→scales -->
 

@@ -1,33 +1,29 @@
 ---
-name: scaffold-landing
-description: 'Copy canonical landing template and populate content slots from brief.md'
+name: populate-landing
+description: 'Fill packages/landing/src/content/site.ts from brief.md. The landing template already ships to the venture via platform-modules in bootstrap Step 1 — this skill only populates content.'
 agent: _builder
 argument-hint: '<venture-name>'
 ---
 
-# /scaffold-landing — Set Up Landing Page (Canonical)
+# /populate-landing — Fill Landing Content from Brief
 
 ## What It Does
 
-1. Copy `../reineira-atlas/.claude/templates/landing/` → `../<venture-name>/packages/landing/`.
-2. Populate `site.ts`:
+The landing template already lives in `../<venture-name>/packages/landing/` after the base
+scaffold (bootstrap Step 1 rsyncs `platform-modules/`, which now includes
+`packages/landing/`). This skill only fills content:
+
+1. Populate `packages/landing/src/content/site.ts`:
    - `meta` (brand name, tagline, description, URLs, emails, social, keywords) from brief.
    - `branding.accent` (hex from brief), optional `fontSans`/`fontMono`/`borderRadius`/`borderWidth`.
    - Every `home.*`, `mobile.*`, `business.*`, `pricing.*`, `blog.*`, `contact.*`, `privacy`,
      `terms` slot that the brief supplies.
    - Leave untouched: page set, component sequence, and everything in `src/components/*`,
      `src/app/*`, `src/lib/*`, `globals.css`.
-3. Update `package.json.name` to `@<venture-name>/landing`.
+2. Ensure `packages/landing/package.json.name` equals `@<venture-name>/landing`
+   (the bootstrap rebrand step handles this; verify it landed).
 
-## How
-
-```bash
-rsync -a --exclude='node_modules' --exclude='.next' --exclude='out' \
-  ../reineira-atlas/.claude/templates/landing/ \
-  ../<venture-name>/packages/landing/
-```
-
-Then Edit only `src/content/site.ts` (and `design.ts` if token-level overrides are needed).
+Edit only `src/content/site.ts` (and `design.ts` if token-level overrides are needed).
 
 ---
 

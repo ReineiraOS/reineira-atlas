@@ -7,7 +7,7 @@ argument-hint: '<venture-name>'
 
 # /claude-design — Polish Landing Design (tokens-only, canonical structure)
 
-> Runs **after** `/scaffold-landing`. Canonical-structure policy means this skill **only** touches
+> Runs **after** `/populate-landing`. Canonical-structure policy means this skill **only** touches
 > the token system — never layout, never component markup, never page set.
 
 ## What It Does
@@ -77,7 +77,7 @@ export const design: DesignConfig = {
 
 ## What this skill does NOT do
 
-- Pick page structure (that's `scaffold-landing`'s job, and it's canonical there).
+- Pick page structure (canonical in `packages/landing/` — pages and components are fixed).
 - Edit any component code.
 - Fabricate content.
 - Add new direction presets or visual treatments.
