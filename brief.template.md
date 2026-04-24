@@ -145,7 +145,166 @@ Example:
 
 ---
 
-## 7. Priorities
+## 7. Branding (for landing + app)
+
+- **Accent colour (HEX):** _e.g., #3b8bff_
+- **Font sans:** _e.g., Inter_
+- **Font mono:** _e.g., JetBrains Mono_
+- **Mode:** dark | light
+- **Favicon initial:** _single letter, defaults to first char of Venture name_
+
+<!-- Optional: logo file path (relative to brief). Leave blank to use generated letter mark. -->
+
+---
+
+## 8. Landing Sections (fill only what applies)
+
+All sub-sections here feed `/populate-landing`. **Leave a section blank or delete it if it does
+not apply** — on the venture's landing, blank sections simply do not render.
+
+### Hero
+
+- **Title:** _short, declarative (e.g., "Private settlement for cross-border freelance")_
+- **Subtitle:** _one-sentence expansion_
+- **Primary CTA:** _label + target URL or route_
+- **Secondary CTA (optional):** _label + target_
+
+### Metrics (3-5 items, pitch-ready)
+
+| Value | Label | Caption |
+|---|---|---|
+|  |  |  |
+
+<!-- Example: "$12M" / "GMV on testnet" / "Settled since Jan 2026" -->
+
+### Problem
+
+<!-- 2-3 sentences stating the sharp problem. One line title + paragraph body.
+Example:
+Title: Cross-border payroll leaks to fees and surveillance.
+Body: Freelancers lose 5-8% of every invoice to FX and wires. Crypto rails expose amounts
+and counterparties. Neither is acceptable for enterprise buyers. -->
+
+- **Title:**
+- **Body:**
+
+### Product features (3-5 items)
+
+| Title | Description | Icon hint |
+|---|---|---|
+|  |  |  |
+
+<!-- Icon hint is a free-text label — populate-landing picks the nearest of:
+escrow→vault, FHE/privacy→lock|shield-check, ML→brain, agro→plant, freight→truck,
+stablecoin→currency, dev API→code, growth→chart, partnerships→handshake, regulation→scales -->
+
+### How it works (3-5 steps)
+
+| Step title | Description |
+|---|---|
+|  |  |
+
+### Protocol flow (optional, 3-5 steps — lower-level mechanics)
+
+| Step title | Description |
+|---|---|
+|  |  |
+
+### Business model (optional)
+
+| Segment | Fee | Volume assumption | Notes |
+|---|---|---|---|
+|  |  |  |  |
+
+### Five-year arc (optional)
+
+| Year | Milestone | Target |
+|---|---|---|
+|  |  |  |
+
+### Competitive advantage (optional, 2-4 pairs)
+
+| Claim | Proof |
+|---|---|
+|  |  |
+
+### FAQ (optional, 3-6 items)
+
+- **Q:** ...
+- **A:** ...
+
+### Main CTA (bottom of page)
+
+- **Title:**
+- **Subtitle (optional):**
+- **Primary CTA:** _label + target_
+- **Secondary CTA (optional):** _label + target_
+
+---
+
+## 9. Landing Pages (standard — enable only what you need)
+
+For each page below, fill the section if the venture has content for it. Leave blank to omit
+the page entirely (the route won't be built and links to it won't appear).
+
+### /business (enterprise angle)
+
+- **Hero title:**
+- **Hero subtitle:**
+- **Segments (optional):** cards of (title, description, icon hint)
+- **Trust stats (optional):** pairs of (value, label)
+- **Compliance bullets (optional):**
+
+### /mobile (if you have a mobile app or mobile-targeted SDK)
+
+- **Hero title:**
+- **Hero subtitle:**
+- **Features (optional):** (title, description, icon hint)
+- **CTA:**
+
+### /pricing (if venture has a pricing model)
+
+- **Hero title:**
+- **Hero subtitle:**
+- **Plans:** array of (name, price, priceSuffix, description, features[], cta, featured?)
+
+### /contact (if you have public channels)
+
+- **Hero title:**
+- **Hero subtitle:**
+- **Channels:** array of (label, value, href, icon hint)
+
+### /privacy, /terms (legal)
+
+Plain text body (Markdown-ish). Leave blank to skip.
+
+---
+
+## 10. Custom pages (0-2 extra)
+
+If the venture needs unique pages not covered above (e.g., `/compliance`, `/research`,
+`/integrations`), list them here. Up to **two** custom pages for MVP.
+
+### Page 1
+
+- **Slug (kebab-case):**
+- **Label (for nav):**
+- **Hero title:**
+- **Hero subtitle:**
+- **Sections:** ordered list of blocks — each is one of:
+  - `text` — `title` + `body`
+  - `cards` — `title` + array of `{title, description}`
+  - `stats` — array of `{value, label}`
+  - `steps` — array of `{title, description}`
+  - `table` — array of `{col1, col2, ...}` (column names become headers)
+
+### Page 2 (optional)
+
+_same structure_
+
+---
+
+## 11. Priorities
 
 <!-- What are the top 3 things you need to do RIGHT NOW?
 1. e.g., Deploy custom condition resolver for our use case

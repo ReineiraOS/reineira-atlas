@@ -63,9 +63,33 @@ Then rebrand — find and replace in these files ONLY:
 - `reineira.json` → name: `<venture-name>`, type: `venture`
 - `packages/backend/package.json` → name: `@<venture-name>/backend`
 - `packages/app/package.json` → name: `@<venture-name>/app`
+- `packages/landing/package.json` → name: `@<venture-name>/landing`
 - `packages/app/index.html` → `<title>` tag
 - `CLAUDE.md` → first heading and description
 - `README.md` → first heading and description
+
+### Step 1b: Populate Landing
+Run `/populate-landing <venture-name>` — fills `packages/landing/src/content/site.ts` from the
+brief. Only populate sections that the brief actually describes — leave everything else `null` /
+empty so the component stays hidden.
+
+Minimum fields to populate: `meta.brandName`, `meta.title`, `meta.description`, `branding.accent`
+(HEX from brief section 7), `branding.faviconInitial` (first letter of brandName), `home.hero`,
+`home.problem` (if brief has problem statement), `home.features` (3-5 items).
+
+Assemble `site.header.nav` and `site.footer.groups` from active pages only. If the brief
+describes unique themes not covered by `/business`, `/mobile`, `/pricing`, `/contact`, add them
+to `site.customPages[]` (up to 2 extras).
+
+See full mapping table in `.claude/skills/build/populate-landing/SKILL.md`.
+
+### Step 1c: Polish Landing Design
+Run `/claude-design <venture-name>`. This skill audits content (brief vs site.ts), picks a
+BOLD aesthetic direction via the global `frontend-design` plugin skill, then extracts a full
+Tailwind v4 `@theme` token set via `tailwind-design-system` plugin skill. Applies to
+`packages/landing/src/app/globals.css` and records rationale to `packages/landing/src/content/design.ts`.
+
+See `.claude/skills/build/claude-design/SKILL.md`.
 
 ### Step 2: Brand
 Read Section 7 (Branding) from brief. Edit `packages/app/src/styles/main.css` — replace CSS custom property values:
@@ -132,7 +156,10 @@ Update dashboard route with:
 ```bash
 cd ../<venture-name> && pnpm install && pnpm build
 ```
-Check for template remnants: `grep -r "reineira-os/modules" --include="*.ts" --include="*.json"`
+Check for template remnants:
+- `grep -r "reineira-os/modules" --include="*.ts" --include="*.json"`
+- `grep -r "Privara\|privara" packages/landing/src/ packages/landing/public/` (landing must be
+  free of Privara-branded content)
 Report results.
 
 ---
